@@ -1,0 +1,91 @@
+@CHARSET "ISO-8859-1";
+*{
+    position:relative;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    z-index: -2;
+	font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	height:100vh;
+	width:100vw;
+	margin:0;
+	padding:0;
+}
+
+.container {
+	padding-top: 10vh;
+    z-index: -1;
+	top: 0;
+	left: 0;
+	margin: 0;
+	background: #f2f2f2;
+	color: #000000;
+	width: 100vw;
+	height: auto;
+}
+
+.menu {
+	text-align: center;
+	top: 0;
+	left: 0;
+	position: fixed;
+	width: 100vw;
+	height: 10vh;
+	background-color: lightseagreen;
+	z-index: 2;
+}
+
+.eventList{
+	width: 100vw;
+	height: auto;
+	}
+
+.singleEvent{
+	text-align: center;
+	width: 90vw;
+	margin: 5vh auto 2vh auto;
+	height: auto;
+
+	background-color: #FFFFFF;
+	box-shadow: 0 0 0.1vh #9E9E9E;
+	border-radius: 0.2vh;
+}
+	
+.eventTop{
+	padding-left: 2vw;
+	padding-right: 2vw;
+	padding-bottom: 3vh;
+	padding-top: 3vh;
+}
+
+.eventType{
+	float: left;
+}
+
+.eventSubs{
+	float:right;
+}
+
+.eventImg{
+	width: 100%;
+    height: auto;
+}
+
+.eventBottom{
+
+}
+
+.eventTitle{
+	
+}
+
+.eventDate{
+	
+}
+
