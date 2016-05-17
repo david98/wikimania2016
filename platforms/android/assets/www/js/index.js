@@ -17,7 +17,7 @@
  * under the License.
  */
 document.getElementById("button").addEventListener("click", visualizza);
-
+document.getElementById("polpetta").addEventListener("submit", login);
 
 function visualizza() {
     document.getElementById("logo").style.transform='translateY(-12vh)';
@@ -27,7 +27,14 @@ function visualizza() {
     document.getElementById("button").value='Sign in';
     document.getElementById("button").style.width='40vmin';
     document.getElementById("button").style.transform='translateY(-20vh)';
+    document.getElementById("button").addEventListener("click", login);
 
     document.getElementById("form").style.visibility='visible';
     document.getElementById("form").style.opacity='1';
+}
+
+function login(){
+    var txt = document.getElementById("polpetta").value;
+    alert(txt);
+    location.href = 'eventList.html';
 }

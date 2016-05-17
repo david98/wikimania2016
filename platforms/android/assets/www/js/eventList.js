@@ -16,29 +16,3 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-document.getElementById("button").addEventListener("click", visualizza);
-
-
-function visualizza() {
-    if(document.getElementById("prova").style.display=='block') {
-        document.getElementById("prova").style.display = 'none';
-        document.getElementById("audio").load();
-    }
-
-    else if(document.getElementById("prova").style.display!='block'){
-        document.getElementById("prova").style.display='block';
-        document.getElementById("audio").play();
-    }
-
-    document.getElementById("logo").style.transform='translateY(-12vh)';
-    
-    document.getElementById("title").style.transform='translateY(15vh)';
-
-    document.getElementById("button").value='Sign in';
-    document.getElementById("button").style.width='40vmin';
-    document.getElementById("button").style.transform='translateY(-20vh)';
-
-    document.getElementById("form").style.visibility='visible';
-    document.getElementById("form").style.opacity='1';
-        
-}

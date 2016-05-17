@@ -12,7 +12,7 @@
 body {
     z-index: -2;
 	font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-	height:100vh;
+	height:100%;
 	width:100vw;
 	margin:0;
 	padding:0;
@@ -27,7 +27,7 @@ body {
 	background: #f2f2f2;
 	color: #000000;
 	width: 100vw;
-	height: auto;
+	height: 100%;
 }
 
 .menu {
@@ -50,7 +50,7 @@ body {
 	text-align: center;
 	width: 90vw;
 	margin: 5vh auto 2vh auto;
-	height: auto;
+	height: 100%;
 
 	background-color: #FFFFFF;
 	box-shadow: 0 0 0.1vh #9E9E9E;
@@ -60,16 +60,32 @@ body {
 .eventTop{
 	padding-left: 2vw;
 	padding-right: 2vw;
-	padding-bottom: 3vh;
-	padding-top: 3vh;
 }
 
 .eventType{
-	float: left;
+    float: left;
+    margin-top: 2.5vh;
+    margin-bottom: 2.5vh;
+    color: lightseagreen;
+    border: 0.5vw solid lightseagreen;
+    font-size: 4vw;
+    font-weight: bold;
+    padding: 0.5vw 2vw 0.5vw 2vw;
+    border-radius: 3vw;
 }
 
 .eventSubs{
 	float:right;
+    margin-top: calc(2.5vh + 0.5vw);
+    margin-bottom: calc(2.5vh + 0.5vw);
+    color: lightseagreen;
+    font-size: 4vw;
+    font-weight: bold;
+    padding: 0.5vw 2vw 0.5vw 2vw;
+}
+
+.eventNum{
+    font-size: 3vw;
 }
 
 .eventImg{
@@ -78,14 +94,22 @@ body {
 }
 
 .eventBottom{
-
+	margin-top: 1vh;
+	margin-bottom: 2vh;
+	line-height: 3.3vh;
 }
 
 .eventTitle{
-	
+	color: lightseagreen;
+	letter-spacing: 0.5vw;
+	word-spacing: 0.5vw;
+	font-size: 4.5vw;
+	font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 }
 
 .eventDate{
-	
+	color: gray;
+	font-size: 3.5vw;
+	font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 }
 
