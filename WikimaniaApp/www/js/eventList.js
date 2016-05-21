@@ -16,3 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+$(document).ready(function () {
+    $('#menu_btn').click(function () {
+            slideout.toggle();
+        }
+    );
+});
