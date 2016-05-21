@@ -9,9 +9,14 @@
     user-select: none;
 }
 
+@font-face {
+    font-family: 'HelveticaNeue-Light';
+    src: url(/fonts/HelveticaNeue-Light.otf) format("opentype");
+}
+
 body {
     z-index: -2;
-	font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-family:'HelveticaNeue-Light';/*, 'HelveticaNeue', Helvetica, Arial, sans-serif;*/
 	height:100%;
 	width:100vw;
 	margin:0;
@@ -19,7 +24,7 @@ body {
 }
 
 .container {
-	padding-top: 10vh;
+    padding-top: 10vh;
     z-index: -1;
 	top: 0;
 	left: 0;
@@ -104,13 +109,13 @@ body {
 	letter-spacing: 0.5vw;
 	word-spacing: 0.5vw;
 	font-size: 4.5vw;
-	font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
 .eventDate{
 	color: gray;
 	font-size: 3.5vw;
-	font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
 .slideout-menu {
@@ -127,7 +132,7 @@ body {
 }
 
 .slideout-panel {
-  position:relative;
+  position: relative;
   z-index: 1;
   will-change: transform;
 }
@@ -140,4 +145,22 @@ body {
 
 .slideout-open .slideout-menu {
   display: block;
+}
+
+#panel, #menu{
+    background-color: lightseagreen;
+}
+
+#logo{
+    color: #ffffff;
+    display: inline-block;
+    margin-bottom: 1vh;
+}
+
+#menu_btn{
+    display: inline-block;
+    margin-left: 2vw;
+    margin-top: 4vh;
+    margin-right: 5vw;
+    font-size: 2em;
 }
