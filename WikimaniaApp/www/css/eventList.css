@@ -11,7 +11,7 @@
 
 @font-face {
     font-family: 'HelveticaNeue-Light';
-    src: url(/fonts/HelveticaNeue-Light.otf) format("opentype");
+    src: url(../fonts/HelveticaNeue-Light.otf) format("opentype");
 }
 
 body {
@@ -158,9 +158,10 @@ body {
 }
 
 #menu_btn{
+    color: #ffffff;
     display: inline-block;
-    margin-left: 2vw;
-    margin-top: 4vh;
+    margin-left: 4vw;
+    margin-top: 5vh;
     margin-right: 5vw;
     font-size: 2em;
 }
