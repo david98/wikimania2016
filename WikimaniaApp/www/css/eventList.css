@@ -1,50 +1,23 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 @CHARSET "ISO-8859-1";
-*{
-    position:relative;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-@font-face {
-    font-family: 'HelveticaNeue-Light';
-    src: url(/fonts/HelveticaNeue-Light.otf) format("opentype");
-}
-
-body {
-    z-index: -2;
-	font-family:'HelveticaNeue-Light';/*, 'HelveticaNeue', Helvetica, Arial, sans-serif;*/
-	height:100%;
-	width:100vw;
-	margin:0;
-	padding:0;
-}
-
-.container {
-    padding-top: 10vh;
-    z-index: -1;
-	top: 0;
-	left: 0;
-	margin: 0;
-	background: #f2f2f2;
-	color: #000000;
-	width: 100vw;
-	height: 100%;
-}
-
-.menu {
-	text-align: center;
-	top: 0;
-	left: 0;
-	position: fixed;
-	width: 100vw;
-	height: 10vh;
-	background-color: lightseagreen;
-	z-index: 2;
-}
 
 .eventList{
 	width: 100vw;
@@ -116,51 +89,4 @@ body {
 	color: gray;
 	font-size: 3.5vw;
 	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
-}
-
-.slideout-menu {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 0;
-  width: 256px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  display: none;
-}
-
-.slideout-panel {
-  position: relative;
-  z-index: 1;
-  will-change: transform;
-}
-
-.slideout-open,
-.slideout-open body,
-.slideout-open .slideout-panel {
-  overflow: hidden;
-}
-
-.slideout-open .slideout-menu {
-  display: block;
-}
-
-#panel, #menu{
-    background-color: lightseagreen;
-}
-
-#logo{
-    color: #ffffff;
-    display: inline-block;
-    margin-bottom: 1vh;
-}
-
-#menu_btn{
-    display: inline-block;
-    margin-left: 2vw;
-    margin-top: 4vh;
-    margin-right: 5vw;
-    font-size: 2em;
 }
