@@ -28,7 +28,6 @@
 ul
 {
     list-style-type: none;
-    margin-left: 10vw;
     padding: 0;
 }
 a{
@@ -39,31 +38,31 @@ a:visited{
     color: inherit;
 }
 
-li{
-	color: black;
-}
-#navbar-text
+.navbar-text
 {
+    margin-top: 0.5vh;
 	display: block;
-	margin-left: -2vw;
-	font-size: 2vh;
+	font-size: 0.8em;
+    color: #ffffff;
+    font-weight: bold;
 }
-#navbar-list
+.navbar-list
 {
 	margin-bottom:2vh;
-	margin-left: 15vw;
+    color: #ffffff;
 }
 #menu-line
 {
 	margin-top:2vh;
-	background-color: rgba(0, 0, 0, 0.26);
+	background-color: rgba(42, 95, 134, 0.20);
 	height: 2vh;
 }
+
 #menu-line-right
 {
 	float:right;
 	margin-top:2vh;
-	background-color: black;
+	background-color: #2a5f86;
 	height: 100vh;
 	width: 1vw;
 }
@@ -146,6 +145,7 @@ body {
 
 #navbar{
 	margin-top: 10vh;
+    text-align: center;
 }
 
 #menu_btn{
