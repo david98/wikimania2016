@@ -36,11 +36,15 @@
 		<meta charset="ISO-8859-1">
 
 		<link rel="stylesheet" type="text/css" href="css/eventList.css">
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>-->
         <script src="js/slideout.min.js"></script>
         <script src="js/jquery-git.js"></script>
         <script src="js/eventList.js"></script>
-        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+        
+        
+        
 
         <title>WIKIMANIA 2016</title>
     </head>
@@ -49,6 +53,8 @@
         <nav id="menu">
             <header>
                 <h2>Menu</h2>
+                <a href="eventSingle.html">eventSingle</a>
+                <a href="restaurantList.html">restaurantList</a>
             </header>
         </nav>
 
@@ -104,14 +110,8 @@
 
             </div>
         </main>
-
-        <script>
-            var slideout = new Slideout({
-            'panel': document.getElementById('panel'),
-            'menu': document.getElementById('menu'),
-            'padding': 256,
-            'tolerance': 70
-            });
-        </script>
-	    </body>
+        
+        <script src="js/common.js"></script>
+	    
+    </body>
 </html>
