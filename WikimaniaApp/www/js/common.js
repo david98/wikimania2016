@@ -25,8 +25,20 @@ var slideout = new Slideout({
 });
 
 $(document).ready(function () {
+	var opened = 0;
     $('#menu_btn').click(function () {
         slideout.toggle();
     }
     );
+	slideout.on('open', function() { 
+		$('#menu_btn').toggleClass('open');	
+		opened = 1;
+	})
+	slideout.on('close', function() { 
+		if(opened == 1)
+		{
+			$('#menu_btn').toggleClass('open');
+			opened = 0;
+		}
+	})
 });
