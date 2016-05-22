@@ -19,6 +19,11 @@
 
 @CHARSET "ISO-8859-1";
 
+@font-face {
+    font-family: 'HelveticaNeue-Light';
+    src: url(../fonts/HelveticaNeue-Light.otf) format("opentype");
+}
+
 .eventList{
 	width: 100vw;
 	height: auto;
