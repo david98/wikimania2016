@@ -47,20 +47,18 @@
 }
 
 .restaurantTitle{
-	color: lightseagreen;
+	color: #5A9BC3;
     letter-spacing: 1.5vw;
 	font-size: 4.5vw;
-	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
 .restaurantDate{
 	color: gray;
 	font-size: 4vw;
-	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
 .restaurantDistance{
     font-size: 4.5vw;
-    color: lightseagreen;
+    color: #5A9BC3;
     font-weight: bold;
 }
