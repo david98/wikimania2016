@@ -44,8 +44,8 @@
     float: left;
     margin-top: 2.5vh;
     margin-bottom: 2.5vh;
-    color: #5A9BC3;
-    border: 0.5vw solid #5A9BC3;
+    color: lightseagreen;
+    border: 0.5vw solid lightseagreen;
     font-size: 4vw;
     font-weight: bold;
     padding: 0.5vw 2vw 0.5vw 2vw;
@@ -56,7 +56,7 @@
 	float:right;
     margin-top: calc(2.5vh + 0.5vw);
     margin-bottom: calc(2.5vh + 0.5vw);
-    color: #5A9BC3;
+    color: lightseagreen;
     font-size: 4vw;
     font-weight: bold;
     padding: 0.5vw 2vw 0.5vw 2vw;
@@ -78,8 +78,9 @@
 }
 
 .eventTitle{
-	color: #5A9BC3;
-    letter-spacing: 1.5vw;
+	color: lightseagreen;
+	letter-spacing: 0.5vw;
+	word-spacing: 0.5vw;
 	font-size: 4.5vw;
 	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
