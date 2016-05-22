@@ -63,7 +63,7 @@ body {
 	position: fixed;
 	width: 100vw;
 	height: 10vh;
-	background-color: lightseagreen;
+	background-color: #5A9BC3;
 	z-index: 2;
 }
 
@@ -97,7 +97,7 @@ body {
 }
 
 #panel, #menu{
-    background-color: lightseagreen;
+    background-color: #5A9BC3;
 }
 
 #logo{

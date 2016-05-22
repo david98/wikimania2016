@@ -1,2 +1,50 @@
-﻿body {
+﻿.singleEvent{
+	width: 100vw;
+	min-height: 100vh;
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.eventTitle{
+    padding: 1vh;
+    color: #5A9BC3;
+    letter-spacing: 1.5vw;
+	font-size: 6vw;
+    font-weight: bold;
+    background-color: #E2E2E2;
+
+}
+
+.eventImg{
+    margin-top: 3vh;
+    width: 100%;
+    height: auto;
+}
+
+.eventDate{
+    float: right;
+    margin-right: 5vw;
+}
+
+.eventDesc{
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: block;
+    text-align: justify !important; 
+}
+
+.eventSubs{
+    background-color: #E2E2E2;
+}
+
+.eventNum{
+
+}
+
+.eventBtn{
+
+}
+
+.eventGuide{
+
 }
