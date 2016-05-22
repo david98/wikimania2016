@@ -63,7 +63,7 @@ a:visited{
 	float:right;
 	margin-top:2vh;
 	background-color: #2a5f86;
-	height: 100vh;
+	height: 98%;
 	width: 1vw;
 }
 @font-face {
@@ -133,6 +133,8 @@ body {
   
 #logo{
 	font-size: 2vh;
+    vertical-align: center;
+    height: 8vh;
     /*position: fixed;*/
     width: 100%;
     background-color: #5e9ac6;
@@ -151,7 +153,6 @@ body {
 #menu_btn{
     display: inline-block;
     margin-left: 4vw;
-    margin-top: 4vh;
     margin-right: 5vw;
     font-size: 2em;
 }
