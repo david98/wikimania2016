@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
  * distributed with this work for additional information
@@ -19,12 +19,12 @@
 
 @CHARSET "ISO-8859-1";
 
-.eventList{
+.restaurantList{
 	width: 100vw;
 	height: auto;
 	}
 
-.singleEvent{
+.singleRestaurant{
 	text-align: center;
 	width: 90vw;
 	margin: 5vh auto 2vh auto;
@@ -35,57 +35,32 @@
 	border-radius: 0.2vh;
 }
 	
-.eventTop{
-	padding-left: 2vw;
-	padding-right: 2vw;
-}
-
-.eventType{
-    float: left;
-    margin-top: 2.5vh;
-    margin-bottom: 2.5vh;
-    color: lightseagreen;
-    border: 0.5vw solid lightseagreen;
-    font-size: 4vw;
-    font-weight: bold;
-    padding: 0.5vw 2vw 0.5vw 2vw;
-    border-radius: 3vw;
-}
-
-.eventSubs{
-	float:right;
-    margin-top: calc(2.5vh + 0.5vw);
-    margin-bottom: calc(2.5vh + 0.5vw);
-    color: lightseagreen;
-    font-size: 4vw;
-    font-weight: bold;
-    padding: 0.5vw 2vw 0.5vw 2vw;
-}
-
-.eventNum{
-    font-size: 3vw;
-}
-
-.eventImg{
+.restaurantImg{
 	width: 100%;
     height: auto;
 }
 
-.eventBottom{
+.restaurantBottom{
 	margin-top: 1vh;
-	margin-bottom: 2vh;
-	line-height: 3.3vh;
+	margin-bottom: 1vh;
+	line-height: 4vh;
 }
 
-.eventTitle{
+.restaurantTitle{
 	color: lightseagreen;
     letter-spacing: 1.5vw;
 	font-size: 4.5vw;
 	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
-.eventDate{
+.restaurantDate{
 	color: gray;
-	font-size: 3.5vw;
+	font-size: 4vw;
 	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
+}
+
+.restaurantDistance{
+    font-size: 4.5vw;
+    color: lightseagreen;
+    font-weight: bold;
 }
