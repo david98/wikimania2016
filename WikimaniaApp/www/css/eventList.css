@@ -1,51 +1,3 @@
-@CHARSET "ISO-8859-1";
-*{
-    position:relative;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-@font-face {
-    font-family: 'HelveticaNeue-Light';
-    src: url(../fonts/HelveticaNeue-Light.otf) format("opentype");
-}
-
-body {
-    z-index: -2;
-	font-family:'HelveticaNeue-Light';/*, 'HelveticaNeue', Helvetica, Arial, sans-serif;*/
-	height:100%;
-	width:100vw;
-	margin:0;
-	padding:0;
-}
-
-.container {
-    padding-top: 10vh;
-    z-index: -1;
-	top: 0;
-	left: 0;
-	margin: 0;
-	background: #f2f2f2;
-	color: #000000;
-	width: 100vw;
-	height: 100%;
-}
-
-.menu {
-	text-align: center;
-	top: 0;
-	left: 0;
-	position: fixed;
-	width: 100vw;
-	height: 10vh;
-	background-color: lightseagreen;
-	z-index: 2;
-}
-
 .eventList{
 	width: 100vw;
 	height: auto;
@@ -108,11 +60,9 @@ body {
 	color: #5A9BC3;
     letter-spacing: 1.5vw;
 	font-size: 4.5vw;
-	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
 
 .eventDate{
 	color: gray;
 	font-size: 3.5vw;
-	font-family: 'HelveticaNeue-Light';/*, 'HelveticaNeue', "Orator Std",  Helvetica, Arial, sans-serif;*/
 }
