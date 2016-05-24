@@ -16,25 +16,31 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-document.getElementById("button").addEventListener("click", visualizza);
-document.getElementById("polpetta").addEventListener("submit", login);
+
+var button = $('#button');
+var idCode = $('#idCode');
+var form = $('#form');
+var logo = $('#logo');
+var title = $('#title');
+
+button.click(visualizza);
+idCode.submit(login);
 
 function visualizza() {
-    document.getElementById("logo").style.transform='translateY(-12vh)';
-    
-    document.getElementById("title").style.transform='translateY(15vh)';
+    logo.css('transform', 'translateY(-12vh)');
+    title.css('transform', 'translateY(15vh)');
 
-    document.getElementById("button").value='Sign in';
-    document.getElementById("button").style.width='40vmin';
-    document.getElementById("button").style.transform='translateY(-20vh)';
-    document.getElementById("button").addEventListener("click", login);
+    button.val('Sign in');
+    button.css('width', '40vmin');
+    button.css('transform', 'translateY(-20vh)');
+    button.bind('touchstart', login);
 
-    document.getElementById("form").style.visibility='visible';
-    document.getElementById("form").style.opacity='1';
+    form.css('visibility', 'visible');
+    form.css('opacity', '1');
 }
 
 function login(){
-    var txt = document.getElementById("polpetta").value;
+    var txt = idCode.text();
     alert(txt);
     location.href = 'eventList.html';
 }
