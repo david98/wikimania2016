@@ -147,15 +147,14 @@ a:visited{
 {
     margin-top: 0.5vh;
 	display: block;
-	font-size: 0.8em;
     color: #ffffff;
-    font-weight: bold;
 }
 
 .navbar-list
 {
 	margin-bottom:2vh;
     color: #ffffff;
+    font-size: 3vmin;
 }
 
 #menu-line
@@ -257,5 +256,5 @@ body {
     display: inline-block;
     margin-left: 4vw;
     margin-right: 5vw;
-    font-size: 2em;
+    font-size: 7vmin;
 }
