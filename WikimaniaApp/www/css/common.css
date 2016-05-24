@@ -139,6 +139,10 @@ a{
 	text-decoration:none;
 }
 
+a:link{
+    text-decoration: none;
+}
+
 a:visited{
     color: inherit;
 }
@@ -246,5 +250,6 @@ body {
     display: inline-block;
     margin-left: 4vw;
     margin-right: 5vw;
+    margin-top: 2vh;
     font-size: 7vmin;
 }
