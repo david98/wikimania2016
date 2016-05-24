@@ -22,23 +22,29 @@
 }
 
 .eventDate{
+    font-size: 4vw;
     float: right;
     margin-right: 5vw;
+    color: gray;
 }
 
 .eventDesc{
+    margin-top:5vh;
     padding-left: 5vw;
     padding-right: 5vw;
+    font-size: 1.1em;
     display: block;
-    text-align: justify !important; 
+    text-align: justify;
+    font-size: 4vw;
 }
 
 .eventSubs{
+    margin-top: 4vh;
     background-color: #E2E2E2;
 }
 
 .eventNum{
-
+    
 }
 
 .eventBtn{

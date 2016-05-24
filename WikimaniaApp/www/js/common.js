@@ -17,12 +17,12 @@
  * under the License.
  */
 
-var vw = window.innerWidth;
+var vw = window.innerWidth/100;
 var slideout = new Slideout({
     'panel': document.getElementById('panel'),
     'menu': document.getElementById('menu'),
-    'padding': 3/10*vw,
-    'tolerance': (vw*1)/10
+    'padding': vw*30,
+    'tolerance': vw*10
 });
 
 $(document).ready(function () {
