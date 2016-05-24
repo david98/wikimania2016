@@ -19,17 +19,6 @@
 
 var vw = window.innerWidth / 100;
 
-$(window).resize(function () {
-    vw = window.innerWidth / 100;
-    slideout.destroy();
-    slideout = new Slideout({
-        'panel': document.getElementById('panel'),
-        'menu': document.getElementById('menu'),
-        'padding': vw * 30,
-        'tolerance': vw * 10
-    });
-})
-
 var slideout = new Slideout({
     'panel': document.getElementById('panel'),
     'menu': document.getElementById('menu'),
@@ -43,6 +32,17 @@ $(document).ready(function () {
         }
     );
 
+
+    $(window).resize(function () {
+        vw = window.innerWidth / 100;
+        slideout.destroy();
+        slideout = new Slideout({
+            'panel': document.getElementById('panel'),
+            'menu': document.getElementById('menu'),
+            'padding': vw * 30,
+            'tolerance': vw * 10
+        });
+    })
 
 });
 
