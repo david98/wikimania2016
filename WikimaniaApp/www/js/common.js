@@ -17,7 +17,19 @@
  * under the License.
  */
 
-var vw = window.innerWidth/100;
+var vw = window.innerWidth / 100;
+
+$(window).resize(function () {
+    vw = window.innerWidth / 100;
+    slideout.destroy();
+    slideout = new Slideout({
+        'panel': document.getElementById('panel'),
+        'menu': document.getElementById('menu'),
+        'padding': vw * 30,
+        'tolerance': vw * 10
+    });
+})
+
 var slideout = new Slideout({
     'panel': document.getElementById('panel'),
     'menu': document.getElementById('menu'),
@@ -26,8 +38,15 @@ var slideout = new Slideout({
 });
 
 $(document).ready(function () {
-    $('#menu_btn').click(function () {
-        slideout.toggle();
-    }
+    $('#menu_btn').bind('touchstart', function () {
+            slideout.toggle();
+        }
     );
+
+
 });
+
+$(document).bind('backbutton', function () {
+    if (document.referrer != 'index.html')
+        location.href = document.referrer;
+})
