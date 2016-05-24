@@ -21,6 +21,8 @@
 }
 
 .eventDate{
+    font-weight: 100;
+    font-style: italic;
     font-size: 4vw;
     float: right;
     margin-right: 5vw;
