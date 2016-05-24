@@ -157,22 +157,6 @@ a:visited{
     font-size: 3vmin;
 }
 
-#menu-line
-{
-	margin-top:2vh;
-	background-color: rgba(42, 95, 134, 0.20);
-	height: 2vh;
-}
-
-#menu-line-right
-{
-	float:right;
-	margin-top:2vh;
-	background-color: #2a5f86;
-	height: 98%;
-	width: 1vw;
-}
-
 body {
     z-index: -2;
 	height:100%;

@@ -107,6 +107,7 @@
     <splash src="res/screens/wp8/SplashScreenImage.png" width="768" height="1280" />
   </platform>
   <preference name="Orientation" value="portrait" />
+  <preference name="DisallowOverscroll" value="true" />
   <preference name="target-device" value="handset" />
   <preference name="SuppressesIncrementalRendering" value="False" />
   <preference name="WindowsStoreDisplayName" value="" />
