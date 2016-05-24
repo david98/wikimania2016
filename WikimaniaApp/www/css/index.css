@@ -9,12 +9,43 @@
     user-select: none;
 }
 
-::-webkit-input-placeholder { /* Chrome */
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: black;
     opacity: 0.5;
     transition: opacity 200ms ease-in-out;
 }
+
 :focus::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+    color: black;
+    opacity: 0.5;
+    transition: opacity 200ms ease-in-out;
+}
+
+:focus::-moz-placeholder {
+    opacity: 0;
+}
+
+:-ms-input-placeholder { /* IE 10+ */
+    color: black;
+    opacity: 0.5;
+    transition: opacity 200ms ease-in-out;
+}
+
+:focus:-ms-input-placeholder {
+    opacity: 0;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: black;
+    opacity: 0.5;
+    transition: opacity 200ms ease-in-out;
+}
+
+:focus:-moz-placeholder {
     opacity: 0;
 }
 
@@ -58,7 +89,7 @@ body {
 	top: 40vh;
 	letter-spacing: 2.5vw;
 	word-spacing: 2vw;
-    font-size: 1.5rem;
+    font-size: 7vmin;
     font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
     color: rgb(255, 255, 255);
     text-shadow: 0 0.2vmin 0.2vmin #000000;
@@ -66,7 +97,7 @@ body {
 }
 
 .title span {
-    font-size: 7vmin;
+    font-size: 8vmin;
 }
 
 .button_sign {
@@ -74,7 +105,7 @@ body {
     top: 47vh;
 	width: 75vmin;
     height: 11vmin;
-	font-size: 1.1rem;
+	font-size: 4.5vmin;
 	background: none;
 	color: rgb(255, 255, 255);
 	line-height: 8vmin;
@@ -105,20 +136,15 @@ body {
     border-radius: 6vmin;
     width: 52vmin;
     height: 6vmin;
-    padding: 1vmin 0 1vmin 7vmin;
-    margin: 1vmin 0 1vmin 0;
+    padding: 1vmin 7vmin 1vmin 7vmin;
+    text-align: center;
+    /*margin: 1vmin 0 1vmin 0;*/
     font-size: 5vmin;
     font-family: "Orator Std", 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 }
 
 .input:focus{
     outline:none;
-}
-
-.input.username{
-}
-
-.input.password{
 }
 
 .button_sign:active .form{
