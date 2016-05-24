@@ -248,8 +248,10 @@ body {
 }
 
 #navbar{
-	margin-top: 10vh;
     text-align: center;
+    background-color: rgba(42, 95, 134, 0.20);
+    padding: 4vh;
+    margin-top: 5vh;
 }
 
 #menu_btn{
