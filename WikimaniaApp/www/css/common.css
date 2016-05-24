@@ -245,6 +245,7 @@ body {
 
 #logo h2{
     display: inline-block;
+    font-weight: 400;
 }
 
 #navbar{
