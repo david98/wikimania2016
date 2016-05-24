@@ -225,6 +225,10 @@ body {
     background-color: #5e9ac6;
 }
 
+#menu{
+    background-color: #2c638b;
+}
+
 .fixed 
 {
 	backface-visibility: hidden;
@@ -249,7 +253,6 @@ body {
 
 #navbar{
     text-align: center;
-    background-color: rgba(42, 95, 134, 0.20);
     padding: 4vh;
     margin-top: 5vh;
 }
