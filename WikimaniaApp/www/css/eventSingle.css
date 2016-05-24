@@ -11,7 +11,7 @@
     letter-spacing: 1.5vw;
 	font-size: 6vw;
     font-weight: bold;
-    background-color: #E2E2E2;
+    background-color: #E8E8E8;
 
 }
 
@@ -32,7 +32,6 @@
     margin-top:5vh;
     padding-left: 5vw;
     padding-right: 5vw;
-    font-size: 1.1em;
     display: block;
     text-align: justify;
     font-size: 4vw;
@@ -40,17 +39,37 @@
 
 .eventSubs{
     margin-top: 4vh;
-    background-color: #E2E2E2;
+    margin-bottom:4vh;
+    background-color: #E8E8E8;
 }
 
 .eventNum{
-    
+    display:block;
+    font-weight: bold;
+    font-size: 5vw;
+    color: #5A9BC3;
 }
 
 .eventBtn{
-
+    margin-top:2vh;
+    outline: none;
+	text-decoration: none;
+    border-radius: 150px;
+    border: 0 solid #5A9BC3;
+	color: #fff;
+	background: #5A9BC3;
+    font-size: 5vw;
+    padding:;
 }
 
 .eventGuide{
-
+    margin-bottom: 5vh;
+    outline: none;
+	text-decoration: none;
+    border: 0 solid #5A9BC3;
+    border-radius:10px;
+	color: #fff;
+	background: #5A9BC3;
+    font-size: 5vw;
+    padding:;
 }
