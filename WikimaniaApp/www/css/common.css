@@ -249,6 +249,8 @@ a:visited{
 	margin-bottom:2vh;
     color: #ffffff;
     font-size: 5vmin;
+    border-bottom: solid 0.3vh #ffffff;
+    width: 100%;
 }
 
 .navbar_text{
