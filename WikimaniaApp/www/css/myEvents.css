@@ -12,7 +12,12 @@ li{
 	height: auto;
     margin-top: 8vh;
 	}
-
+.myEventsTitle{
+    color: #5A9BC3;
+    letter-spacing: 1vw;
+	font-size: 5vw;
+    font-weight: bold;	
+}
 .singleEvent{
 	text-align: center;
 	width: 90vw;
@@ -24,6 +29,7 @@ li{
 }
 .selectEvents{
     margin-top: 2vh;
+    text-align: center;
 }
 .dateButton{
     font-size: 5vw;
