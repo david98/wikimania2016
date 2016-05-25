@@ -22,7 +22,7 @@ var vw = window.innerWidth / 100;
 var slideout = new Slideout({
     'panel': document.getElementById('panel'),
     'menu': document.getElementById('menu'),
-    'padding': vw*30,
+    'padding': vw*50,
     'tolerance': vw*10
 });
 
@@ -39,7 +39,7 @@ $(document).ready(function () {
         slideout = new Slideout({
             'panel': document.getElementById('panel'),
             'menu': document.getElementById('menu'),
-            'padding': vw * 30,
+            'padding': vw * 50,
             'tolerance': vw * 10
         });
     })
