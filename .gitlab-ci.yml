@@ -1,0 +1,15 @@
+stages:
+  - build
+
+build:
+  script:
+    - cd WikimaniaApp
+    - npm install
+    - cordova platform add android
+    - cordova build android
+    - mkdir -p /public/WikiMania/App/$CI_BUILD_ID-$CI_BUILD_REF_NAME
+    - mv platforms/android/build/outputs/apk/* /public/WikiMania/App/$CI_BUILD_ID-$CI_BUILD_REF_NAME
+  image: cordova
+  tags:
+    - docker
+  stage: build

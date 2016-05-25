@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <!--
+    Customize this policy to fit your own app's needs. For more guidance, see:
+        https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+    Some notes:
+        * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+        * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+        * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+            * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' ; media-src *">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <meta charset="ISO-8859-1">
+
+    <link rel="stylesheet" type="text/css" href="css/restaurantSingle.css">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+    <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>-->
+    <script src="js/slideout.min.js"></script>
+    <script src="js/jquery-git.js"></script>
+
+
+
+
+    <title>WIKIMANIA 2016</title>
+</head>
+
+<body>
+    <header id="logo" class="fixed">
+        <i id="menu_btn" class="fa fa-bars"></i>
+        <h2>Wikimania 2016</h2>
+    </header>
+
+    <nav id="menu">
+        <div id="menu-line-right"></div>
+        <header id="navbar">
+            <div id="menu-line"></div>
+            <ul>
+                <li><div class="navbar-list"><a href=""><i class="fa fa-user fa-3x"></i><span class="navbar-text">Profile</span></a></div></li>
+                <li><div class="navbar-list"><a href="eventList.html"><i class="fa fa-calendar fa-3x"></i><span class="navbar-text">Events</span></a></div></li>
+                <li><div class="navbar-list"><a href="restaurantList.html"><i class="fa fa fa-cutlery fa-3x"></i><span class="navbar-text">Restaurants</span></a></div></li>
+                <li><div class="navbar-list"><a href="index.html"><i class="fa fa-sign-out fa-3x"></i><span class="navbar-text">Log Out</span></a></div></li>
+            </ul>
+            <div id="menu-line"></div>
+        </header>
+    </nav>
+
+    <main id="panel">
+        <div class="container">
+            <div class="singleRestaurant">
+                <span class="restaurantTitle">Ristorante da GIGI DAG</span>
+                <img class="restaurantImg" src="img/restaurant1.jpg"/>
+                <a href="tel:+18881235467" class="restaurantPhone"><i class="fa fa-phone" id="phoneIcon" aria-hidden="true"></i> 039 000 0000</a>
+				<span class="restaurantDistance">a 320 metri</span>
+                <span class="restaurantDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi blandit facilisis quam quis ultrices. Sed rhoncus bibendum urna, a posuere nibh iaculis vel. Morbi sit amet egestas leo, nec bibendum urna. Quisque viverra placerat orci nec bibendum. Sed venenatis viverra rutrum. Sed nec sem efficitur libero varius suscipit. Phasellus fringilla malesuada porttitor. Quisque vel laoreet quam. Duis mattis vitae risus eget semper. Ut eget placerat libero, ac feugiat justo. Phasellus ullamcorper nisl ante, eget ultricies eros facilisis in. Sed congue finibus nisl in consequat. In pellentesque ligula lacus, vitae fermentum massa molestie quis. Fusce scelerisque ultricies nisl, vel accumsan ex bibendum sit amet. Cras facilisis vestibulum eros, eget porta tortor vulputate eu. Phasellus varius sagittis urna et porttitor.</span>
+                <button class="restaurantGuide">Bring me here <i class="fa fa-map-marker" aria-hidden="true"></i></button>
+            </div>
+         </div>
+
+    </main>
+
+    <script src="js/common.js"></script>
+
+</body>
+</html>

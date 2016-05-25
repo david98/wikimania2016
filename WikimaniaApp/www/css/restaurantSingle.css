@@ -1,0 +1,61 @@
+.singleRestaurant{
+	width: 100vw;
+	min-height: 100vh;
+    text-align: center;
+    margin-top: 3vh;
+}
+
+.restaurantTitle{
+    padding: 1vh;
+    color: #5A9BC3;
+    letter-spacing: 1vw;
+	font-size: 4.5vw;
+    font-weight: bold;
+    background-color: #E8E8E8;
+	
+}
+.restaurantImg{
+    margin-top: 3vh;
+    width: 100%;
+}
+.restaurantPhone{
+	padding: 0.8vh;
+    color: #5A9BC3;
+    letter-spacing: 0.4vw;
+	font-size: 5vw;
+    font-weight: bold;
+    background-color: #E8E8E8;
+	top: 2vh;
+}
+.restaurantDistance{
+    font-size: 4vw;
+    color: #3884B3;
+    font-weight: bold;
+	display: block;
+	margin-top: 4vh;
+}
+
+.restaurantDesc{
+    margin-top:3.5vh;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: block;
+    text-align: justify;
+    font-size: 4vw;
+}
+.restaurantGuide{
+    margin-top: 4vh;
+	margin-bottom: 6vh;
+    outline: none;
+	text-decoration: none;
+    border: 0 solid #5A9BC3;
+    border-radius:10px;
+	color: #fff;
+	background: #5A9BC3;
+    font-size: 5vw;
+}
+#phoneIcon{
+	color: #C1C1C1;
+	top: 0.5vh;
+    font-size: 6vmin;
+}
