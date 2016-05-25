@@ -90,13 +90,10 @@ body {
 	letter-spacing: 2.5vw;
 	word-spacing: 2vw;
     font-size: 7vmin;
+    font-variant: small-caps;
     color: rgb(255, 255, 255);
     text-shadow: 0 0.2vmin 0.2vmin #000000;
     transition: 1s ease-in-out;
-}
-
-.title span {
-    font-size: 8vmin;
 }
 
 .button_sign {
