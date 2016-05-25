@@ -209,15 +209,15 @@ a:visited{
 
 /*Titolo mostrato nella barra del menu*/
 #logo{
-	font-size: 2vh;
+	font-size: 4vmin;
     font-variant: small-caps;
     vertical-align: central;
-    height: 8vh;
+    /*height: 8vh;*/
     /*position: fixed;*/
     width: 100%;
     background-color: #5e9ac6;
     color: #ffffff;
-    box-shadow: 0 0.1vh 0.7vh rgba(0, 0, 0, 0.80);
+    /*box-shadow: 0 0.1vh 0.7vh rgba(0, 0, 0, 0.80);*/
 }
 
 #logo h2{

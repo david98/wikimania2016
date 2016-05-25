@@ -61,6 +61,8 @@ body {
 	width:100vw;
 	margin:0;
 	padding:0;
+    background: url('../img/BG.png') no-repeat center top;
+    background-size: cover;
 }
 
 .container {
@@ -70,8 +72,6 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: center;
-    background: url('../img/BG.png') no-repeat center top;
-    background-size: cover;
     color: #FFFFFF;
 	width: 100vw;
 	height: 100vh;

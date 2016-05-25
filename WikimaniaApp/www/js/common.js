@@ -17,36 +17,132 @@
  * under the License.
  */
 
-var vw = window.innerWidth / 100;
+var currentPage = 'index';
+var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle'];
 
-var slideout = new Slideout({
-    'panel': document.getElementById('panel'),
-    'menu': document.getElementById('menu'),
-    'padding': vw*50,
-    'tolerance': vw*10
-});
+function isset(variable) {
+    return typeof (variable) != "undefined" && variable !== null;
+}
+
+function rebuildSlideout() {
+    if ( isset(slideout) )
+        slideout.destroy();
+
+    slideout = new Slideout({
+        'panel': document.getElementById('panel'),
+        'menu': document.getElementById('menu'),
+        'padding': vw * 50,
+        'tolerance': vw * 10
+    });
+
+}
+
+var vw = window.innerWidth / 100;
+var slideout;
+
+rebuildSlideout();
 
 $(document).ready(function () {
-    $('#menu_btn').bind('touchstart', function () {
-            slideout.toggle();
-        }
+    
+    bindEvents();
+
+});
+
+function bindEvents() {
+    $(document).on('backbutton', function () {
+        if (document.referrer != 'index.html')
+            location.href = document.referrer;
+    })
+
+    $('#menu_btn').on('touchstart', function () {
+        slideout.toggle();
+    }
     );
 
 
     $(window).resize(function () {
         vw = window.innerWidth / 100;
-        slideout.destroy();
-        slideout = new Slideout({
-            'panel': document.getElementById('panel'),
-            'menu': document.getElementById('menu'),
-            'padding': vw * 50,
-            'tolerance': vw * 10
-        });
+
+        rebuildSlideout();
     })
 
-});
+    $('.navbar_list_element p').on('touchstart', function () {
+        var id = $(this).attr('id');
+        alert(id);
+        //showPage(id);
+    });
+}
 
-$(document).bind('backbutton', function () {
-    if (document.referrer != 'index.html')
-        location.href = document.referrer;
-})
+function showPage(name) {
+    var noMenuLoaded = false;
+    var currentContainer;
+
+    if (currentPage === 'index')
+        noMenuLoaded = true;
+    else
+        currentContainer = $('.container');
+
+    $.get('loading.html', function (data) {
+        var dom = $.parseHTML(data);
+        loadCss('loading');
+
+        if ( noMenuLoaded )
+            $('body').html(dom);
+        else
+            currentContainer.html(dom);
+            
+    });
+
+    if (noMenuLoaded) {
+        $('body').prepend('<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">');
+        currentContainer = $('.container');
+    }
+
+    var newContainer = $(document.createElement('div'));
+    newContainer.addClass('container');
+
+    $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
+
+        var dom = $.parseHTML(data);
+        var content = $('.container', dom);
+
+        $.each(content.children(), function (index, data) {
+            newContainer.append(data);
+        })
+
+        $.each(pageNames, function (index, data) {
+            unloadCss(data);
+        })
+
+        if (noMenuLoaded) {
+            //rebuildSlideout();
+            //slideout.disableTouch();
+            unloadCss('index');
+            loadCss('common');
+            loadCss('font-awesome/css/font-awesome.min');
+        }
+
+        loadCss(name);
+
+        currentContainer.replaceWith(newContainer);
+        //alert(newContainer.html());
+        $('.loading').remove();
+        bindEvents();
+        loadScript(name);
+        slideout.enableTouch();
+        currentPage = name;
+    });
+}
+
+function loadCss(name) {
+    if (!$("link[href='css/" + name + ".css']").length)
+        $('<link href="css/' + name + '.css" rel="stylesheet">').appendTo("head");
+}
+
+function unloadCss(name) {
+    $("link[href='css/" + name + ".css']").remove();
+}
+
+function loadScript(name) {
+    $.getScript('js/' + name + '.js');
+}

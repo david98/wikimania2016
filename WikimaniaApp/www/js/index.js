@@ -41,6 +41,6 @@ function visualizza() {
 
 function login(){
     var txt = idCode.text();
-    alert(txt);
-    location.href = 'eventList.html';
+    showPage('eventList');
+    //location.href = 'eventList.html';
 }
