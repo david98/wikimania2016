@@ -114,4 +114,5 @@
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget platformName="windows" id="" version="0.0.0.0" />
   </vs:platformSpecificValues>
+  <plugin name="cordova-plugin-crosswalk-webview" version="1.7.0" />
 </widget>
