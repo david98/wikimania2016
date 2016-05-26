@@ -152,5 +152,9 @@ function unloadCss(name) {
 }
 
 function loadScript(name) {
-    $.getScript('js/' + name + '.js');
+    return $.getScript('js/' + name + '.js');
+}
+
+function loadExternalScript(URL) {
+    return $.getScript(URL);
 }
