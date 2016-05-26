@@ -19,7 +19,7 @@
 
 var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle'];
-var menuHTML = '<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text" id="restaurantList">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">';
+var menuHTML = '<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text" id="eventSingle">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text" id="eventList">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text" id="restaurantList">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">';
 
 function isset(variable) {
     return typeof (variable) != "undefined" && variable !== null;
@@ -41,12 +41,8 @@ function rebuildSlideout() {
 var vw = window.innerWidth / 100;
 var slideout;
 
-rebuildSlideout();
-
 $(document).ready(function () {
-    
     bindEvents();
-
 });
 
 function bindEvents() {
@@ -57,14 +53,14 @@ function bindEvents() {
 
     $('#menu_btn').on('touchstart', function () {
         slideout.toggle();
-    }
-    );
+    });
 
 
     $(window).resize(function () {
         vw = window.innerWidth / 100;
 
-        rebuildSlideout();
+        if (isset(slideout))
+            rebuildSlideout();
     })
 
     $('.navbar_list_element p').on('touchstart', function () {

@@ -24,7 +24,6 @@ var logo = $('#logo');
 var title = $('#title');
 
 button.click(visualizza);
-idCode.submit(login);
 
 function visualizza() {
     logo.css('transform', 'translateY(-12vh)');
@@ -37,6 +36,9 @@ function visualizza() {
 
     form.css('visibility', 'visible');
     form.css('opacity', '1');
+
+    button.off('click');
+    button.click(login);
 }
 
 function login(){
