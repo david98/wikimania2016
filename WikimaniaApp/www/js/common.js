@@ -82,21 +82,22 @@ function showPage(name) {
     else
         currentContainer = $('.container');
 
-    $.get('loading.html', function (data) {
-        var dom = $.parseHTML(data);
-        loadCss('loading');
+    $.when(
+        $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
+            var dom = $.parseHTML(data);
+            loadCss('loading');
 
-        if ( noMenuLoaded )
-            $('body').html(dom);
-        else
-            currentContainer.html(dom);
+            if ( noMenuLoaded )
+                $('body').html(dom);
+            else
+                currentContainer.html(dom);
             
-    });
-
-    if (noMenuLoaded) {
-        $('body').prepend('<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">');
-        currentContainer = $('.container');
-    }
+            if (noMenuLoaded) {
+                $('body').prepend('<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">');
+                currentContainer = $('.container');
+            }
+        })
+    );
 
     var newContainer = $(document.createElement('div'));
     newContainer.addClass('container');
@@ -108,15 +109,15 @@ function showPage(name) {
 
         $.each(content.children(), function (index, data) {
             newContainer.append(data);
-        })
+        });
 
         $.each(pageNames, function (index, data) {
             unloadCss(data);
-        })
+        });
 
         if (noMenuLoaded) {
-            //rebuildSlideout();
-            //slideout.disableTouch();
+            rebuildSlideout();
+            slideout.disableTouch();
             unloadCss('index');
             loadCss('common');
             loadCss('font-awesome/css/font-awesome.min');
@@ -125,7 +126,6 @@ function showPage(name) {
         loadCss(name);
 
         currentContainer.replaceWith(newContainer);
-        //alert(newContainer.html());
         $('.loading').remove();
         bindEvents();
         loadScript(name);
