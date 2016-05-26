@@ -18,8 +18,12 @@
  */
 
 var currentPage = 'index';
-var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle'];
-var menuHTML = '<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text" id="eventSingle">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text" id="eventList">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text" id="restaurantList">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">';
+var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation'];
+var menuHTML = '';
+
+$.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
+    menuHTML = data;
+});
 
 function isset(variable) {
     return typeof (variable) != "undefined" && variable !== null;
@@ -28,22 +32,21 @@ function isset(variable) {
 function rebuildSlideout() {
     if ( isset(slideout) )
         slideout.destroy();
-
-    slideout = new Slideout({
-        'panel': document.getElementById('panel'),
-        'menu': document.getElementById('menu'),
-        'padding': vw * 50,
-        'tolerance': vw * 10
-    });
+    try{
+        slideout = new Slideout({
+            'panel': document.getElementById('panel'),
+            'menu': document.getElementById('menu'),
+            'padding': vw * 50,
+            'tolerance': vw * 10
+        });
+    } catch (err) {
+        console.log(err);
+    }
 
 }
 
 var vw = window.innerWidth / 100;
 var slideout;
-
-$(document).ready(function () {
-    bindEvents();
-});
 
 function bindEvents() {
     $(document).on('backbutton', function () {
@@ -72,6 +75,7 @@ function bindEvents() {
 }
 
 function showPage(name) {
+
     var noMenuLoaded = false;
     var currentContainer;
 
