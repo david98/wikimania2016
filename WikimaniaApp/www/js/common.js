@@ -51,6 +51,7 @@ function bindEvents() {
             location.href = document.referrer;
     })
 
+    $('#menu_btn').off('touchstart');
     $('#menu_btn').on('touchstart', function () {
         slideout.toggle();
     });
@@ -63,6 +64,7 @@ function bindEvents() {
             rebuildSlideout();
     })
 
+    $('.navbar_list_element p').off('touchstart');
     $('.navbar_list_element p').on('touchstart', function () {
         var id = $(this).attr('id');
         showPage(id);
