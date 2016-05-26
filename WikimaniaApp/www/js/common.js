@@ -19,6 +19,7 @@
 
 var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle'];
+var menuHTML = '<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text" id="restaurantList">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">';
 
 function isset(variable) {
     return typeof (variable) != "undefined" && variable !== null;
@@ -68,8 +69,7 @@ function bindEvents() {
 
     $('.navbar_list_element p').on('touchstart', function () {
         var id = $(this).attr('id');
-        alert(id);
-        //showPage(id);
+        showPage(id);
     });
 }
 
@@ -82,56 +82,62 @@ function showPage(name) {
     else
         currentContainer = $('.container');
 
+    if (!noMenuLoaded)
+        slideout.close();
+
     $.when(
         $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
-            var dom = $.parseHTML(data);
+            
             loadCss('loading');
 
             if ( noMenuLoaded )
-                $('body').html(dom);
+                $('body').html(data);
             else
-                currentContainer.html(dom);
+                currentContainer.html(data);
             
             if (noMenuLoaded) {
-                $('body').prepend('<header id="logo" class="fixed"> <i id="menu_btn" class="fa fa-bars"></i> <h2>Wikimania 2016</h2> </header> <nav id="menu"> <header id="navbar"> <ul class="navbar_list"> <li class="navbar_list_element"><i class="fa fa-user"></i><p class="navbar_text">Profile</p></li><li class="navbar_list_element"><i class="fa fa-calendar"></i><p class="navbar_text">Events</p></li><li class="navbar_list_element"><i class="fa fa fa-cutlery"></i><p class="navbar_text">Restaurants</p></li><li class="navbar_list_element"><i class="fa fa-sign-out"></i><p class="navbar_text">Log Out</p></li></ul> </header> </nav> <main id="panel"> <div class="container">');
+                $('body').prepend(menuHTML);
                 currentContainer = $('.container');
+                $('#logo, #menu, #panel').hide();
             }
+            
+            var newContainer = $('<div></div>');
+            newContainer.addClass('container');
+
+            $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
+
+                var dom = $.parseHTML(data);
+                var content = $('.container', dom);
+
+                newContainer.append(content.children().first());
+
+                $.each(pageNames, function (index, data) {
+                    unloadCss(data);
+                });
+
+                if (noMenuLoaded) {
+                    rebuildSlideout();
+                    slideout.disableTouch();
+                    unloadCss('index');
+                    loadCss('common');
+                    loadCss('font-awesome/css/font-awesome.min');
+                }
+
+                loadCss(name);
+
+                currentContainer.replaceWith(newContainer);
+                $('.loading').remove();
+
+                if (noMenuLoaded)
+                    bindEvents();
+
+                loadScript(name);
+                slideout.enableTouch();
+                currentPage = name;
+                $('#logo, #menu, #panel').show();
+            });
         })
     );
-
-    var newContainer = $(document.createElement('div'));
-    newContainer.addClass('container');
-
-    $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
-
-        var dom = $.parseHTML(data);
-        var content = $('.container', dom);
-
-        $.each(content.children(), function (index, data) {
-            newContainer.append(data);
-        });
-
-        $.each(pageNames, function (index, data) {
-            unloadCss(data);
-        });
-
-        if (noMenuLoaded) {
-            rebuildSlideout();
-            slideout.disableTouch();
-            unloadCss('index');
-            loadCss('common');
-            loadCss('font-awesome/css/font-awesome.min');
-        }
-
-        loadCss(name);
-
-        currentContainer.replaceWith(newContainer);
-        $('.loading').remove();
-        bindEvents();
-        loadScript(name);
-        slideout.enableTouch();
-        currentPage = name;
-    });
 }
 
 function loadCss(name) {
