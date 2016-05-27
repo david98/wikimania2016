@@ -76,74 +76,77 @@ function bindEvents() {
 
 function showPage(name) {
 
-    var noMenuLoaded = false;
-    var currentContainer;
+    if (name !== currentPage) {
 
-    if (currentPage === 'index')
-        noMenuLoaded = true;
-    else
-        currentContainer = $('.container');
+        var noMenuLoaded = false;
+        var currentContainer;
 
-    if (!noMenuLoaded)
-        slideout.close();
+        if (currentPage === 'index')
+            noMenuLoaded = true;
+        else
+            currentContainer = $('.container');
 
-    $.when(
-        $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
-            
-            loadCss('loading');
+        if (!noMenuLoaded)
+            slideout.close();
 
-            if ( noMenuLoaded )
-                $('body').html(data);
-            else
-                currentContainer.html(data);
-            
-            if (noMenuLoaded) {
-                $('body').prepend(menuHTML);
-                currentContainer = $('.container');
-                $('#logo, #menu, #panel').hide();
-            }
-            
-            var newContainer = $('<div></div>');
-            newContainer.addClass('container');
+        $.when(
+            $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
 
-            $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
-
-                /*var dom = $.parseHTML(data);
-                var content = $('.container', dom);
-
-
-                $.each(content.children(), function (index, data) {
-                    newContainer.append(data);
-                });*/
-
-                newContainer.html(data);
-
-                for(var i = 0; i < pageNames.length; i++ )
-                    unloadCss(pageNames[i]);
-
-                if (noMenuLoaded) {
-                    rebuildSlideout();
-                    slideout.disableTouch();
-                    unloadCss('index');
-                    loadCss('common');
-                    loadCss('font-awesome/css/font-awesome.min');
-                }
-
-                loadCss(name);
-
-                currentContainer.replaceWith(newContainer);
-                $('.loading').remove();
+                loadCss('loading');
 
                 if (noMenuLoaded)
-                    bindEvents();
+                    $('body').html(data);
+                else
+                    currentContainer.html(data);
 
-                loadScript(name);
-                slideout.enableTouch();
-                currentPage = name;
-                $('#logo, #menu, #panel').show();
-            });
-        })
-    );
+                if (noMenuLoaded) {
+                    $('body').prepend(menuHTML);
+                    currentContainer = $('.container');
+                    $('#logo, #menu, #panel').hide();
+                }
+
+                var newContainer = $('<div></div>');
+                newContainer.addClass('container');
+
+                $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
+
+                    /*var dom = $.parseHTML(data);
+                    var content = $('.container', dom);
+    
+    
+                    $.each(content.children(), function (index, data) {
+                        newContainer.append(data);
+                    });*/
+
+                    newContainer.html(data);
+
+                    for (var i = 0; i < pageNames.length; i++)
+                        unloadCss(pageNames[i]);
+
+                    if (noMenuLoaded) {
+                        rebuildSlideout();
+                        slideout.disableTouch();
+                        unloadCss('index');
+                        loadCss('common');
+                        loadCss('font-awesome/css/font-awesome.min');
+                    }
+
+                    loadCss(name);
+
+                    currentContainer.replaceWith(newContainer);
+                    $('.loading').remove();
+
+                    if (noMenuLoaded)
+                        bindEvents();
+
+                    loadScript(name);
+                    slideout.enableTouch();
+                    currentPage = name;
+                    $('#logo, #menu, #panel').show();
+                });
+            })
+        );
+    }
 }
 
 function loadCss(name) {
