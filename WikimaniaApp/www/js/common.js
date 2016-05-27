@@ -111,7 +111,10 @@ function showPage(name) {
                 var dom = $.parseHTML(data);
                 var content = $('.container', dom);
 
-                newContainer.append(content.children().first());
+
+                $.each(content.children(), function (index, data) {
+                    newContainer.append(data);
+                });
 
                 $.each(pageNames, function (index, data) {
                     unloadCss(data);
