@@ -4,8 +4,8 @@ stages:
 build:
   script:
     - cd WikimaniaApp
-    - npm install
     - cordova plugin add cordova-plugin-crosswalk-webview
+    - npm install
     - cordova platform add android
     - cordova build android
     - mkdir -p /public/WikiMania/App/$CI_BUILD_ID-$CI_BUILD_REF_NAME
