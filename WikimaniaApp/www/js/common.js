@@ -18,7 +18,7 @@
  */
 
 var currentPage = 'index';
-var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation'];
+var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
 var menuHTML = '';
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
