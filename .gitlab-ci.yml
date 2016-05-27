@@ -4,7 +4,10 @@ stages:
 build:
   script:
     - cd WikimaniaApp
-    - cordova plugin add cordova-plugin-crosswalk-webview
+    - cordova plugin add cordova-plugin-crosswalk-webview --save
+    - cd plugins/cordova-plugin-crosswalk-webview/
+    - npm install
+    - cd ../../
     - npm install
     - cordova platform add android
     - cordova build android
