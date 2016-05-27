@@ -108,13 +108,15 @@ function showPage(name) {
 
             $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
 
-                var dom = $.parseHTML(data);
+                /*var dom = $.parseHTML(data);
                 var content = $('.container', dom);
 
 
                 $.each(content.children(), function (index, data) {
                     newContainer.append(data);
-                });
+                });*/
+
+                newContainer.html(data);
 
                 for(var i = 0; i < pageNames.length; i++ )
                     unloadCss(pageNames[i]);
