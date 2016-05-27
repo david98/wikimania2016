@@ -116,9 +116,8 @@ function showPage(name) {
                     newContainer.append(data);
                 });
 
-                $.each(pageNames, function (index, data) {
-                    unloadCss(data);
-                });
+                for(var i = 0; i < pageNames.length; i++ )
+                    unloadCss(pageNames[i]);
 
                 if (noMenuLoaded) {
                     rebuildSlideout();
