@@ -36,7 +36,7 @@ function rebuildSlideout() {
         slideout = new Slideout({
             'panel': document.getElementById('panel'),
             'menu': document.getElementById('menu'),
-            'padding': vw * 50,
+            'padding': vw * 70,
             'tolerance': vw * 10
         });
     } catch (err) {
