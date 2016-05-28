@@ -205,7 +205,8 @@ a:visited{
 }
 
 #menu{
-    background-color: #236899;
+    background-color: #237cbe;
+    width: 100%;
 }
 
 /*Titolo mostrato nella barra del menu*/
@@ -213,7 +214,7 @@ a:visited{
 	font-size: 4vmin;
     font-variant: small-caps;
     vertical-align: central;
-    height: 8vh;
+    height: 10vh;
     /*position: fixed;*/
     width: 100%;
     background-color: #5e9ac6;
@@ -250,7 +251,7 @@ a:visited{
 .navbar_list_element{
 	margin-bottom:2vh;
     color: #ffffff;
-    font-size: 5vmin;
+    font-size: 8vmin;
     border-bottom: solid 0.3vh #ffffff;
     width: 100%;
 }
@@ -258,6 +259,6 @@ a:visited{
 .navbar_text{
     margin: 1vh 2vw;
 	display: inline-block;
-    font-size: 4vmin;
+    font-size: 5vmin;
     color: #ffffff;
 }
