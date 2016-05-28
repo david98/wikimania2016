@@ -102,10 +102,10 @@
   <vs:platformSpecificValues>
     <vs:platformSpecificWidget id="" platformName="windows" version="0.0.0.0" />
   </vs:platformSpecificValues>
-  <plugin name="cordova-plugin-crosswalk-webview" version="1.7.0" />
   <preference name="xwalkVersion" value="xwalk_core_library_beta:18+" />
   <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
   <preference name="xwalkMode" value="embedded" />
   <preference name="xwalkMultipleApk" value="true" />
   <plugin name="cordova-plugin-geolocation" version="2.1.0" />
+  <plugin name="cordova-plugin-crosswalk-webview" version="1.7.0" />
 </widget>
