@@ -227,8 +227,8 @@ a:visited{
     display: inline-block;
     margin-left: 4vw;
     margin-right: 5vw;
-    margin-top: 2vh;
-    font-size: 9vmin;
+    margin-top: calc(5vh - 3.5vmin);
+    font-size: 7vmin;
 }
 
 #logoTitle{
