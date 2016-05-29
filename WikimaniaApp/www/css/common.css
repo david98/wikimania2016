@@ -142,7 +142,7 @@ body {
 
 
 .container {
-    padding-top: 8vh;
+    padding-top: 10vh;
     z-index: -1;
 	top: 0;
 	left: 0;
@@ -150,7 +150,7 @@ body {
 	background: #f2f2f2;
 	color: #000000;
 	width: 100vw;
-	min-height: 92vh;
+	min-height: 90vh;
     height: 100%;
 }
 
@@ -228,7 +228,7 @@ a:visited{
     margin-left: 4vw;
     margin-right: 5vw;
     margin-top: 2vh;
-    font-size: 7vmin;
+    font-size: 9vmin;
 }
 
 #logoTitle{
