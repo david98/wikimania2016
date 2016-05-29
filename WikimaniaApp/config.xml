@@ -104,4 +104,5 @@
   </vs:platformSpecificValues>
   <plugin name="cordova-plugin-crosswalk-webview" version="1.7.0" />
   <plugin name="cordova-plugin-splashscreen" version="3.1.0" />
+  <plugin name="cordova-plugin-geolocation" version="2.1.0" />
 </widget>
