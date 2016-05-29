@@ -8,8 +8,16 @@ $.ajax('loading.html', function (data, textStatus, jqXHR) {
 request.done(function () {
 
     $('.loading').remove();
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 2 * 1000,
+        maximumAge: 0
+    }
 
-    navigator.geolocation.getCurrentPosition(showMap, alert("Can't load the map!"));
+    if( isset(window.navigator) )
+        window.navigator.geolocation.getCurrentPosition(showMap, function () { alert("Can't load the map!") }, options);
+    else
+        navigator.geolocation.getCurrentPosition(showMap, function () { alert("Can't load the map!") }, options);
 });
 
 function showMap(position) {
