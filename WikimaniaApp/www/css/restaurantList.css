@@ -22,12 +22,44 @@
 .restaurantList{
 	width: 100vw;
 	height: auto;
+    padding-top: 3vh;
 	}
+
+.restaurantListTitle{
+    /* margin: auto; */
+    width: 50%;
+    /* height: 100%; */
+    /* max-width: 600px; */
+    /* padding-bottom: 15px; */
+    text-align: center;
+    display: block;
+    /* position: absolute; */
+    left: 25%;
+    font-size: 7vw;
+    line-height: 7vw;
+    color: #5A9BC3;
+}
+
+.restaurantListFilter{
+    /* max-width: 600px; */
+    width: 20%;
+    /* height: 100%; */
+    /* padding-top: 60px; */
+    /* padding-bottom: 50px; */
+    /* text-align: center; */
+    display: block;
+    position: absolute;
+    right: 0;
+    box-shadow: -1.5vw 0 1px -0.6vh #BDB6B6;
+    line-height: 7vw;
+    padding-left: 2vw;
+    color: #5A9BC3;
+}
 
 .singleRestaurant{
 	text-align: center;
 	width: 90vw;
-	margin: 5vh auto 2vh auto;
+	margin: 3vh auto 3vh auto;
 	height: 100%;
 
 	background-color: #FFFFFF;
