@@ -211,7 +211,7 @@ a:visited{
 
 /*Titolo mostrato nella barra del menu*/
 #logo{
-	font-size: 4vmin;
+	font-size: 5vmin;
     font-variant: small-caps;
     vertical-align: central;
     height: 10vh;
@@ -232,7 +232,7 @@ a:visited{
 }
 
 #logoTitle{
-    font-size: 6.5vmin;
+    font-size: 7vmin;
     display: inline-block;
     font-weight: 400;
 }
