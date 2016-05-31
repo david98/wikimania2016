@@ -93,3 +93,11 @@
     display: inline-block;
     margin: 2vh 0;
 }
+
+.aboutCreditsList{
+    text-align: left;
+}
+
+.aboutCreditsList a, .aboutCreditsList a:visited{
+    color: blue;
+}
