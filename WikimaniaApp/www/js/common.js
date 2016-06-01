@@ -17,9 +17,13 @@
  * under the License.
  */
 
+/*Variabili globali utilizzati da ogni parte dell'app*/
 var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
 var menuHTML = '';
+var userId;
+var userToken;
+var APIServerAddress = 'http://185.53.148.24/api/v1/';
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
     menuHTML = data;
@@ -76,7 +80,9 @@ function bindEvents() {
 
 function showPage(name) {
 
-    if (name !== currentPage) {
+    if (name === "logout")
+        logout();
+    else if (name !== currentPage) {
 
         var noMenuLoaded = false;
         var currentContainer;
@@ -164,4 +170,28 @@ function loadScript(name) {
 
 function loadExternalScript(URL) {
     return $.getScript(URL);
+}
+
+function store(name, value) {
+    if (typeof (Storage) !== "undefined") {
+        // Code for localStorage/sessionStorage.
+        localStorage.setItem(name, value);
+        return true;
+    } else {
+        // Sorry! No Web Storage support..
+    }
+}
+
+function getFromStorage(name) {
+    if (typeof (Storage) !== "undefined") {
+        // Code for localStorage/sessionStorage.
+        return localStorage.getItem(name);
+    } else {
+        // Sorry! No Web Storage support..
+    }
+}
+
+function logout() {
+    store('userId', '');
+    window.location.reload();
 }

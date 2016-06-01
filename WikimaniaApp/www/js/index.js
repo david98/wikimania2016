@@ -17,13 +17,23 @@
  * under the License.
  */
 
-var button = $('#button');
-var idCode = $('#idCode');
-var form = $('#form');
-var logo = $('#logo');
-var title = $('#title');
+var button, idCode, form, logo, title;
 
-button.click(visualizza);
+userId = getFromStorage('userToken');
+sendId(userId, true);
+
+$(document).ready(function () {
+    button = $('#button');
+    idCode = $('#idCode');
+    form = $('#form');
+    logo = $('#logo');
+    title = $('#title');
+
+    button.click(visualizza);
+    form.submit(function (event) {
+        event.preventDefault();
+    });
+});
 
 function visualizza() {
     logo.css('transform', 'translateY(-12vh)');
@@ -42,7 +52,38 @@ function visualizza() {
 }
 
 function login(){
-    var txt = idCode.text();
-    showPage('eventList');
-    //location.href = 'eventList.html';
+    var userId = idCode.val();
+
+    sendId(userId);
+}
+
+function sendId(id, autologin) {
+
+    var data = {
+        key: id
+    };
+
+    $.ajax({
+        url: APIServerAddress + 'login',
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        async: false,
+        statusCode: {
+            400: function () {
+                if( !autologin )
+                    alert("Server error. Please retry later.");
+            },
+            403: function () {
+                if( !autologin )
+                    alert("Wrong code");
+            }
+        },
+        success: function (msg) {
+            userToken = msg.data['token'];
+            store('userId', id);
+            showPage('eventList');
+        }
+    });
 }
