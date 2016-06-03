@@ -7,11 +7,11 @@ $(document).ready(function () {
 });
 
 function openDropDown() {
-    myDropDown.show();
+    myDropDown.fadeToggle(150);
 }
 
 function closeDropDown() {
-    myDropDown.hide();
+    myDropDown.fadeOut(150);
 }
 
 window.onclick = function (event) {
