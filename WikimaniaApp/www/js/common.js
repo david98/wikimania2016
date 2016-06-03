@@ -114,6 +114,8 @@ function showPage(name) {
                 var newContainer = $('<div></div>');
                 newContainer.addClass('container');
 
+
+                //sostituire la chiamata AJAX con un caricamento dei dati da API
                 $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
 
                     /*var dom = $.parseHTML(data);
@@ -192,6 +194,64 @@ function getFromStorage(name) {
 }
 
 function logout() {
-    store('userId', '');
-    window.location.reload();
+    $.ajax({
+        url: APIServerAddress + 'logout',
+        type: 'GET',
+        async: false,
+        dataType: 'json',
+        headers: {
+            'X-Auth-Token': userToken
+        },
+        statusCode: {
+            400: function () {
+                if (!autologin)
+                    alert("Server error. Please retry later.");
+            },
+        },
+        success: function (data) {
+            store('userId', '');
+            window.location.reload();
+        }
+    });
 }
+
+var API = {
+
+    eventList: function (currentContainer, noMenuLoaded) {
+        $.ajax({
+            url: APIServerAddress + 'events',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': userToken
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+            success: function (data) {
+                API.show(data, currentContainer, noMenuLoaded);
+            }
+        });
+    },
+
+    show: function (jsonData, currentContainer, noMenuLoaded) {
+        var newContainer = $('<div></div>');
+        newContainer.addClass('container');
+
+        //costruire l'html da inserire
+
+        currentContainer.replaceWith(newContainer);
+        $('.loading').remove();
+
+        if (noMenuLoaded)
+            bindEvents();
+
+        loadScript(name);
+        slideout.enableTouch();
+        currentPage = name;
+        $('#logo, #menu, #panel').show();
+    }
+};
