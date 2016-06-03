@@ -79,9 +79,7 @@ function bindEvents() {
 
 function showPage(name) {
 
-    if (name === "logout")
-        API.logout();
-    else if (name !== currentPage) {
+    if (name !== currentPage) {
 
         var noMenuLoaded = false;
         var currentContainer;
@@ -110,47 +108,21 @@ function showPage(name) {
                     $('#logo, #menu, #panel').hide();
                 }
 
-                var newContainer = $('<div></div>');
-                newContainer.addClass('container');
+                API[name](name, currentContainer, noMenuLoaded);
 
+                for (var i = 0; i < pageNames.length; i++)
+                    unloadCss(pageNames[i]);
 
-                //sostituire la chiamata AJAX con un caricamento dei dati da API
-                $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
+                if (noMenuLoaded) {
+                    rebuildSlideout();
+                    slideout.disableTouch();
+                    unloadCss('index');
+                    loadCss('common');
+                    loadCss('font-awesome/css/font-awesome.min');
+                }
 
-                    /*var dom = $.parseHTML(data);
-                    var content = $('.container', dom);
-    
-    
-                    $.each(content.children(), function (index, data) {
-                        newContainer.append(data);
-                    });*/
+                loadCss(name);
 
-                    newContainer.html(data);
-
-                    for (var i = 0; i < pageNames.length; i++)
-                        unloadCss(pageNames[i]);
-
-                    if (noMenuLoaded) {
-                        rebuildSlideout();
-                        slideout.disableTouch();
-                        unloadCss('index');
-                        loadCss('common');
-                        loadCss('font-awesome/css/font-awesome.min');
-                    }
-
-                    loadCss(name);
-
-                    currentContainer.replaceWith(newContainer);
-                    $('.loading').remove();
-
-                    if (noMenuLoaded)
-                        bindEvents();
-
-                    loadScript(name);
-                    slideout.enableTouch();
-                    currentPage = name;
-                    $('#logo, #menu, #panel').show();
-                });
             })
         );
     }
@@ -250,7 +222,7 @@ var API = {
         });
     },
 
-    eventList: function (currentContainer, noMenuLoaded) {
+    eventList: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
             url: APIServerAddress + 'events',
@@ -266,27 +238,195 @@ var API = {
                 },
             },
             success: function (data) {
-                API.show(data, currentContainer, noMenuLoaded);
+                API.show(pageName, data, currentContainer, noMenuLoaded);
             }
         });
     },
 
-    show: function (jsonData, currentContainer, noMenuLoaded) {
+    show: function (pageName, jsonData, currentContainer, noMenuLoaded) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
 
         //costruire l'html da inserire
-        alert(jsonData.data[0].type);
+        $.ajax(pageName + '.html').done(function (pageData) {
 
-        currentContainer.replaceWith(newContainer);
-        $('.loading').remove();
+            switch (pageName) {
+                case 'eventList': {
 
-        if (noMenuLoaded)
-            bindEvents();
+                    var pageHTML = $.parseHTML(pageData);
+                    var baseEvent = $('.singleEvent', pageHTML)[0];
+                    $('.singleEvent', pageHTML).remove();
 
-        loadScript(name);
-        slideout.enableTouch();
-        currentPage = name;
-        $('#logo, #menu, #panel').show();
+                    
+
+                    for (var i = 0; i < jsonData.data.length; i++)
+                    {
+                        var newEvent = $(baseEvent).clone();
+                        
+                        $(newEvent).attr('id', jsonData.data[i].id);
+                        $('.eventType', newEvent).text(jsonData.data[i].type);
+                        $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+                        $('.eventSubs', newEvent).text(jsonData.data[i].bookings + $('.eventSubs', newEvent).text());
+                        //immagine... ?
+                        $('.eventTitle', newEvent).text(jsonData.data[i].title);
+                        var day = new Date(jsonData.data[i].date);
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                        $('.eventDate', newEvent).text($('.eventDate', newEvent).text() + dayText);
+                        newContainer.append(newEvent);
+                    }
+
+                    break;
+                }
+            }
+
+            currentContainer.replaceWith(newContainer);
+            $('.loading').remove();
+
+            if (noMenuLoaded)
+                bindEvents();
+
+            loadScript(pageName);
+            slideout.enableTouch();
+            currentPage = name;
+            $('#logo, #menu, #panel').show();
+        });
+    },
+
+    buildPage: function (baseHTML) {
+
     }
 };
+
+function getMonthName(number) {
+    switch (number) {
+        case 0: {
+            return 'January';
+            break;
+        }
+        case 1: {
+            return 'February';
+            break;
+        }
+        case 2: {
+            return 'March';
+            break;
+        }
+        case 3: {
+            return 'April';
+            break;
+        }
+        case 4: {
+            return 'May';
+            break;
+        }
+        case 5: {
+            return 'June';
+            break;
+        }
+        case 6: {
+            return 'July';
+            break;
+        }
+        case 7: {
+            return 'August';
+            break;
+        }
+        case 8: {
+            return 'September';
+            break;
+        }
+        case 9: {
+            return 'October';
+            break;
+        }
+        case 10: {
+            return 'November';
+            break;
+        }
+        case 11: {
+            return 'December';
+            break;
+        }
+    }
+}
+
+/*
+function showPage(name) {
+
+    if (name === "logout")
+        API.logout();
+    else if (name !== currentPage) {
+
+        var noMenuLoaded = false;
+        var currentContainer;
+
+        if (currentPage === 'index')
+            noMenuLoaded = true;
+        else
+            currentContainer = $('.container');
+
+        if (!noMenuLoaded)
+            slideout.close();
+
+        $.when(
+            $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
+
+                loadCss('loading');
+
+                if (noMenuLoaded)
+                    $('body').html(data);
+                else
+                    currentContainer.html(data);
+
+                if (noMenuLoaded) {
+                    $('body').prepend(menuHTML);
+                    currentContainer = $('.container');
+                    $('#logo, #menu, #panel').hide();
+                }
+
+                var newContainer = $('<div></div>');
+                newContainer.addClass('container');
+
+
+                //sostituire la chiamata AJAX con un caricamento dei dati da API
+                $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
+
+                    /*var dom = $.parseHTML(data);
+                    var content = $('.container', dom);
+    
+    
+                    $.each(content.children(), function (index, data) {
+                        newContainer.append(data);
+                    });*//*
+
+newContainer.html(data);
+
+for (var i = 0; i < pageNames.length; i++)
+    unloadCss(pageNames[i]);
+
+if (noMenuLoaded) {
+    rebuildSlideout();
+    slideout.disableTouch();
+    unloadCss('index');
+    loadCss('common');
+    loadCss('font-awesome/css/font-awesome.min');
+}
+
+loadCss(name);
+
+currentContainer.replaceWith(newContainer);
+$('.loading').remove();
+
+if (noMenuLoaded)
+    bindEvents();
+
+loadScript(name);
+slideout.enableTouch();
+currentPage = name;
+$('#logo, #menu, #panel').show();
+});
+})
+        );
+}
+}
+*/
