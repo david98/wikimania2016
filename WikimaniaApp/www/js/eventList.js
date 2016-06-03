@@ -1,17 +1,21 @@
-﻿var bntFilter, modal, btnCloseModal;
+﻿var btnFilter, myDropdown, btnCloseModal;
 
 $(document).ready(function () {
-    bntFilter = $('#bntFilter');
-    modal = $('#myModal');
-    btnCloseModal = $('#btnCloseModal');
-    bntFilter.bind('touchstart', openModal);
-    btnCloseModal.bind('touchstart', closeModal());
+    btnFilter = $('#btnFilter');
+    myDropDown = $('#myDropDown');
+    btnFilter.bind('click', openDropDown);
 });
 
-function openModal() {
-    modal.show();
+function openDropDown() {
+    myDropDown.show();
 }
 
-function closeModal() {
-    modal.hide();
+function closeDropDown() {
+    myDropDown.hide();
+}
+
+window.onclick = function (event) {
+    if (!event.target.matches('#btnFilter')) {
+        closeDropDown();
+    }
 }
