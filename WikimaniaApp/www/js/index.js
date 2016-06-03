@@ -19,8 +19,9 @@
 
 var button, idCode, form, logo, title;
 
-userId = getFromStorage('userToken');
-sendId(userId, true);
+userId = getFromStorage('userId');
+if( userId != '' )
+    login(userId, true);
 
 $(document).ready(function () {
     button = $('#button');
@@ -29,7 +30,7 @@ $(document).ready(function () {
     logo = $('#logo');
     title = $('#title');
 
-    button.click(visualizza);
+    button.on('touchstart', visualizza);
     form.submit(function (event) {
         event.preventDefault();
     });
@@ -42,48 +43,24 @@ function visualizza() {
     button.val('Sign in');
     button.css('width', '40vmin');
     button.css('transform', 'translateY(-20vh)');
-    button.bind('touchstart', login);
+
+    button.off('touchstart');
+    button.on('touchstart', function () {
+        login(idCode.val(), false);
+    });
 
     form.css('visibility', 'visible');
     form.css('opacity', '1');
-
-    button.off('click');
-    button.click(login);
 }
 
-function login(){
-    var userId = idCode.val();
+function login(userId, autologin) {
 
-    sendId(userId);
-}
+    var isValidId = true;
+    /*controlli sull'userId*/
 
-function sendId(id, autologin) {
 
-    var data = {
-        key: id
-    };
-
-    $.ajax({
-        url: APIServerAddress + 'login',
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        async: false,
-        statusCode: {
-            400: function () {
-                if( !autologin )
-                    alert("Server error. Please retry later.");
-            },
-            403: function () {
-                if( !autologin )
-                    alert("Wrong code");
-            }
-        },
-        success: function (msg) {
-            userToken = msg.data['token'];
-            store('userId', id);
-            showPage('eventList');
-        }
-    });
+    if (isValidId)
+        API.login(userId, autologin);
+    else if( !autologin )
+        alert("Invalid code.");
 }

@@ -22,7 +22,6 @@ var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
 var menuHTML = '';
 var userId;
-var userToken;
 var APIServerAddress = 'http://185.53.148.24/api/v1/';
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
@@ -81,7 +80,7 @@ function bindEvents() {
 function showPage(name) {
 
     if (name === "logout")
-        logout();
+        API.logout();
     else if (name !== currentPage) {
 
         var noMenuLoaded = false;
@@ -193,38 +192,73 @@ function getFromStorage(name) {
     }
 }
 
-function logout() {
-    $.ajax({
-        url: APIServerAddress + 'logout',
-        type: 'GET',
-        async: false,
-        dataType: 'json',
-        headers: {
-            'X-Auth-Token': userToken
-        },
-        statusCode: {
-            400: function () {
-                if (!autologin)
-                    alert("Server error. Please retry later.");
-            },
-        },
-        success: function (data) {
-            store('userId', '');
-            window.location.reload();
-        }
-    });
-}
-
 var API = {
 
+    token: '',
+
+    login: function (id, autologin) {
+        var data = {
+            key: id
+        };
+        var that = this;
+
+        $.ajax({
+            url: APIServerAddress + 'login',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: true,
+            statusCode: {
+                400: function () {
+                    if (!autologin)
+                        alert("Server error. Please retry later.");
+                },
+                403: function () {
+                    if (!autologin)
+                        alert("Wrong code");
+                }
+            },
+            success: function (msg) {
+                that.token = msg.data['token'];
+                store('userId', id);
+                showPage('eventList');
+            }
+        });
+    },
+
+    logout: function () {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'logout',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    if (!autologin)
+                        alert("Server error. Please retry later.");
+                },
+            },
+            success: function (data) {
+                store('userId', '');
+                window.location.reload();
+            }
+        });
+    },
+
     eventList: function (currentContainer, noMenuLoaded) {
+        var that = this;
         $.ajax({
             url: APIServerAddress + 'events',
             type: 'GET',
             async: true,
             dataType: 'json',
             headers: {
-                'X-Auth-Token': userToken
+                'X-Auth-Token': that.token
             },
             statusCode: {
                 400: function () {
@@ -242,6 +276,7 @@ var API = {
         newContainer.addClass('container');
 
         //costruire l'html da inserire
+        alert(jsonData.data[0].type);
 
         currentContainer.replaceWith(newContainer);
         $('.loading').remove();
