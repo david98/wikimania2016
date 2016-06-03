@@ -65,6 +65,7 @@
 	background-color: #FFFFFF;
 	box-shadow: 0 0 0.1vh #9E9E9E;
 	border-radius: 0.2vh;
+    border: black 0 solid;
 }
 	
 .restaurantImg{
@@ -84,7 +85,7 @@
 	font-size: 4.5vw;
 }
 
-.restaurantDate{
+.restaurantPhone{
 	color: gray;
 	font-size: 4vw;
 }
@@ -93,4 +94,24 @@
     font-size: 4.5vw;
     color: #5A9BC3;
     font-weight: bold;
+}
+
+.dropdown-content {
+    z-index: 10;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width:40vw;
+    overflow: auto;
+    right: 5vw;
+    box-shadow: 0 0 0.2vh #9E9E9E;
+}
+
+.dropdown-content a {
+    color: gray;
+    padding: 2vh 5vw;
+    text-decoration: none;
+    display: block;
+    box-shadow: 0 0 0.01vh #9E9E9E;
+    font-size: 5vw;
 }

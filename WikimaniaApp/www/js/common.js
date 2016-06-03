@@ -243,6 +243,27 @@ var API = {
         });
     },
 
+    restaurantList: function (pageName, currentContainer, noMenuLoaded) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'restaurants',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
+    },
+
     show: function (pageName, jsonData, currentContainer, noMenuLoaded) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
@@ -275,6 +296,32 @@ var API = {
                         newContainer.append(newEvent);
                     }
 
+                    break;
+                }
+                case 'restaurantList': {
+                    var pageHTML = $.parseHTML(pageData);
+                    var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
+                    $('.singleRestaurant', pageHTML).remove();
+
+                    newContainer.append(pageHTML);
+
+                    for (var i = 0; i < jsonData.data.length; i++) {
+                        var newRestaurant = $(baseRestaurant).clone();
+
+                        //immagine... ?
+                        $(newRestaurant).attr('id', jsonData.data[i].id);
+                        $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+
+                        $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
+                        $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
+
+                        //var myPosition = 
+                        //var myDestination =
+                        //var distance = 
+                        //$('.restaurantDistance', newRestaurant).text(distance + ' km');
+
+                        newContainer.append(newRestaurant);
+                    }
                     break;
                 }
             }
