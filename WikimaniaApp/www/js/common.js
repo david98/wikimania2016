@@ -257,7 +257,7 @@ var API = {
                     var baseEvent = $('.singleEvent', pageHTML)[0];
                     $('.singleEvent', pageHTML).remove();
 
-                    
+                    newContainer.append(pageHTML);
 
                     for (var i = 0; i < jsonData.data.length; i++)
                     {
@@ -287,7 +287,7 @@ var API = {
 
             loadScript(pageName);
             slideout.enableTouch();
-            currentPage = name;
+            currentPage = pageName;
             $('#logo, #menu, #panel').show();
         });
     },
