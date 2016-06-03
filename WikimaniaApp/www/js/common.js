@@ -266,12 +266,12 @@ var API = {
                         $(newEvent).attr('id', jsonData.data[i].id);
                         $('.eventType', newEvent).text(jsonData.data[i].type);
                         $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
-                        $('.eventSubs', newEvent).text(jsonData.data[i].bookings + $('.eventSubs', newEvent).text());
+                        $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         //immagine... ?
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
                         var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
-                        $('.eventDate', newEvent).text($('.eventDate', newEvent).text() + dayText);
+                        $('.eventDate', newEvent).append(' ' + dayText);
                         newContainer.append(newEvent);
                     }
 
