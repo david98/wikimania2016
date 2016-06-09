@@ -19,11 +19,14 @@
 
 var button, idCode, form, logo, title;
 
-userId = getFromStorage('userId');
-if( userId != '' )
-    login(userId, true);
-
 $(document).ready(function () {
+
+    userToken = getFromStorage('userToken');
+    if (userToken != '') {
+        API.token = userToken;
+        showPage('eventList');
+    }
+
     button = $('#button');
     idCode = $('#idCode');
     form = $('#form');
