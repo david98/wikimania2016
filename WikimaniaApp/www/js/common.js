@@ -77,8 +77,7 @@ function bindEvents() {
     });
 }
 
-function showPage(name) {
-
+function showPage(name, id) {
     if (name !== currentPage) {
 
         var noMenuLoaded = false;
@@ -108,7 +107,7 @@ function showPage(name) {
                     $('#logo, #menu, #panel').hide();
                 }
 
-                API[name](name, currentContainer, noMenuLoaded);
+                API[name](name, currentContainer, noMenuLoaded, id);
 
                 for (var i = 0; i < pageNames.length; i++)
                     unloadCss(pageNames[i]);
@@ -263,9 +262,28 @@ var API = {
             }
         });
     },
-    about: function(pageName, currentContainer, noMenuLoaded) {
-        
+
+    eventSingle: function (pageName, currentContainer, noMenuLoaded, idEvent) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'event/' + idEvent,
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
     },
+
     show: function (pageName, jsonData, currentContainer, noMenuLoaded) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
@@ -295,11 +313,15 @@ var API = {
                         var day = new Date(jsonData.data[i].date);
                         var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                         $('.eventDate', newEvent).append(' ' + dayText);
+
+                        $('.eventImg, .eventTitle', newEvent).click({ id: jsonData.data[i].id }, function (e) { showPage("eventSingle", e.data.id) });
+
                         newContainer.append(newEvent);
                     }
 
                     break;
                 }
+
                 case 'restaurantList': {
                     var pageHTML = $.parseHTML(pageData);
                     var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
@@ -317,6 +339,17 @@ var API = {
                         $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
                         $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
 
+
+                        //var geolocation = new ol.Geolocation({
+                            // take the projection to use from the map's view
+                            //projection: view.getProjection()
+                        //});
+                        // listen to changes in position
+                        //geolocation.on('change', function (evt) {
+                            //window.console.log(geolocation.getPosition());
+                        //});
+
+
                         //var myPosition = 
                         //var myDestination =
                         //var distance = 
@@ -324,6 +357,29 @@ var API = {
 
                         newContainer.append(newRestaurant);
                     }
+                    break;
+                }
+
+                case 'eventSingle': {
+                    var pageHTML = $.parseHTML(pageData);
+                    var baseEventSingle = $('.eventSingle', pageHTML)[0];
+                    $('.singleEvent', pageHTML).remove();
+
+                    newContainer.append(pageHTML);
+
+                    var newSingle = $(baseEventSingle).clone();
+
+                    $(newSingle).attr('id', jsonData.data.event.id);
+                    $('.eventTitle', newSingle).text(jsonData.data.event.title);
+                    //immagine... ?
+                    var day = new Date(jsonData.data.event.date);
+                    var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                    $('.eventDate', newSingle).append(' ' + dayText);
+
+                    $('.eventNum', newSingle).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!' );
+
+                    newContainer.append(newSingle);
+
                     break;
                 }
             }
