@@ -18,11 +18,39 @@
  */
 
 /*Variabili globali utilizzati da ogni parte dell'app*/
+var history = [];
 var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
 var menuHTML = '';
 var userId;
 var APIServerAddress = 'http://185.53.148.24/api/v1/';
+
+var vw = window.innerWidth / 100;
+var slideout;
+
+$(document).ready(function () {
+
+    $(window).resize(function () {
+        vw = window.innerWidth / 100;
+
+        if (isset(slideout))
+            rebuildSlideout();
+    });
+
+    $('body').on('touchstart', '#menu_btn', function () {
+        slideout.toggle();
+    });
+
+    $('body').on('touchstart', '.navbar_list_element p', function (event) {
+        showPage(event.target.id);
+    });
+
+    $(document).on('backbutton', goBack);
+
+    $('body').on('click', '.eventImg, .eventTitle', function (event) {
+        showPage('eventSingle', $(event.target).parent().attr('id'));
+    });
+});
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
     menuHTML = data;
@@ -30,6 +58,15 @@ $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
 
 function isset(variable) {
     return typeof (variable) != "undefined" && variable !== null;
+}
+
+function goBack() {
+    if (history.length > 0) {
+        var pageToShow = history[history.length];
+        alert(pageToShow);
+        history.splice(history.length, 1);
+        showPage(pageToShow.name, pageToShow.id);
+    }
 }
 
 function rebuildSlideout() {
@@ -48,33 +85,8 @@ function rebuildSlideout() {
 
 }
 
-var vw = window.innerWidth / 100;
-var slideout;
-
 function bindEvents() {
-    $(document).on('backbutton', function () {
-        if (document.referrer != 'index.html')
-            location.href = document.referrer;
-    })
-
-    $('#menu_btn').off('touchstart');
-    $('#menu_btn').on('touchstart', function () {
-        slideout.toggle();
-    });
-
-
-    $(window).resize(function () {
-        vw = window.innerWidth / 100;
-
-        if (isset(slideout))
-            rebuildSlideout();
-    })
-
-    $('.navbar_list_element p').off('touchstart');
-    $('.navbar_list_element p').on('touchstart', function () {
-        var id = $(this).attr('id');
-        showPage(id);
-    });
+    
 }
 
 function showPage(name, id) {
@@ -167,7 +179,7 @@ var API = {
 
     token: '',
 
-    login: function (id, autologin) {
+    login: function (id) {
         var data = {
             key: id
         };
@@ -182,17 +194,15 @@ var API = {
             async: true,
             statusCode: {
                 400: function () {
-                    if (!autologin)
-                        alert("Server error. Please retry later.");
+                    alert("Server error. Please retry later.");
                 },
                 403: function () {
-                    if (!autologin)
-                        alert("Wrong code");
+                    alert("Wrong code");
                 }
             },
             success: function (msg) {
                 that.token = msg.data['token'];
-                store('userId', id);
+                store('userToken', that.token);
                 showPage('eventList');
             }
         });
@@ -210,12 +220,11 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    if (!autologin)
-                        alert("Server error. Please retry later.");
+                    alert("Server error. Please retry later.");
                 },
             },
             success: function (data) {
-                store('userId', '');
+                store('userToken', '');
                 window.location.reload();
             }
         });
@@ -235,6 +244,10 @@ var API = {
                 400: function () {
                     alert("Server error. Please retry later.");
                 },
+                403: function () {
+                    that.token = '';
+                    window.location.reload();
+                }
             },
             success: function (data) {
                 API.show(pageName, data, currentContainer, noMenuLoaded);
@@ -279,12 +292,12 @@ var API = {
                 },
             },
             success: function (data) {
-                API.show(pageName, data, currentContainer, noMenuLoaded);
+                API.show(pageName, data, currentContainer, noMenuLoaded, idEvent);
             }
         });
     },
 
-    show: function (pageName, jsonData, currentContainer, noMenuLoaded) {
+    show: function (pageName, jsonData, currentContainer, noMenuLoaded, itemId) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
 
@@ -313,8 +326,6 @@ var API = {
                         var day = new Date(jsonData.data[i].date);
                         var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                         $('.eventDate', newEvent).append(' ' + dayText);
-
-                        $('.eventImg, .eventTitle', newEvent).click({ id: jsonData.data[i].id }, function (e) { showPage("eventSingle", e.data.id) });
 
                         newContainer.append(newEvent);
                     }
@@ -392,13 +403,16 @@ var API = {
 
             loadScript(pageName);
             slideout.enableTouch();
+            
+            var historyItem = {
+                name: currentPage,
+                id: isset(itemId) ? itemId : null
+            };
+            history[history.length] = historyItem;
+
             currentPage = pageName;
             $('#logo, #menu, #panel').show();
         });
-    },
-
-    buildPage: function (baseHTML) {
-
     }
 };
 
