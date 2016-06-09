@@ -263,7 +263,9 @@ var API = {
             }
         });
     },
-
+    about: function(pageName, currentContainer, noMenuLoaded) {
+        
+    },
     show: function (pageName, jsonData, currentContainer, noMenuLoaded) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
