@@ -55,8 +55,14 @@ $(document).ready(function () {
         showPage('eventSingle', $(event.target).parent().attr('id'));
     });
 
-    $('body').on('click', '.restaurantImg, .eventTitle', function (event) {
-        showPage('restaurantSingle', $(event.target).parent().attr('id'));
+    $('body').on('click', '.restaurantImg, .restaurantTitle', function (event) {
+        showPage('restaurantSingle', {
+            "name": $(event.target).parent().attr('data-name'),
+            "address": $(event.target).parent().attr('data-address'),
+            "latitude": $(event.target).parent().attr('data-latitude'),
+            "longitude": $(event.target).parent().attr('data-longitude'),
+            "phone_number": $(event.target).parent().attr('data-phone_number')
+        });
     });
 });
 
@@ -98,7 +104,7 @@ function bindEvents() {
     
 }
 
-function showPage(name, parameter) //parameter can assume differents values: if we are showing the "eventSingle" this variable will be the id(of the event) of the page to show;
+function showPage(name, parameters) //parameter can assume differents values: if we are showing the "eventSingle" this variable will be the id(of the event) of the page to show;
                                    //If we are showing the "restaurantSingle" it will coincide with the page's data.
 {
     if (name !== currentPage) {
@@ -315,10 +321,11 @@ var API = {
     },
 
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
-               API.show(pageName, data, currentContainer, noMenuLoaded, parameters);
+               API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
-    show: function (pageName, jsonData, currentContainer, noMenuLoaded, itemId) {
+    show: function (pageName, jsonData, currentContainer, noMenuLoaded) { //parameter can assume differents values: if we are showing the "eventSingle" this variable will be the id(of the event) of the page to show;
+                                                                                  //If we are showing the "restaurantSingle" it will coincide with the page's data.
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
 
@@ -380,6 +387,7 @@ var API = {
                         $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
                         $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
 
+                        //MANCA TUTTO IL CALCOLO DELLA DISTANZA
 
                         //var geolocation = new ol.Geolocation({
                             // take the projection to use from the map's view
@@ -405,7 +413,7 @@ var API = {
                     var pageHTML = $.parseHTML(pageData);
 
     
-                    $(pageHTML).attr('id', jsonData.data.event.id);
+                    $(pageHTML).attr('id', jsonData.data.restaurant_id);
                     $('.eventTitle', pageHTML).text(jsonData.data.event.title);
                     //immagine... ?
                     var day = new Date(jsonData.data.event.date);
@@ -413,6 +421,21 @@ var API = {
                     $('.eventDate', pageHTML).append(' ' + dayText);
 
                     $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
+
+                    newContainer.append(pageHTML);
+
+                    break;
+                }
+
+                case 'restaurantSingle': {
+                    var pageHTML = $.parseHTML(pageData);
+
+                    $('.restaurantTitle', pageHTML).text(jsonData.name);
+                    //immagine... ?
+                    $('.restaurantPhone', pageHTML).append(' ' + jsonData.phone_number);
+                    $('.restaurantPhone', pageHTML).attr('href', 'tel:' + jsonData.phone_number);
+
+                    //MANCA LA DISTANZA E LA MAPPA!!!!!!!!!11!!!!!1!!!!1!!ù
 
                     newContainer.append(pageHTML);
 
