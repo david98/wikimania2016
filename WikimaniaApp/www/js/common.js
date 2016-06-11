@@ -18,7 +18,6 @@
  */
 
 /*Variabili globali utilizzati da ogni parte dell'app*/
-var history = [];
 var currentPage = 'index';
 var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
 var menuHTML = '';
@@ -27,6 +26,11 @@ var APIServerAddress = 'http://185.53.148.24/api/v1/';
 
 var vw = window.innerWidth / 100;
 var slideout;
+
+$(document).on('deviceready', function () {
+    alert();
+    document.addEventListener('backbutton', goBack, false);
+});
 
 $(document).ready(function () {
 
@@ -45,7 +49,7 @@ $(document).ready(function () {
         showPage(event.target.id);
     });
 
-    $(document).on('backbutton', goBack);
+    $(document).on('popstate', previousPage);
 
     $('body').on('click', '.eventImg, .eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().attr('id'));
@@ -60,13 +64,14 @@ function isset(variable) {
     return typeof (variable) != "undefined" && variable !== null;
 }
 
-function goBack() {
-    if (history.length > 0) {
-        var pageToShow = history[history.length];
-        alert(pageToShow);
-        history.splice(history.length, 1);
-        showPage(pageToShow.name, pageToShow.id);
-    }
+function goBack(event) {
+    alert();
+    //history.back();
+}
+
+function previousPage(event) {
+    console.log(event.state);
+    showPage(event.state);
 }
 
 function rebuildSlideout() {
@@ -134,6 +139,12 @@ function showPage(name, id) {
 
                 loadCss(name);
 
+                historyItem = {
+                    name: name,
+                    parameters: parameters
+                };
+
+                history.pushState(name, name, name + '.html');
             })
         );
     }
@@ -319,7 +330,8 @@ var API = {
                         
                         $(newEvent).attr('id', jsonData.data[i].id);
                         $('.eventType', newEvent).text(jsonData.data[i].type);
-                        $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+                        if (isset(jsonData.data[i].capacity) )
+                            $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
                         $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         //immagine... ?
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
@@ -398,12 +410,6 @@ var API = {
 
             loadScript(pageName);
             slideout.enableTouch();
-            
-            var historyItem = {
-                name: currentPage,
-                id: isset(itemId) ? itemId : null
-            };
-            history[history.length] = historyItem;
 
             currentPage = pageName;
             $('#logo, #menu, #panel').show();
