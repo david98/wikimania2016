@@ -27,11 +27,6 @@ var APIServerAddress = 'http://185.53.148.24/api/v1/';
 var vw = window.innerWidth / 100;
 var slideout;
 
-$(document).on('deviceready', function () {
-    alert();
-    document.addEventListener('backbutton', goBack, false);
-});
-
 $(document).ready(function () {
 
     $(window).resize(function () {
@@ -58,6 +53,10 @@ $(document).ready(function () {
     $('body').on('click', '.restaurantImg, .eventTitle', function (event) {
         showPage('restaurantSingle', $(event.target).parent().attr('id'));
     });
+
+    $(document).on('deviceready', function () {
+        document.addEventListener('backbutton', goBack, false);
+    });
 });
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
@@ -69,13 +68,13 @@ function isset(variable) {
 }
 
 function goBack(event) {
-    alert();
-    //history.back();
+    history.back();
 }
 
 function previousPage(event) {
-    console.log(event.state);
-    showPage(event.state);
+    console.log(event.state.name);
+    if( isset(event.state.name) && isset(event.state.parameters) )
+        showPage(event.state.name, event.state.parameters);
 }
 
 function rebuildSlideout() {
@@ -98,8 +97,10 @@ function bindEvents() {
     
 }
 
-function showPage(name, parameter) //parameter can assume differents values: if we are showing the "eventSingle" this variable will be the id(of the event) of the page to show;
-                                   //If we are showing the "restaurantSingle" it will coincide with the page's data.
+/*
+parameters è un oggetto contenente dati richiesti per la visualizzazione della pagina name
+*/
+function showPage(name, parameters) 
 {
     if (name !== currentPage) {
 
@@ -150,7 +151,7 @@ function showPage(name, parameter) //parameter can assume differents values: if 
                     parameters: parameters
                 };
 
-                history.pushState(name, name, name + '.html');
+                history.pushState(historyItem, name, name + '.html');
             })
         );
     }
