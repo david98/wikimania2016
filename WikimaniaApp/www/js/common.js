@@ -50,6 +50,10 @@ $(document).ready(function () {
     $('body').on('click', '.eventImg, .eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().attr('id'));
     });
+
+    $('body').on('click', '.restaurantImg, .eventTitle', function (event) {
+        showPage('restaurantSingle', $(event.target).parent().attr('id'));
+    });
 });
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
@@ -89,7 +93,9 @@ function bindEvents() {
     
 }
 
-function showPage(name, id) {
+function showPage(name, parameter) //parameter can assume differents values: if we are showing the "eventSingle" this variable will be the id(of the event) of the page to show;
+                                   //If we are showing the "restaurantSingle" it will coincide with the page's data.
+{
     if (name !== currentPage) {
 
         var noMenuLoaded = false;
@@ -119,7 +125,7 @@ function showPage(name, id) {
                     $('#logo, #menu, #panel').hide();
                 }
 
-                API[name](name, currentContainer, noMenuLoaded, id);
+                API[name](name, currentContainer, noMenuLoaded, parameters);
 
                 for (var i = 0; i < pageNames.length; i++)
                     unloadCss(pageNames[i]);
@@ -297,6 +303,10 @@ var API = {
         });
     },
 
+    restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
+               API.show(pageName, data, currentContainer, noMenuLoaded, parameters);
+    },
+
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, itemId) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
@@ -345,6 +355,14 @@ var API = {
 
                         //immagine... ?
                         $(newRestaurant).attr('id', jsonData.data[i].id);
+
+                        //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
+                        $(newRestaurant).attr('data-name', jsonData.data[i].name);
+                        $(newRestaurant).attr('data-address', jsonData.data[i].address);
+                        $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
+                        $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
+                        $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+
                         $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
 
                         $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
