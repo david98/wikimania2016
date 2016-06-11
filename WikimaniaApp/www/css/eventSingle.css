@@ -9,8 +9,9 @@
     padding: 1vh;
     color: #5A9BC3;
     letter-spacing: 1.1vw;
-	font-size: 6vw;
+    font-size: 6vw;
     background-color: #E8E8E8;
+    display: block;
 }
 
 .eventImg{
@@ -20,12 +21,12 @@
 }
 
 .eventDate{
-    font-weight: 100;
+    font-weight: 400;
     font-style: italic;
     font-size: 4vw;
     float: right;
     margin-right: 5vw;
-    color: gray;
+    color: grey;
 }
 
 .eventDesc{

@@ -373,23 +373,18 @@ var API = {
 
                 case 'eventSingle': {
                     var pageHTML = $.parseHTML(pageData);
-                    var baseEventSingle = $('.eventSingle', pageHTML)[0];
-                    $('.singleEvent', pageHTML).remove();
 
-                    newContainer.append(pageHTML);
-
-                    var newSingle = $(baseEventSingle).clone();
-
-                    $(newSingle).attr('id', jsonData.data.event.id);
-                    $('.eventTitle', newSingle).text(jsonData.data.event.title);
+    
+                    $(pageHTML).attr('id', jsonData.data.event.id);
+                    $('.eventTitle', pageHTML).text(jsonData.data.event.title);
                     //immagine... ?
                     var day = new Date(jsonData.data.event.date);
                     var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
-                    $('.eventDate', newSingle).append(' ' + dayText);
+                    $('.eventDate', pageHTML).append(' ' + dayText);
 
-                    $('.eventNum', newSingle).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!' );
+                    $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
 
-                    newContainer.append(newSingle);
+                    newContainer.append(pageHTML);
 
                     break;
                 }
