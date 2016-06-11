@@ -22,7 +22,7 @@ var button, idCode, form, logo, title;
 $(document).ready(function () {
 
     userToken = getFromStorage('userToken');
-    if (userToken != '') {
+    if (userToken !== '' && isset(userToken)) {
         API.token = userToken;
         showPage('eventList');
     }
