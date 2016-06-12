@@ -40,8 +40,14 @@ $(document).ready(function () {
         slideout.toggle();
     });
 
-    $('body').on('touchstart', '.navbar_list_element p', function (event) {
-        showPage(event.target.id);
+    $('body').on('click', '.restaurantImg, .restaurantTitle', function (event) {
+        showPage('restaurantSingle', {
+            "name": $(event.target).parent().attr('data-name'),
+            "address": $(event.target).parent().attr('data-address'),
+            "latitude": $(event.target).parent().attr('data-latitude'),
+            "longitude": $(event.target).parent().attr('data-longitude'),
+            "phone_number": $(event.target).parent().attr('data-phone_number')
+        });
     });
 
     $(document).on('popstate', previousPage);
@@ -100,8 +106,7 @@ function bindEvents() {
 /*
 parameters è un oggetto contenente dati richiesti per la visualizzazione della pagina name
 */
-function showPage(name, parameters) 
-{
+function showPage(name, parameters){ 
     if (name !== currentPage) {
 
         var noMenuLoaded = false;
@@ -310,16 +315,16 @@ var API = {
                 },
             },
             success: function (data) {
-                API.show(pageName, data, currentContainer, noMenuLoaded, idEvent);
+                API.show(pageName, data, currentContainer, noMenuLoaded);
             }
         });
     },
 
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
-               API.show(pageName, data, currentContainer, noMenuLoaded, parameters);
+               API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
-    show: function (pageName, jsonData, currentContainer, noMenuLoaded, itemId) {
+    show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
 
@@ -414,6 +419,21 @@ var API = {
                     $('.eventDate', pageHTML).append(' ' + dayText);
 
                     $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
+
+                    newContainer.append(pageHTML);
+
+                    break;
+                }
+
+                case 'restaurantSingle': {
+                    var pageHTML = $.parseHTML(pageData);
+
+                    $('.restaurantTitle', pageHTML).text(jsonData.name);
+                    //immagine... ?
+                    $('.restaurantPhone', pageHTML).append(' ' + jsonData.phone_number);
+                    $('.restaurantPhone', pageHTML).attr('href', 'tel:' + jsonData.phone_number);
+
+                    //MANCA LA DISTANZA E LA MAPPA!!!!!!!!!11!!!!!1!!!!1!!ù
 
                     newContainer.append(pageHTML);
 
