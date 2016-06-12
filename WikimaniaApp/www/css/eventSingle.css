@@ -3,6 +3,7 @@
 	min-height: 100vh;
     text-align: center;
     margin-top: 3vh;
+    margin-bottom: 5vh;
 }
 
 .eventTitle{
@@ -64,7 +65,6 @@
 }
 
 .eventGuide{
-    margin-bottom: 5vh;
     outline: none;
 	text-decoration: none;
     border: 0 solid #5A9BC3;
