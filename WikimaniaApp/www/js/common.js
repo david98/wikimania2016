@@ -40,6 +40,10 @@ $(document).ready(function () {
         slideout.toggle();
     });
 
+    $('body').on('touchstart', '.navbar_list_element p', function (event) {
+        showPage(event.target.id);
+    });
+
     $('body').on('click', '.restaurantImg, .restaurantTitle', function (event) {
         showPage('restaurantSingle', {
             "name": $(event.target).parent().attr('data-name'),
