@@ -44,7 +44,7 @@ $(document).ready(function () {
         showPage(event.target.id);
     });
 
-    $('body').on('click', '.restaurantImg, .restaurantTitle', function (event) {
+    $('body').on('click', '.restaurantImg', function (event) {
         showPage('restaurantSingle', {
             "name": $(event.target).parent().attr('data-name'),
             "address": $(event.target).parent().attr('data-address'),
@@ -54,14 +54,24 @@ $(document).ready(function () {
         });
     });
 
+    $('body').on('click', '.restaurantTitle', function (event) {
+        showPage('restaurantSingle', {
+            "name": $(event.target).parent().parent().attr('data-name'),
+            "address": $(event.target).parent().parent().attr('data-address'),
+            "latitude": $(event.target).parent().parent().attr('data-latitude'),
+            "longitude": $(event.target).parent().parent().attr('data-longitude'),
+            "phone_number": $(event.target).parent().parent().attr('data-phone_number')
+        });
+    });
+
     $(document).on('popstate', previousPage);
 
     $('body').on('click', '.eventImg, .eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().attr('id'));
     });
 
-    $('body').on('click', '.restaurantImg, .eventTitle', function (event) {
-        showPage('restaurantSingle', $(event.target).parent().attr('id'));
+    $('body').on('click', '.eventTitle', function (event) {
+        showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
 
     $(document).on('deviceready', function () {
