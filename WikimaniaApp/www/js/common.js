@@ -338,6 +338,12 @@ var API = {
                API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
+    about: function (pageName, currentContainer, noMenuLoaded) {
+        $.get(pageName + '.html').then(function(data){
+            API.show(pageName, data, currentContainer, noMenuLoaded);
+        });
+    },
+
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
@@ -451,6 +457,13 @@ var API = {
 
                     newContainer.append(pageHTML);
 
+                    break;
+                }
+
+                case 'about': {
+                    var pageHTML = $.parseHTML(pageData);
+
+                    newContainer.append(pageHTML);
                     break;
                 }
             }
