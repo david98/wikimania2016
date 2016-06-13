@@ -19,7 +19,7 @@
 
 /*Variabili globali utilizzati da ogni parte dell'app*/
 var currentPage = 'index';
-var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about'];
+var pageNames = ['eventList', 'eventSingle', 'restaurantList', 'restaurantSingle', 'accommodation', 'about', 'myEvents', 'myProfile'];
 var menuHTML = '';
 var userId;
 var APIServerAddress = 'http://185.53.148.24/api/v1/';
@@ -63,6 +63,10 @@ $(document).ready(function () {
             "longitude": $(event.target).parent().parent().attr('data-longitude'),
             "phone_number": $(event.target).parent().parent().attr('data-phone_number')
         });
+    });
+
+    $('body').on('touchstart', '.buttonEvents', function () {
+        showPage('myEvents');
     });
 
     $(document).on('popstate', previousPage);
@@ -116,6 +120,13 @@ function rebuildSlideout() {
 
 function bindEvents() {
     
+}
+
+/*
+TODO: calcola la distanza tra a e b, dove a e b sono oggetti {lon: , lat: }
+*/
+function distanceBetween(a, b) {
+
 }
 
 /*
@@ -466,15 +477,18 @@ var API = {
                         var newEvent = $(baseEvent).clone();
                         
                         $(newEvent).attr('id', jsonData.data[i].id);
-                        $('.eventType', newEvent).text(jsonData.data[i].type);
+                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== "null" && jsonData.data[i].type !== "")
+                            $('.eventType', newEvent).text(jsonData.data[i].type);
+                        else
+                            $('.eventType', newEvent).remove();
 
                         if (jsonData.data[i].hasBooked) {
                             $('.eventSubs', newEvent).text("Booked!");
                         }
                         else
                         {
-                            if (isset(jsonData.data[i].capacity))
-                            $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+                            if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0 )
+                                $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
 
                         $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
@@ -489,7 +503,7 @@ var API = {
                             dateTitle.addClass('dateTitle');
                         } else
                             dateTitle = null;
-                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + jsonData.data[i].start;
                         $('.eventDate', newEvent).append(' ' + dayText);
 
                         if (isset(dateTitle))
@@ -569,7 +583,10 @@ var API = {
                         $('.eventNum', pageHTML).text("You booked this event");
                         $('.eventBtn', pageHTML).text("Unsubscribe");
                     }
-                        $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
+
+                    $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
+
+                    $('.eventGuide', pageHTML).attr('href', 'geo:');
 
                     newContainer.append(pageHTML);
 
