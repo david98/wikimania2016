@@ -334,14 +334,30 @@ var API = {
         });
     },
 
-    restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
-               API.show(pageName, data, currentContainer, noMenuLoaded);
+    myProfile: function (pageName, currentContainer, noMenuLoaded) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'profile',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
     },
 
-    about: function (pageName, currentContainer, noMenuLoaded) {
-        $.get(pageName + '.html').then(function(data){
-            API.show(pageName, data, currentContainer, noMenuLoaded);
-        });
+    restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
+               API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
@@ -460,10 +476,12 @@ var API = {
                     break;
                 }
 
-                case 'about': {
+                case 'myProfile': {
                     var pageHTML = $.parseHTML(pageData);
 
+                    $('.username', pageHTML).text(jsonData.data.user.name + " " + jsonData.data.user.surname);
                     newContainer.append(pageHTML);
+
                     break;
                 }
             }

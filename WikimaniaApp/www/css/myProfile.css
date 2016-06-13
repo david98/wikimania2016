@@ -1,0 +1,48 @@
+﻿.username{
+    font-size: 4.5vw;
+    font-weight: bold;
+    background-color: #E8E8E8;
+    padding: 1vh 20vw 1vh 20vw;
+    color: #5A9BC3;
+}
+
+.buttonAccomodation{
+    margin-top: 4vh;
+	margin-bottom: 6vh;
+    outline: none;
+	text-decoration: none;
+    border: 0 solid #5A9BC3;
+    border-radius:10px;
+	color: #fff;
+	background: #5A9BC3;
+    font-size: 5vw;
+    display:block;
+    margin-left: 22vw;
+    padding: 1vh 10vw 1vh 10vw;
+}
+.buttonEvents{
+    margin-top: 4vh;
+	margin-bottom: 6vh;
+    outline: none;
+	text-decoration: none;
+    border: 0 solid #5A9BC3;
+    border-radius:10px;
+	color: #fff;
+	background: #5A9BC3;
+    font-size: 5vw;
+    display:block;
+    margin-left: 22vw;
+    padding: 1vh 15.5vw 1vh 15.5vw;
+}
+.buttonsContainer{
+    margin-top:20vh;
+}
+.mapProfile{
+    margin-top:5vh;
+}
+.myProfile{
+    text-align:center;
+}
+.profileContainer{
+    margin-top:3vh;
+}
