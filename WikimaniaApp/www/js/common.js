@@ -274,9 +274,9 @@ var API = {
             type: 'GET',
             async: true,
             dataType: 'json',
-            headers: {
-                'X-Auth-Token': that.token
-            },
+            //headers: {
+            //    'X-Auth-Token': that.token
+            //},
             statusCode: {
                 400: function () {
                     alert("Server error. Please retry later.");
@@ -299,9 +299,9 @@ var API = {
             type: 'GET',
             async: true,
             dataType: 'json',
-            headers: {
-                'X-Auth-Token': that.token
-            },
+            //headers: {
+            //    'X-Auth-Token': that.token
+            //},
             statusCode: {
                 400: function () {
                     alert("Server error. Please retry later.");
