@@ -334,6 +334,28 @@ var API = {
         });
     },
 
+    myProfile: function (pageName, currentContainer, noMenuLoaded) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'profile',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
+    },
+
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
                API.show(pageName, data, currentContainer, noMenuLoaded);
     },
@@ -449,6 +471,15 @@ var API = {
 
                     //MANCA LA DISTANZA E LA MAPPA!!!!!!!!!11!!!!!1!!!!1!!ù
 
+                    newContainer.append(pageHTML);
+
+                    break;
+                }
+
+                case 'myProfile': {
+                    var pageHTML = $.parseHTML(pageData);
+
+                    $('.username', pageHTML).text(jsonData.data.user.name + " " + jsonData.data.user.surname);
                     newContainer.append(pageHTML);
 
                     break;
