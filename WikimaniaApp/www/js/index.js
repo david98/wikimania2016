@@ -25,7 +25,7 @@ $(document).ready(function () {
     if (userToken !== '' && isset(userToken)) {
         API.token = userToken;
         showPage('eventList');
-    }
+    } 
 
     button = $('#button');
     idCode = $('#idCode');
