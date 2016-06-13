@@ -358,6 +358,56 @@ var API = {
                API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
+    toggleBook: function (event) {
+        var that = this;
+        var id = event.data.id;
+        var hasBooked = event.data.hasBooked;
+
+        if (!hasBooked) {
+            $.ajax({
+                url: APIServerAddress + 'event/' + id + '/book',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                headers: {
+                    'X-Auth-Token': that.token
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Server error. Please retry later.");
+                    },
+                },
+
+                success: function (data) {
+                    alert("Successfully subscribed!")
+                    showPage("eventSingle",id);
+                }
+            });
+        }
+        else
+        {
+            $.ajax({
+                url: APIServerAddress + 'event/' + id + '/unbook',
+                type: 'DELETE',
+                async: true,
+                dataType: 'json',
+                headers: {
+                    'X-Auth-Token': that.token
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Server error. Please retry later.");
+                    },
+                },
+
+                success: function (data) {
+                    alert("Successfully unsubscribed!")
+                    showPage("eventSingle", id);
+                }
+            });
+        }
+    },
+
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
@@ -461,9 +511,16 @@ var API = {
                     var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                     $('.eventDate', pageHTML).append(' ' + dayText);
 
-                    $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
-
-                    $('.eventBtn', pageHTML).click()
+                    if (!jsonData.data.event.hasBooked) {
+                        $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
+                        $('.eventBtn', pageHTML).text("Subscribe");
+                    }
+                    else
+                    {
+                        $('.eventNum', pageHTML).text("You booked this event");
+                        $('.eventBtn', pageHTML).text("Unsubscribe");
+                    }
+                        $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
 
                     newContainer.append(pageHTML);
 
