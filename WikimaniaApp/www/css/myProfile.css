@@ -7,7 +7,7 @@
 }
 
 .buttonAccomodation{
-    margin-top: 4vh;
+    margin-top: 2vh;
 	margin-bottom: 6vh;
     outline: none;
 	text-decoration: none;
@@ -21,8 +21,7 @@
     padding: 1vh 10vw 1vh 10vw;
 }
 .buttonEvents{
-    margin-top: 4vh;
-	margin-bottom: 6vh;
+    margin-top: 2vh;
     outline: none;
 	text-decoration: none;
     border: 0 solid #5A9BC3;
@@ -35,7 +34,7 @@
     padding: 1vh 15.5vw 1vh 15.5vw;
 }
 .buttonsContainer{
-    margin-top:20vh;
+    margin-top:5vh;
 }
 .mapProfile{
     margin-top:5vh;

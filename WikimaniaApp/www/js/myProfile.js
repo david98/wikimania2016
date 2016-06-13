@@ -7,6 +7,10 @@ $.ajax('loading.html', function (data, textStatus, jqXHR) {
     loadCss('loading');
 });
 
+$(".buttonEvents").click(function () {
+    showPage("myEvents");
+    
+});
 request.done(function () {
     $('.loading').remove();
     locateUser();
