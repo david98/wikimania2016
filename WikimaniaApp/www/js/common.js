@@ -42,6 +42,7 @@ $(document).ready(function () {
 
     $('body').on('touchstart', '.navbar_list_element p', function (event) {
         showPage(event.target.id);
+        slideout.close();
     });
 
     $('body').on('click', '.restaurantImg', function (event) {
@@ -130,9 +131,6 @@ function showPage(name, parameters){
             noMenuLoaded = true;
         else
             currentContainer = $('.container');
-
-        if (!noMenuLoaded)
-            slideout.close();
 
         $.when(
             $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
@@ -279,9 +277,9 @@ var API = {
             type: 'GET',
             async: true,
             dataType: 'json',
-            //headers: {
-            //    'X-Auth-Token': that.token
-            //},
+            headers: {
+                'X-Auth-Token': that.token
+            },
             statusCode: {
                 400: function () {
                     alert("Server error. Please retry later.");
@@ -304,9 +302,9 @@ var API = {
             type: 'GET',
             async: true,
             dataType: 'json',
-            //headers: {
-            //    'X-Auth-Token': that.token
-            //},
+            headers: {
+                'X-Auth-Token': that.token
+            },
             statusCode: {
                 400: function () {
                     alert("Server error. Please retry later.");
@@ -361,8 +359,80 @@ var API = {
         });
     },
 
+    myEvents: function (pageName, currentContainer, noMenuLoaded) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'events/booked',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
+    },
+
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
-           API.show(pageName, data, currentContainer, noMenuLoaded);
+               API.show(pageName, data, currentContainer, noMenuLoaded);
+    },
+
+    toggleBook: function (event) {
+        var that = this;
+        var id = event.data.id;
+        var hasBooked = event.data.hasBooked;
+
+        if (!hasBooked) {
+            $.ajax({
+                url: APIServerAddress + 'event/' + id + '/book',
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                headers: {
+                    'X-Auth-Token': that.token
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Server error. Please retry later.");
+                    },
+                },
+
+                success: function (data) {
+                    alert("Successfully subscribed!")
+                    showPage("eventSingle",id);
+                }
+            });
+        }
+        else
+        {
+            $.ajax({
+                url: APIServerAddress + 'event/' + id + '/unbook',
+                type: 'DELETE',
+                async: true,
+                dataType: 'json',
+                headers: {
+                    'X-Auth-Token': that.token
+                },
+                statusCode: {
+                    400: function () {
+                        alert("Server error. Please retry later.");
+                    },
+                },
+
+                success: function (data) {
+                    alert("Successfully unsubscribed!")
+                    showPage("eventSingle", id);
+                }
+            });
+        }
     },
 
     about: function(pageName, currentContainer, noMenuLoaded, data){
@@ -397,9 +467,18 @@ var API = {
                         
                         $(newEvent).attr('id', jsonData.data[i].id);
                         $('.eventType', newEvent).text(jsonData.data[i].type);
-                        if (isset(jsonData.data[i].capacity) )
+
+                        if (jsonData.data[i].hasBooked) {
+                            $('.eventSubs', newEvent).text("Booked!");
+                        }
+                        else
+                        {
+                            if (isset(jsonData.data[i].capacity))
                             $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+
                         $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
+                        }
+
                         //immagine... ?
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
@@ -481,7 +560,16 @@ var API = {
                     var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                     $('.eventDate', pageHTML).append(' ' + dayText);
 
+                    if (!jsonData.data.event.hasBooked) {
                     $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
+                        $('.eventBtn', pageHTML).text("Subscribe");
+                    }
+                    else
+                    {
+                        $('.eventNum', pageHTML).text("You booked this event");
+                        $('.eventBtn', pageHTML).text("Unsubscribe");
+                    }
+                        $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
 
                     newContainer.append(pageHTML);
 
@@ -509,6 +597,28 @@ var API = {
                     $('.username', pageHTML).text(jsonData.data.user.name + " " + jsonData.data.user.surname);
                     newContainer.append(pageHTML);
 
+                    break;
+                }
+
+                case 'myEvents': {
+                    var pageHTML = $.parseHTML(pageData);
+                    var baseEvent = $('.singleEvent', pageHTML)[0];
+                    $('.singleEvent', pageHTML).remove();
+                    newContainer.append(pageHTML);
+
+                    for (var i = 0; i < jsonData.data.length; i++) {
+
+                        var newEvent = $(baseEvent).clone();
+                        $(newEvent).attr('id', jsonData.data[i].id);
+                        $('.eventType', newEvent).text(jsonData.data[i].type);
+                        if (isset(jsonData.data[i].capacity))
+                        $('.eventTitle', newEvent).text(jsonData.data[i].title);
+                        var day = new Date(jsonData.data[i].date);
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                        $('.eventDate', newEvent).append(' ' + dayText);
+
+                        newContainer.append(newEvent);
+                    }
                     break;
                 }
 
@@ -599,8 +709,8 @@ var sortMethods = {
         else {
             //TODO: controllo sull'ora
             return 0;
-        }
     }
+}
 };
 
 /*
