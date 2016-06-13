@@ -262,6 +262,11 @@ var API = {
             },
             success: function (data) {
                 store('userToken', '');
+                var historyItem = {
+                    name: 'index',
+                    parameters: null
+                };
+                history.replaceState(null, 'index', 'index.html');
                 window.location.reload();
             }
         });
@@ -357,7 +362,13 @@ var API = {
     },
 
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
-               API.show(pageName, data, currentContainer, noMenuLoaded);
+           API.show(pageName, data, currentContainer, noMenuLoaded);
+    },
+
+    about: function(pageName, currentContainer, noMenuLoaded, data){
+        $.get(pageName + '.html', function (data) {
+            API.show(pageName, data, currentContainer, noMenuLoaded);
+        });
     },
 
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
@@ -370,12 +381,16 @@ var API = {
             switch (pageName) {
                 case 'eventList': {
 
+                    jsonData.data.sort(sortMethods.date);
+
                     var pageHTML = $.parseHTML(pageData);
                     var baseEvent = $('.singleEvent', pageHTML)[0];
                     $('.singleEvent', pageHTML).remove();
 
                     newContainer.append(pageHTML);
 
+                    var previousDay = new Date();
+                    var dateTitle = null;
                     for (var i = 0; i < jsonData.data.length; i++)
                     {
                         var newEvent = $(baseEvent).clone();
@@ -388,10 +403,22 @@ var API = {
                         //immagine... ?
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
+                        if (day.getDate() !== previousDay.getDate()) {
+                            console.log(jsonData.data[i].title);
+                            console.log("Giorno precedente: " + previousDay.getDate() + " OGGI: " + day.getDate());
+                            dateTitle = $('<h2></h2>').text(getMonthName(day.getMonth()) + ' ' + day.getDate());
+                            dateTitle.addClass('dateTitle');
+                        } else
+                            dateTitle = null;
                         var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                         $('.eventDate', newEvent).append(' ' + dayText);
 
+                        if (isset(dateTitle))
+                            newContainer.append(dateTitle);
                         newContainer.append(newEvent);
+
+                        previousDay = day;
+
                     }
 
                     break;
@@ -484,6 +511,12 @@ var API = {
 
                     break;
                 }
+
+                case 'about': {
+                    var pageHTML = $.parseHTML(pageData);
+
+                    newContainer.append(pageHTML);
+                }
             }
 
             currentContainer.replaceWith(newContainer);
@@ -553,6 +586,22 @@ function getMonthName(number) {
         }
     }
 }
+
+var sortMethods = {
+    'date': function (event1, event2) {
+        var day1 = new Date(event1.date);
+        var day2 = new Date(event2.date);
+
+        if (day1 < day2)
+            return -1;
+        else if (day1 > day2)
+            return 1;
+        else {
+            //TODO: controllo sull'ora
+            return 0;
+        }
+    }
+};
 
 /*
 function showPage(name) {

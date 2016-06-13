@@ -46,3 +46,9 @@
 .profileContainer{
     margin-top:3vh;
 }
+
+#map{
+    margin: 5vh 0 !important;
+    height: 40vh;
+    width: 100%;
+}
