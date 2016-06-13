@@ -356,6 +356,28 @@ var API = {
         });
     },
 
+    myEvents: function (pageName, currentContainer, noMenuLoaded) {
+        var that = this;
+        $.ajax({
+            url: APIServerAddress + 'events/booked',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': that.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+            },
+
+            success: function (data) {
+                API.show(pageName, data, currentContainer, noMenuLoaded);
+            }
+        });
+    },
+
     restaurantSingle: function (pageName, currentContainer, noMenuLoaded, data) {
                API.show(pageName, data, currentContainer, noMenuLoaded);
     },
@@ -482,6 +504,28 @@ var API = {
                     $('.username', pageHTML).text(jsonData.data.user.name + " " + jsonData.data.user.surname);
                     newContainer.append(pageHTML);
 
+                    break;
+                }
+
+                case 'myEvents': {
+                    var pageHTML = $.parseHTML(pageData);
+                    var baseEvent = $('.singleEvent', pageHTML)[0];
+                    $('.singleEvent', pageHTML).remove();
+                    newContainer.append(pageHTML);
+
+                    for (var i = 0; i < jsonData.data.length; i++) {
+
+                        var newEvent = $(baseEvent).clone();
+                        $(newEvent).attr('id', jsonData.data[i].id);
+                        $('.eventType', newEvent).text(jsonData.data[i].type);
+                        if (isset(jsonData.data[i].capacity))
+                        $('.eventTitle', newEvent).text(jsonData.data[i].title);
+                        var day = new Date(jsonData.data[i].date);
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                        $('.eventDate', newEvent).append(' ' + dayText);
+
+                        newContainer.append(newEvent);
+                    }
                     break;
                 }
             }

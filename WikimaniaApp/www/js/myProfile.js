@@ -1,3 +1,3 @@
 ﻿$(".buttonEvents").click(function () {
-    API.myEvents();
+    showPage("myEvents");
 });
