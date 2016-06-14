@@ -490,7 +490,7 @@ var API = {
                             if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0 )
                                 $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
 
-                        $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
+                            $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
 
                         //immagine... ?
@@ -586,7 +586,8 @@ var API = {
 
                     $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
 
-                    $('.eventGuide', pageHTML).attr('href', 'geo:');
+                    var geoLink = 'geo:' + jsonData.data.event.places[0].latitude + ',' + jsonData.data.event.places[0].longitude;
+                    $('.eventGuide', pageHTML).attr('href', geoLink);
 
                     newContainer.append(pageHTML);
 
