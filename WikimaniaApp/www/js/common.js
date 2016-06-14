@@ -198,7 +198,7 @@ function loadScript(name) {
     return $.getScript('js/' + name + '.js');
 }
 
-function loadExternalScript(URL) {
+function loadExternalScript(URL) {APIServerAddress
     return $.getScript(URL);
 }
 
@@ -225,6 +225,8 @@ var API = {
 
     token: '',
 
+    serverAddress: 'http://185.53.148.24/api/v1/',
+
     login: function (id) {
         var data = {
             key: id
@@ -232,7 +234,7 @@ var API = {
         var that = this;
 
         $.ajax({
-            url: APIServerAddress + 'login',
+            url: this.serverAddress + 'login',
             type: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
@@ -257,7 +259,7 @@ var API = {
     logout: function () {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'logout',
+            url: this.serverAddress + 'logout',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -284,7 +286,7 @@ var API = {
     eventList: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'events',
+            url: this.serverAddress + 'events',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -309,7 +311,7 @@ var API = {
     restaurantList: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'restaurants',
+            url: this.serverAddress + 'restaurants',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -330,7 +332,7 @@ var API = {
     eventSingle: function (pageName, currentContainer, noMenuLoaded, idEvent) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'event/' + idEvent,
+            url: this.serverAddress + 'event/' + idEvent,
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -351,7 +353,7 @@ var API = {
     myProfile: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'profile',
+            url: this.serverAddress + 'profile',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -373,7 +375,7 @@ var API = {
     myEvents: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'events/booked',
+            url: this.serverAddress + 'events/booked',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -403,7 +405,7 @@ var API = {
 
         if (!hasBooked) {
             $.ajax({
-                url: APIServerAddress + 'event/' + id + '/book',
+                url: this.serverAddress + 'event/' + id + '/book',
                 type: 'POST',
                 async: true,
                 dataType: 'json',
@@ -425,7 +427,7 @@ var API = {
         else
         {
             $.ajax({
-                url: APIServerAddress + 'event/' + id + '/unbook',
+                url: this.serverAddress + 'event/' + id + '/unbook',
                 type: 'DELETE',
                 async: true,
                 dataType: 'json',
@@ -497,13 +499,11 @@ var API = {
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
                         if (day.getDate() !== previousDay.getDate()) {
-                            console.log(jsonData.data[i].title);
-                            console.log("Giorno precedente: " + previousDay.getDate() + " OGGI: " + day.getDate());
-                            dateTitle = $('<h2></h2>').text(getMonthName(day.getMonth()) + ' ' + day.getDate());
+                            dateTitle = $('<h2></h2>').text((getMonthName(day.getMonth()) + ' ' + day.getDate()));
                             dateTitle.addClass('dateTitle');
                         } else
                             dateTitle = null;
-                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + jsonData.data[i].start;
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + jsonData.data[i].start.substr(0,5);
                         $('.eventDate', newEvent).append(' ' + dayText);
 
                         if (isset(dateTitle))

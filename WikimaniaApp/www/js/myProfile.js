@@ -32,7 +32,7 @@ function locateUser() {
 function showMap(position) {
     var lon = position.coords.longitude;
     var lat = position.coords.latitude;
-    var zoom = 13;
+    var zoom = 15;
     if (!isset(map)) {
         map = new OpenLayers.Map("map", {
             controls: [
@@ -55,11 +55,15 @@ function showMap(position) {
         );
     }
     map.setCenter(lonLat, zoom);
-    addMarker(lon, lat, null, null);
-    addMarker(10, 45, 'img/accommodationIcon.png', function () { alert(); });
+    userData.getMyEvents();
 }
 
-function addMarker(longitude, latitude, icon, eventHandler) {
+function addMarker(longitude, latitude, icon, eventHandler, width, height) {
+    if (!isset(width))
+        width = 32;
+    if (!isset(height))
+        height = 32;
+
     if (!isset(markers)) {
         markers = new OpenLayers.Layer.Markers("Markers");
         map.addLayer(markers);
@@ -71,7 +75,7 @@ function addMarker(longitude, latitude, icon, eventHandler) {
             map.getProjectionObject() // to Spherical Mercator Projection
     );
 
-    var icon = new OpenLayers.Icon(icon, new OpenLayers.Size(64, 64));
+    var icon = new OpenLayers.Icon(icon, new OpenLayers.Size(width, height));
     var marker = new OpenLayers.Marker(markerLonLat, icon);
     markers.addMarker(marker);
 }
@@ -79,7 +83,7 @@ function addMarker(longitude, latitude, icon, eventHandler) {
 var userData = {
     getMyEvents: function () {
         $.ajax({
-            url: APIServerAddress + 'events',
+            url: API.serverAddress + 'events/booked',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -96,9 +100,46 @@ var userData = {
                 }
             },
             success: function (data) {
-                for( var i = 0; i < data.data.length; i++ ){
-                    //TODO: aggiungere i marker sugli eventi...
+                var today = new Date();
+                for (var i = 0; i < data.data.length; i++) {
+                    var day = new Date(data.data[i].date);
+
+                    if (isset(data.data[i].places) && day > today)
+                        for(var k = 0; k < data.data[i].places.length; k++)
+                        {
+                            addMarker(data.data[i].places[k].longitude, data.data[i].places[k].latitude, 'img/mapIcons/event.png', null, 32, 37);
+                        }
                 }
+            }
+        });
+    },
+    getAccomodation: function(){
+        $.ajax({
+            url: API.serverAddress + 'events/booked',
+            type: 'GET',
+            async: true,
+            dataType: 'json',
+            headers: {
+                'X-Auth-Token': API.token
+            },
+            statusCode: {
+                400: function () {
+                    alert("Server error. Please retry later.");
+                },
+                403: function () {
+                    API.token = '';
+                    window.location.reload();
+                },
+                404: function () {
+                    alert("Warning! You have no accomodation in Esino.");
+                }
+            },
+            success: function (data) {
+                var longitude = data.data.longitude;
+                var latitude = data.data.latitude;
+                var icon = 'img/mapIcons/home.png';
+
+                addMarker(longitude, latitude, icon, null, 32, 37);
             }
         });
     }
