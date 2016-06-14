@@ -55,6 +55,7 @@ function showMap(position) {
         );
     }
     map.setCenter(lonLat, zoom);
+    addMarker(lon, lat, 'img/mapIcons/user.png', null, 32, 37);
     userData.getMyEvents();
 }
 
@@ -74,8 +75,8 @@ function addMarker(longitude, latitude, icon, eventHandler, width, height) {
             new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
             map.getProjectionObject() // to Spherical Mercator Projection
     );
-
-    var icon = new OpenLayers.Icon(icon, new OpenLayers.Size(width, height));
+    var offset = { x: 0, y: -20 };
+    var icon = new OpenLayers.Icon(icon, new OpenLayers.Size(width, height), offset);
     var marker = new OpenLayers.Marker(markerLonLat, icon);
     markers.addMarker(marker);
 }
