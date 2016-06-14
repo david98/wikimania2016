@@ -56,4 +56,17 @@
     list-style-type: none;
     text-align: left;
     padding-right: 2vw;
+    margin-right: 5vw;
+}
+
+.legend li {
+    margin-top: 2vh;
+    border-bottom: solid 0.2vh gray;
+    font-style: italic;
+    font-weight: 100;
+}
+
+.legend li img{
+    margin-right: 5vw;
+    display:table-cell;
 }
