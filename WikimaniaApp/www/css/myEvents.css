@@ -83,3 +83,9 @@
 #tomorrowButton{
    margin-left: 0vw;
 }
+
+.dateTitle{
+    color: gray;
+    font-weight: 100;
+    text-align: center;
+}

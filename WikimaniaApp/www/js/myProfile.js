@@ -13,10 +13,11 @@ $(".buttonEvents").click(function () {
 request.done(function () {
     $('.loading').remove();
     locateUser();
-    $('#refresh_map_btn').on('touchstart', locateUser);
+    //$('#refresh_map_btn').on('touchstart', locateUser);
 });
 
 window.setTimeout(function () {
+    alert();
     $('.arrow').hide();
     $('.arrowLabel').hide();
 }, 5000);

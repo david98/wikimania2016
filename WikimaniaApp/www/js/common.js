@@ -619,24 +619,73 @@ var API = {
                 }
 
                 case 'myEvents': {
+                    //var pageHTML = $.parseHTML(pageData);
+                    //var baseEvent = $('.singleEvent', pageHTML)[0];
+                    //$('.singleEvent', pageHTML).remove();
+                    //newContainer.append(pageHTML);
+
+                    //for (var i = 0; i < jsonData.data.length; i++) {
+
+                    //    var newEvent = $(baseEvent).clone();
+                    //    $(newEvent).attr('id', jsonData.data[i].id);
+                    //    $('.eventType', newEvent).text(jsonData.data[i].type);
+                    //    if (isset(jsonData.data[i].capacity))
+                    //    $('.eventTitle', newEvent).text(jsonData.data[i].title);
+                    //    var day = new Date(jsonData.data[i].date);
+                    //    var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                    //    $('.eventDate', newEvent).append(' ' + dayText);
+
+                    //    newContainer.append(newEvent);
+                    //}
+
+                    jsonData.data.sort(sortMethods.date);
+
                     var pageHTML = $.parseHTML(pageData);
                     var baseEvent = $('.singleEvent', pageHTML)[0];
                     $('.singleEvent', pageHTML).remove();
+
                     newContainer.append(pageHTML);
 
+                    var previousDay = new Date();
+                    var dateTitle = null;
                     for (var i = 0; i < jsonData.data.length; i++) {
-
                         var newEvent = $(baseEvent).clone();
+
                         $(newEvent).attr('id', jsonData.data[i].id);
-                        $('.eventType', newEvent).text(jsonData.data[i].type);
-                        if (isset(jsonData.data[i].capacity))
+                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== "null" && jsonData.data[i].type !== "")
+                            $('.eventType', newEvent).text(jsonData.data[i].type);
+                        else
+                            $('.eventType', newEvent).remove();
+
+                        if (jsonData.data[i].hasBooked) {
+                            $('.eventSubs', newEvent).text("Booked!");
+                        }
+                        else {
+                            if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0)
+                                $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+
+                            $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
+                        }
+
+                        //immagine... ?
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
-                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                        if (day.getDate() !== previousDay.getDate()) {
+                            dateTitle = $('<h2></h2>').text((getMonthName(day.getMonth()) + ' ' + day.getDate()));
+                            dateTitle.addClass('dateTitle');
+                        } else
+                            dateTitle = null;
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' - ' + jsonData.data[i].start.substr(0, 5);
                         $('.eventDate', newEvent).append(' ' + dayText);
 
+                        if (isset(dateTitle))
+                            newContainer.append(dateTitle);
                         newContainer.append(newEvent);
+
+                        previousDay = day;
+
                     }
+
                     break;
                 }
 
