@@ -396,15 +396,22 @@ var API = {
                API.show(pageName, data, currentContainer, noMenuLoaded);
     },
 
-    toggleBook: function (event) {
+    toggleBook: function (id, hasBooked) {
         var that = this;
-        var id = event.data.id;
-        var hasBooked = event.data.hasBooked;
+        var request = "";
+        var urlPath = "";
 
         if (!hasBooked) {
+            request = "POST";
+            urlPath = "/book";
+        }
+        else {
+            request = "DELETE";
+            urlPath = "/unbook";
+        }
             $.ajax({
-                url: APIServerAddress + 'event/' + id + '/book',
-                type: 'POST',
+                url: APIServerAddress + 'event/' + id + urlPath,
+                type: request,
                 async: true,
                 dataType: 'json',
                 headers: {
@@ -417,33 +424,9 @@ var API = {
                 },
 
                 success: function (data) {
-                    alert("Successfully subscribed!")
-                    showPage("eventSingle",id);
+                    showPage('myEvents');
                 }
             });
-        }
-        else
-        {
-            $.ajax({
-                url: APIServerAddress + 'event/' + id + '/unbook',
-                type: 'DELETE',
-                async: true,
-                dataType: 'json',
-                headers: {
-                    'X-Auth-Token': that.token
-                },
-                statusCode: {
-                    400: function () {
-                        alert("Server error. Please retry later.");
-                    },
-                },
-
-                success: function (data) {
-                    alert("Successfully unsubscribed!")
-                    showPage("eventSingle", id);
-                }
-            });
-        }
     },
 
     about: function(pageName, currentContainer, noMenuLoaded, data){
@@ -584,7 +567,9 @@ var API = {
                         $('.eventBtn', pageHTML).text("Unsubscribe");
                     }
 
-                    $('.eventBtn', pageHTML).click({ id: jsonData.data.event.id, hasBooked: jsonData.data.event.hasBooked }, API.toggleBook)
+                    $('.eventBtn', pageHTML).click(function(){
+                        API.toggleBook(jsonData.data.event.id, jsonData.data.event.hasBooked)
+                    });
 
                     var geoLink = 'geo:' + jsonData.data.event.places[0].latitude + ',' + jsonData.data.event.places[0].longitude;
                     $('.eventGuide', pageHTML).attr('href', geoLink);
