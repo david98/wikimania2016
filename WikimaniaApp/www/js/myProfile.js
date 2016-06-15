@@ -8,8 +8,7 @@ $.ajax('loading.html', function (data, textStatus, jqXHR) {
 });
 
 $(".buttonEvents").click(function () {
-    showPage("myEvents");
-    
+    showPage("myEvents"); 
 });
 request.done(function () {
     $('.loading').remove();
@@ -17,7 +16,18 @@ request.done(function () {
     $('#refresh_map_btn').on('touchstart', locateUser);
 });
 
+window.setTimeout(function () {
+    $('.arrow').hide();
+    $('.arrowLabel').hide();
+}, 5000);
+
 function locateUser() {
+    if (isset(map)) {
+        map.destroy();
+        map = null;
+        markers.destroy();
+        markers = null;
+    }
     var options = {
         enableHighAccuracy: true,
         timeout: 100 * 1000,
@@ -32,7 +42,7 @@ function locateUser() {
 function showMap(position) {
     var lon = position.coords.longitude;
     var lat = position.coords.latitude;
-    var zoom = 15;
+    var zoom = 16;
     if (!isset(map)) {
         map = new OpenLayers.Map("map", {
             controls: [
