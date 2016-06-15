@@ -16,10 +16,16 @@ request.done(function () {
     //$('#refresh_map_btn').on('touchstart', locateUser);
 });
 
-window.setTimeout(function () {
+if (!isset(getFromStorage('hasSeenTutorialProfile')))
+    window.setTimeout(function () {
+        $('.arrow').hide();
+        $('.arrowLabel').hide();
+        store('hasSeenTutorialProfile', 'true');
+    }, 5000);
+else {
     $('.arrow').hide();
     $('.arrowLabel').hide();
-}, 5000);
+}
 
 function locateUser() {
     if (isset(map)) {
@@ -143,7 +149,10 @@ var userData = {
                     window.location.reload();
                 },
                 404: function () {
-                    alert("Warning! You have no accomodation in Esino.");
+                    if( !isset(getFromStorage('hasNoAccomodation')) ){
+                        alert("Warning! You have no accomodation in Esino.");
+                        store('hasNoAccomodation', 'true');
+                    }
                     $('.buttonAccomodation').addClass('disabled');
                 }
             },
