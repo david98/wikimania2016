@@ -409,7 +409,8 @@ var API = {
             request = "DELETE";
             urlPath = "/unbook";
         }
-            $.ajax({
+        
+        $.ajax({
                 url: APIServerAddress + 'event/' + id + urlPath,
                 type: request,
                 async: true,
