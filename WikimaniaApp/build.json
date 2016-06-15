@@ -1,10 +1,10 @@
 {
      "android": {
          "release": {
-             "keystore": "",
-             "storePassword": "",
-             "alias": "",
-             "password" : "",
+             "keystore": "C:\\Users\\Davide\\Source\\Repos\\app\\key.keystore",
+             "storePassword": "WikimaniaEsino2016",
+             "alias": "BadoniTeam",
+             "password" : "WikimaniaEsino2016",
              "keystoreType": ""
          }
      }
