@@ -70,3 +70,37 @@
     margin-right: 5vw;
     display:table-cell;
 }
+
+.arrow {
+    position: absolute;
+    margin: auto;
+    top: 60vh; bottom: 0;
+    left: 0; right: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 25vmin;
+    line-height: 40px;
+    -webkit-animation: bounce 2s infinite ease-in-out;
+    color: gray;
+}
+
+.arrowLabel{
+    font-size: 5vmin;
+    font-style: italic;
+    position: absolute;
+    display: block;
+    bottom: 25vh;
+    left: 22.5vw;
+    color: #ffffff;
+    background-color: rgba(0,0,0,0.4);
+    padding: 2vmin;
+    border: 1px solid #ffffff;
+    border-radius: 1vmin;
+    -webkit-animation: bounce 2s infinite ease-in-out;
+}
+
+@-webkit-keyframes bounce {
+	0%, 20%, 60%, 100%  { -webkit-transform: translateY(0); }
+    40%  { -webkit-transform: translateY(-20px); }
+	80% { -webkit-transform: translateY(-10px); }
+}
