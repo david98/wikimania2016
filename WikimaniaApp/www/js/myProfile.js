@@ -17,7 +17,6 @@ request.done(function () {
 });
 
 window.setTimeout(function () {
-    alert();
     $('.arrow').hide();
     $('.arrowLabel').hide();
 }, 5000);

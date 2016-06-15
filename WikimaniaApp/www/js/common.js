@@ -481,8 +481,6 @@ var API = {
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
                         if (day.getDate() !== previousDay.getDate()) {
-                            console.log(jsonData.data[i].title);
-                            console.log("Giorno precedente: " + previousDay.getDate() + " OGGI: " + day.getDate());
                             dateTitle = $('<h2></h2>').text(getMonthName(day.getMonth()) + ' ' + day.getDate());
                             dateTitle.addClass('dateTitle');
                         } else
@@ -765,84 +763,3 @@ var sortMethods = {
     }
 }
 };
-
-/*
-function showPage(name) {
-
-    if (name === "logout")
-        API.logout();
-    else if (name !== currentPage) {
-
-        var noMenuLoaded = false;
-        var currentContainer;
-
-        if (currentPage === 'index')
-            noMenuLoaded = true;
-        else
-            currentContainer = $('.container');
-
-        if (!noMenuLoaded)
-            slideout.close();
-
-        $.when(
-            $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
-
-                loadCss('loading');
-
-                if (noMenuLoaded)
-                    $('body').html(data);
-                else
-                    currentContainer.html(data);
-
-                if (noMenuLoaded) {
-                    $('body').prepend(menuHTML);
-                    currentContainer = $('.container');
-                    $('#logo, #menu, #panel').hide();
-                }
-
-                var newContainer = $('<div></div>');
-                newContainer.addClass('container');
-
-
-                //sostituire la chiamata AJAX con un caricamento dei dati da API
-                $.when($.ajax(name + '.html')).then(function (data, textStatus, jqXHR) {
-
-                    /*var dom = $.parseHTML(data);
-                    var content = $('.container', dom);
-    
-    
-                    $.each(content.children(), function (index, data) {
-                        newContainer.append(data);
-                    });*//*
-
-newContainer.html(data);
-
-for (var i = 0; i < pageNames.length; i++)
-    unloadCss(pageNames[i]);
-
-if (noMenuLoaded) {
-    rebuildSlideout();
-    slideout.disableTouch();
-    unloadCss('index');
-    loadCss('common');
-    loadCss('font-awesome/css/font-awesome.min');
-}
-
-loadCss(name);
-
-currentContainer.replaceWith(newContainer);
-$('.loading').remove();
-
-if (noMenuLoaded)
-    bindEvents();
-
-loadScript(name);
-slideout.enableTouch();
-currentPage = name;
-$('#logo, #menu, #panel').show();
-});
-})
-        );
-}
-}
-*/
