@@ -67,6 +67,7 @@ function showMap(position) {
     map.setCenter(lonLat, zoom);
     addMarker(lon, lat, 'img/mapIcons/user.png', null, 32, 37);
     userData.getMyEvents();
+    userData.getAccomodation();
 }
 
 function addMarker(longitude, latitude, icon, eventHandler, width, height) {
@@ -143,13 +144,14 @@ var userData = {
                 },
                 404: function () {
                     alert("Warning! You have no accomodation in Esino.");
+                    $('.buttonAccomodation').addClass('disabled');
                 }
             },
             success: function (data) {
                 var longitude = data.data.longitude;
                 var latitude = data.data.latitude;
                 var icon = 'img/mapIcons/home.png';
-
+                $('.buttonAccomodation').attr('href', 'geo:' + latitude + ',' + longitude);
                 addMarker(longitude, latitude, icon, null, 32, 37);
             }
         });

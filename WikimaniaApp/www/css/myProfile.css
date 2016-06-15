@@ -7,21 +7,29 @@
 }
 
 .buttonAccomodation{
-    margin-top: 2vh;
-	margin-bottom: 6vh;
+    margin: 2vh 14vw 6vh 14vw;
     outline: none;
 	text-decoration: none;
     border: 0 solid #5A9BC3;
-    border-radius:10px;
+    border-radius: 10px;
 	color: #fff;
 	background: #5A9BC3;
-    font-size: 5vw;
-    display:block;
-    margin-left: 22vw;
+    font-size: 5vmin;
+    display: block;
     padding: 1vh 10vw 1vh 10vw;
 }
+
+.disabled, .disabled:active, .disabled:hover, .disabled:focus, .disabled:visited{
+    text-decoration: line-through;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.buttonAccomodation i{
+    margin: 0 1vw;
+}
+
 .buttonEvents{
-    margin-top: 2vh;
+    margin: 2vh 20vw;
     outline: none;
 	text-decoration: none;
     border: 0 solid #5A9BC3;
@@ -30,11 +38,11 @@
 	background: #5A9BC3;
     font-size: 5vw;
     display:block;
-    margin-left: 22vw;
     padding: 1vh 15.5vw 1vh 15.5vw;
 }
 .buttonsContainer{
     margin-top:5vh;
+    text-align: center;
 }
 .mapProfile{
     margin-top:5vh;
@@ -104,3 +112,4 @@
     40%  { -webkit-transform: translateY(-20px); }
 	80% { -webkit-transform: translateY(-10px); }
 }
+
