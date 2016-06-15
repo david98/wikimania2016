@@ -477,7 +477,8 @@ var API = {
                             $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
 
-                        //immagine... ?
+                        $('.eventImg', newEvent).attr('src', jsonData.data[i].image);
+
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
                         if (day.getDate() !== previousDay.getDate()) {
@@ -551,7 +552,10 @@ var API = {
     
                     $(pageHTML).attr('id', jsonData.data.event.id);
                     $('.eventTitle', pageHTML).text(jsonData.data.event.title);
-                    //immagine... ?
+
+
+                    $('.eventImg', pageHTML).attr('src', jsonData.data.event.image);
+
                     var day = new Date(jsonData.data.event.date);
                     var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
                     $('.eventDate', pageHTML).append(' ' + dayText);
