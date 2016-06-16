@@ -51,6 +51,7 @@ $(document).ready(function () {
             "address": $(event.target).parent().attr('data-address'),
             "latitude": $(event.target).parent().attr('data-latitude'),
             "longitude": $(event.target).parent().attr('data-longitude'),
+            "distance": $(event.target).parent().attr('data-distance'),
             "phone_number": $(event.target).parent().attr('data-phone_number')
         });
     });
@@ -61,6 +62,7 @@ $(document).ready(function () {
             "address": $(event.target).parent().parent().attr('data-address'),
             "latitude": $(event.target).parent().parent().attr('data-latitude'),
             "longitude": $(event.target).parent().parent().attr('data-longitude'),
+            "distance": $(event.target).parent().attr('data-distance'),
             "phone_number": $(event.target).parent().parent().attr('data-phone_number')
         });
     });
@@ -122,11 +124,26 @@ function bindEvents() {
     
 }
 
+function daGradiARadianti(gradi){
+    return (gradi * Math.PI) / 180;
+}
+
 /*
 TODO: calcola la distanza tra a e b, dove a e b sono oggetti {lon: , lat: }
 */
 function distanceBetween(a, b) {
+    var p1 = {
+        lon: daGradiARadianti(a.lon),
+        lat: daGradiARadianti(a.lat)
+    };
 
+    var p2 = {
+        lon: daGradiARadianti(b.lon),
+        lat: daGradiARadianti(b.lat)
+    };
+
+    var distance = Math.acos((Math.sin(p1.lat) * Math.sin(p2.lat)) + (Math.cos(p1.lat) * Math.cos(p2.lat) * Math.cos(p2.lon - p1.lon))) * 6371 * 1000;
+    return distance;
 }
 
 /*
@@ -225,6 +242,8 @@ var API = {
 
     token: '',
 
+    serverAddress: 'http://185.53.148.24/api/v1/',
+
     login: function (id) {
         var data = {
             key: id
@@ -232,7 +251,7 @@ var API = {
         var that = this;
 
         $.ajax({
-            url: APIServerAddress + 'login',
+            url: this.serverAddress + 'login',
             type: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
@@ -257,7 +276,7 @@ var API = {
     logout: function () {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'logout',
+            url: this.serverAddress + 'logout',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -284,7 +303,7 @@ var API = {
     eventList: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'events',
+            url: this.serverAddress + 'events',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -309,7 +328,7 @@ var API = {
     restaurantList: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'restaurants',
+            url: this.serverAddress + 'restaurants',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -330,7 +349,7 @@ var API = {
     eventSingle: function (pageName, currentContainer, noMenuLoaded, idEvent) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'event/' + idEvent,
+            url: this.serverAddress + 'event/' + idEvent,
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -351,7 +370,7 @@ var API = {
     myProfile: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'profile',
+            url: this.serverAddress + 'profile',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -373,7 +392,7 @@ var API = {
     myEvents: function (pageName, currentContainer, noMenuLoaded) {
         var that = this;
         $.ajax({
-            url: APIServerAddress + 'events/booked',
+            url: this.serverAddress + 'events/booked',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -411,7 +430,7 @@ var API = {
         }
         
         $.ajax({
-                url: APIServerAddress + 'event/' + id + urlPath,
+                url: this.serverAddress + 'event/' + id + urlPath,
                 type: request,
                 async: true,
                 dataType: 'json',
@@ -471,8 +490,20 @@ var API = {
                         }
                         else
                         {
-                            if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0 )
-                                $('.eventNum', newEvent).text('/' + jsonData.data[i].capacity);
+                            if (isset(jsonData.data[i].places) && jsonData.data[i].places.length != 0) {
+                                var totalCapacity = 0;
+                                for (var k = 0; k < jsonData.data[i].places.length; k++)
+                                {
+                                    totalCapacity += parseInt(jsonData.data[i].places[k].capacity);
+                                }
+
+                                if (totalCapacity != 0) {
+                                    $('.eventNum', newEvent).text('/' + totalCapacity);
+                                }
+                                
+                            }
+
+                            
 
                             $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
@@ -487,7 +518,8 @@ var API = {
                             dateTitle.addClass('dateTitle');
                         } else
                             dateTitle = null;
-                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + jsonData.data[i].start;
+                        var timeString = jsonData.data[i].start;
+                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + timeString.substring(0,5);
                         $('.eventDate', newEvent).append(' ' + dayText);
 
                         if (isset(dateTitle))
@@ -502,48 +534,73 @@ var API = {
                 }
 
                 case 'restaurantList': {
-                    var pageHTML = $.parseHTML(pageData);
-                    var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
-                    $('.singleRestaurant', pageHTML).remove();
 
-                    newContainer.append(pageHTML);
+                    var options = {
+                        enableHighAccuracy: true,
+                        timeout: 100 * 1000,
+                        maximumAge: 0
+                    };
 
-                    for (var i = 0; i < jsonData.data.length; i++) {
-                        var newRestaurant = $(baseRestaurant).clone();
+                    window.navigator.geolocation.getCurrentPosition(function (position) {
+                        var userPosition = {
+                            lon: position.coords.longitude,
+                            lat: position.coords.latitude
+                        };
 
-                        //immagine... ?
-                        $(newRestaurant).attr('id', jsonData.data[i].id);
+                        var pageHTML = $.parseHTML(pageData);
+                        var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
+                        $('.singleRestaurant', pageHTML).remove();
 
-                        //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
-                        $(newRestaurant).attr('data-name', jsonData.data[i].name);
-                        $(newRestaurant).attr('data-address', jsonData.data[i].address);
-                        $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
-                        $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
-                        $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+                        newContainer.append(pageHTML);
 
-                        $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+                        for (var i = 0; i < jsonData.data.length; i++) {
+                            var newRestaurant = $(baseRestaurant).clone();
 
-                        $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
-                        $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
+                            //immagine... ?
+                            $(newRestaurant).attr('id', jsonData.data[i].id);
+
+                            //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
+                            $(newRestaurant).attr('data-name', jsonData.data[i].name);
+                            $(newRestaurant).attr('data-address', jsonData.data[i].address);
+                            $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
+                            $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
+                            $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+
+                            $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+
+                            $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
+                            $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
 
 
-                        //var geolocation = new ol.Geolocation({
+                            //var geolocation = new ol.Geolocation({
                             // take the projection to use from the map's view
                             //projection: view.getProjection()
-                        //});
-                        // listen to changes in position
-                        //geolocation.on('change', function (evt) {
+                            //});
+                            // listen to changes in position
+                            //geolocation.on('change', function (evt) {
                             //window.console.log(geolocation.getPosition());
-                        //});
+                            //});
 
 
-                        //var myPosition = 
-                        //var myDestination =
-                        //var distance = 
-                        //$('.restaurantDistance', newRestaurant).text(distance + ' km');
+                            //var myPosition = 
+                            //var myDestination =
+                            //var distance = 
 
-                        newContainer.append(newRestaurant);
-                    }
+                            var restaurantPosition = {
+                                lon: jsonData.data[i].longitude,
+                                lat: jsonData.data[i].latitude
+                            };
+
+                            var distance = distanceBetween(userPosition, restaurantPosition).toFixed(0);
+                            $(newRestaurant).attr('data-distance', distance);
+                            $('.restaurantDistance', newRestaurant).text(distance + ' m');
+
+                            newContainer.append(newRestaurant);
+                        }
+
+                    }, null, options);
+
+                   
                     break;
                 }
 
@@ -562,7 +619,7 @@ var API = {
                     $('.eventDate', pageHTML).append(' ' + dayText);
 
                     if (!jsonData.data.event.hasBooked) {
-                    $('.eventNum', pageHTML).text(jsonData.data.event.capacity - jsonData.data.event.bookings + ' seats left!');
+                        $('.eventNum', pageHTML).text(parseInt(jsonData.data.event.capacity) - parseInt(jsonData.data.event.bookings) + ' seats left!');
                         $('.eventBtn', pageHTML).text("Subscribe");
                     }
                     else
@@ -592,6 +649,8 @@ var API = {
                     $('.restaurantPhone', pageHTML).attr('href', 'tel:' + jsonData.phone_number);
 
                     //MANCA LA DISTANZA E LA MAPPA!!!!!!!!!11!!!!!1!!!!1!!ù
+                    
+                    $('.restaurantDistance', pageHTML).text('a ' + jsonData.distance + ' m');
 
                     newContainer.append(pageHTML);
 
