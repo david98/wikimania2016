@@ -132,8 +132,8 @@ function distanceBetween(a, b) {
 /*
 parameters è un oggetto contenente dati richiesti per la visualizzazione della pagina name
 */
-function showPage(name, parameters){ 
-    if (name !== currentPage) {
+function showPage(name, parameters, refresh){ 
+    if (name !== currentPage || isset(refresh)) {
 
         var noMenuLoaded = false;
         var currentContainer;
@@ -425,7 +425,7 @@ var API = {
                 },
 
                 success: function (data) {
-                    showPage('myEvents');
+                    showPage('eventSingle', id, true);
                 }
             });
     },
@@ -656,7 +656,8 @@ var API = {
                             $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
 
-                        //immagine... ?
+                        $('.eventImg', newEvent).attr('src', jsonData.data[i].image);
+
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
                         if (day.getDate() !== previousDay.getDate()) {
