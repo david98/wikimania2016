@@ -95,9 +95,19 @@
 }
 
 .aboutCreditsList{
-    text-align: left;
+    font-style: italic;
+    list-style-type: none;
+    text-decoration:underline;
+    padding: 0;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+.aboutCreditsList li{
+    margin-top: 2vh;
+    margin-bottom: 2vh;
 }
 
 .aboutCreditsList a, .aboutCreditsList a:visited{
-    color: blue;
+    color: gray;
 }
