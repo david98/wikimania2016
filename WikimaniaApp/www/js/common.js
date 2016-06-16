@@ -477,7 +477,8 @@ var API = {
                             $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
 
-                        $('.eventImg', newEvent).attr('src', jsonData.data[i].image);
+                        var imgSrc = (isset(jsonData.data[i].image) && jsonData.data[i].image != '') ? jsonData.data[i].image : 'img/events/noEventImage.png';
+                        $('.eventImg', newEvent).attr('src', imgSrc);
 
                         $('.eventTitle', newEvent).text(jsonData.data[i].title);
                         var day = new Date(jsonData.data[i].date);
