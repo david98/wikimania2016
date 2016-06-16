@@ -133,7 +133,7 @@ var userData = {
     },
     getAccomodation: function(){
         $.ajax({
-            url: API.serverAddress + 'events/booked',
+            url: API.serverAddress + 'accomodation',
             type: 'GET',
             async: true,
             dataType: 'json',
@@ -157,8 +157,8 @@ var userData = {
                 }
             },
             success: function (data) {
-                var longitude = data.data.longitude;
-                var latitude = data.data.latitude;
+                var longitude = data.data.accomodation.longitude;
+                var latitude = data.data.accomodation.latitude;
                 var icon = 'img/mapIcons/home.png';
                 $('.buttonAccomodation').attr('href', 'geo:' + latitude + ',' + longitude);
                 addMarker(longitude, latitude, icon, null, 32, 37);
