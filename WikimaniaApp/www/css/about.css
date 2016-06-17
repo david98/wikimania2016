@@ -27,12 +27,29 @@
 }
 
 .aboutDesc{
-    margin-top:3vh;
+    margin-top:0.5vh;
+    margin-bottom:3vh;
     padding-left: 5vw;
     padding-right: 5vw;
     display: block;
     text-align: justify;
+    font-size: 5vw;
+    color: black;
+}
+
+.aboutContact a{
+    text-decoration: underline;
+}
+
+.aboutContact{
+    margin-top:0.5vh;
+    margin-bottom:3vh;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    display: block;
+    text-align: left;
     font-size: 4vw;
+    color: gray;
 }
 
 .thanks{

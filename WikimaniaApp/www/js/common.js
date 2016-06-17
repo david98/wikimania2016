@@ -614,9 +614,29 @@ var API = {
 
                     $('.eventImg', pageHTML).attr('src', jsonData.data.event.image);
 
+
+                    
+
                     var day = new Date(jsonData.data.event.date);
-                    var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' 11:10 A.M.';
+                    var timeString = jsonData.data.event.start;
+                    var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + timeString.substring(0, 5);
                     $('.eventDate', pageHTML).append(' ' + dayText);
+
+
+                    for (var i = 0; i < jsonData.data.event.places.length; i++) 
+                        $('.eventDesc', pageHTML).append(jsonData.data.event.places[i].place + "(" + jsonData.data.event.places[i].address + "), ");
+
+                    if (jsonData.data.event.speaker != "")
+                        $('.eventDesc', pageHTML).append("the speaker " + jsonData.data.event.speaker + " will talk for " + GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) +" hours.");
+                    else
+                        $('.eventDesc', pageHTML).append("and will last for " +  GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) + " hours.");
+
+                    if (jsonData.data.event.type != "null")
+                        $('.eventDesc', pageHTML).append("<br>Type: " + jsonData.data.event.type);
+
+                    if (jsonData.data.event.theme != "null")
+                        $('.eventDesc', pageHTML).append("<br>Theme:" + jsonData.data.event.theme);
+
 
                     if (!jsonData.data.event.hasBooked) {
                         $('.eventNum', pageHTML).text(parseInt(jsonData.data.event.capacity) - parseInt(jsonData.data.event.bookings) + ' seats left!');
@@ -759,6 +779,39 @@ var API = {
         });
     }
 };
+
+function GetHourDiff(pStartHour, pEndHour) {
+    var res = "";
+    var aTmp="";
+    //Trasformo l'orario di inizio in minuti
+    aTmp=pStartHour.split(":");
+    var nStartMin = (Number(aTmp[0]) * 60) + Number(aTmp[1]);
+    //Trasformo l'orario di fine in minuti
+    aTmp=pEndHour.split(":");
+    var nEndMin = (Number(aTmp[0]) * 60) + Number(aTmp[1]);
+    //Calcolo la differenza
+    var nDiff = 0;
+    if (nStartMin > nEndMin) {
+        nDiff = nStartMin - nEndMin;
+    } else {
+        nDiff = nEndMin - nStartMin;
+    }
+    //Formatto la stringa di uscita
+    var nDiffMin = 0;
+    var nDiffHour  = 0;
+    if (nDiff > 59) {
+        nDiffMin = nDiff % 60;
+        nDiffHour = (nDiff - nDiffMin) / 60;
+    } else {
+        nDiffMin = nDiff;
+    }
+    if (nDiffHour < 10) res += "0";
+    res += nDiffHour;
+    res += ":";
+    if (nDiffMin < 10) res += "0";
+    res += nDiffMin;
+    return res;
+}
 
 function getMonthName(number) {
     switch (number) {
