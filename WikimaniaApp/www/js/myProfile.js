@@ -160,7 +160,7 @@ var userData = {
                 var longitude = data.data.accomodation.longitude;
                 var latitude = data.data.accomodation.latitude;
                 var icon = 'img/mapIcons/home.png';
-                $('.buttonAccomodation').attr('href', 'geo:' + latitude + ',' + longitude);
+                $('.buttonAccomodation').attr('href', 'https://maps.google.com?saddr=Current+Location&daddr=' + latitude + ',' + longitude);
                 addMarker(longitude, latitude, icon, null, 32, 37);
             }
         });

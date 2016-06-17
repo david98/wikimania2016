@@ -81,9 +81,9 @@ $(document).ready(function () {
         showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
 
-    $(document).on('deviceready', function () {
+    /*$(document).on('deviceready', function () {
         document.addEventListener('backbutton', goBack, false);
-    });
+    });*/
 });
 
 $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
@@ -100,7 +100,7 @@ function goBack(event) {
 
 function previousPage(event) {
     console.log(event.state.name);
-    if( isset(event.state.name) && isset(event.state.parameters) )
+    if( isset(event.state.name) )
         showPage(event.state.name, event.state.parameters);
 }
 
@@ -632,7 +632,7 @@ var API = {
                         API.toggleBook(jsonData.data.event.id, jsonData.data.event.hasBooked)
                     });
 
-                    var geoLink = 'geo:' + jsonData.data.event.places[0].latitude + ',' + jsonData.data.event.places[0].longitude;
+                    var geoLink = 'https://maps.google.com?saddr=Current+Location&daddr=' + jsonData.data.event.places[0].latitude + ',' + jsonData.data.event.places[0].longitude;
                     $('.eventGuide', pageHTML).attr('href', geoLink);
 
                     newContainer.append(pageHTML);
