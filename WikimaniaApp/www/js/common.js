@@ -349,11 +349,12 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert('Server error. Please retry later.');
+                    navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    that.token = '';
-                    window.location.reload();
+                    navigator.notification.alert('You must login again.', null, 'Login expired', 'Okay');
+                    that.token = 'public';
+                    API.logout();
                 }
             },
             success: function (data) {
@@ -374,8 +375,13 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert('Server error. Please retry later.');
+                    navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
+                403: function () {
+                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    that.token = 'public';
+                    API.logout();
+                }
             },
             success: function (data) {
                 API.show(pageName, data, currentContainer, noMenuLoaded);
@@ -395,8 +401,13 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert('Server error. Please retry later.');
+                    navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
+                403: function () {
+                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    that.token = 'public';
+                    API.logout();
+                }
             },
             success: function (data) {
                 API.show(pageName, data, currentContainer, noMenuLoaded);
@@ -423,8 +434,13 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert('Server error. Please retry later.');
+                    navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
+                403: function () {
+                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    that.token = 'public';
+                    API.logout();
+                }
             },
 
             success: function (data) {
@@ -451,8 +467,13 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert('Server error. Please retry later.');
+                    navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
+                403: function () {
+                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    that.token = 'public';
+                    API.logout();
+                }
             },
 
             success: function (data) {
@@ -496,8 +517,13 @@ var API = {
                 },
                 statusCode: {
                     400: function () {
-                        alert('Server error. Please retry later.');
+                        navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                     },
+                    403: function () {
+                        navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                        that.token = 'public';
+                        API.logout();
+                    }
                 },
 
                 success: function (data) {
