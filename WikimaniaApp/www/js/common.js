@@ -190,26 +190,28 @@ function showPage(name, parameters, refresh, goingBack) {
 
                 API[name](name, currentContainer, noMenuLoaded, parameters);
 
-                for (var i = 0; i < pageNames.length; i++)
-                    unloadCss(pageNames[i]);
+                if (name !== 'logout') {
+                    for (var i = 0; i < pageNames.length; i++)
+                        unloadCss(pageNames[i]);
 
-                if (noMenuLoaded) {
-                    rebuildSlideout();
-                    slideout.disableTouch();
-                    unloadCss('index');
-                    loadCss('common');
-                    loadCss('font-awesome/css/font-awesome.min');
-                }
+                    if (noMenuLoaded) {
+                        rebuildSlideout();
+                        slideout.disableTouch();
+                        unloadCss('index');
+                        loadCss('common');
+                        loadCss('font-awesome/css/font-awesome.min');
+                    }
 
-                loadCss(name);
+                    loadCss(name);
 
-                if (!goingBack) {
-                    historyItem = {
-                        name: name,
-                        parameters: parameters
-                    };
+                    if (!goingBack) {
+                        historyItem = {
+                            name: name,
+                            parameters: parameters
+                        };
 
-                    history.pushState(historyItem, name, name + '.html');
+                        history.pushState(historyItem, name, name + '.html');
+                    }
                 }
             })
         );
@@ -260,7 +262,7 @@ var API = {
 
     login: function (id) {
         if (id === 'volontario') {
-            this.token = 'volontario';
+            this.token = 'public';
             store('userToken', this.token);
             showPage('eventList');
             return;
@@ -295,6 +297,18 @@ var API = {
     },
 
     logout: function () {
+
+        if (this.token === 'public') {
+            store('userToken', '');
+            var historyItem = {
+                name: 'index',
+                parameters: null
+            };
+            history.replaceState(historyItem, 'index', 'index.html');
+            window.location.reload();
+            return;
+        }
+
         var that = this;
         $.ajax({
             url: this.serverAddress + 'logout',
@@ -315,11 +329,8 @@ var API = {
                     name: 'index',
                     parameters: null
                 };
-                history.replaceState(null, 'index', 'index.html');
+                history.replaceState(historyItem, 'index', 'index.html');
                 window.location.reload();
-            },
-            error: function (data) {
-                navigator.notification.alert('Something clearly isn\'t going right. Try waiting or report the error at davidevolta98@gmail.com', null, 'We\'ve got a problem!', 'Understood!');
             }
         });
     },
@@ -392,6 +403,13 @@ var API = {
     },
 
     myProfile: function (pageName, currentContainer, noMenuLoaded) {
+
+        if (this.token === 'public' ) {
+            navigator.notification.alert('You can\'t access this page. Try logging in with a code.', null, 'Warning!', 'Ok!');
+            goBack();
+            return;
+        }
+
         var that = this;
         $.ajax({
             url: this.serverAddress + 'profile',
@@ -414,6 +432,12 @@ var API = {
     },
 
     myEvents: function (pageName, currentContainer, noMenuLoaded) {
+        if (this.token === 'public') {
+            navigator.notification.alert('You can\'t access this page. Try logging in with a code.', null, 'Warning!', 'Ok!');
+            goBack();
+            return;
+        }
+
         var that = this;
         $.ajax({
             url: this.serverAddress + 'events/booked',
@@ -440,6 +464,13 @@ var API = {
     },
 
     toggleBook: function (id, hasBooked) {
+
+        if (this.token === 'public') {
+            navigator.notification.alert('You can\'t access this page. Try logging in with a code.', null, 'Warning!', 'Ok!');
+            goBack();
+            return;
+        }
+
         var that = this;
         var request = '';
         var urlPath = '';
@@ -525,9 +556,7 @@ var API = {
                                     $('.eventNum', newEvent).text('/' + totalCapacity);
                                 }
                                 
-                            }
-
-                            
+                            }     
 
                             $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
                         }
@@ -595,21 +624,6 @@ var API = {
                             $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
                             $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
 
-
-                            //var geolocation = new ol.Geolocation({
-                            // take the projection to use from the map's view
-                            //projection: view.getProjection()
-                            //});
-                            // listen to changes in position
-                            //geolocation.on('change', function (evt) {
-                            //window.console.log(geolocation.getPosition());
-                            //});
-
-
-                            //var myPosition = 
-                            //var myDestination =
-                            //var distance = 
-
                             var restaurantPosition = {
                                 lon: jsonData.data[i].longitude,
                                 lat: jsonData.data[i].latitude
@@ -665,7 +679,7 @@ var API = {
                     var hasUndefinedCapacityPlace = false;
                     for (var k = 0; k < jsonData.data.event.places.length && !hasUndefinedCapacityPlace; k++)
                     {
-                        var thisPlaceCapacity = parseInt(jsonData.data.event.places[k]) || 0;
+                        var thisPlaceCapacity = parseInt(jsonData.data.event.places[k].capacity) || 0;
                         if (thisPlaceCapacity == 0)
                             hasUndefinedCapacityPlace = true;
                         else
