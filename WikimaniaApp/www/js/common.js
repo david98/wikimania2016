@@ -27,6 +27,7 @@ var APIServerAddress = 'http://185.53.148.24/api/v1/';
 var vw = window.innerWidth / 100;
 var slideout;
 
+
 $(document).ready(function () {
 
     $(window).resize(function () {
@@ -38,11 +39,13 @@ $(document).ready(function () {
 
     $('body').on('touchstart', '#menu_btn', function () {
         slideout.toggle();
+        $('#backButton', $('body')).toggle();
     });
 
     $('body').on('touchstart', '.navbar_list_element p', function (event) {
         showPage(event.target.id);
         slideout.close();
+        $('#backButton', $('body')).show();
     });
 
     $('body').on('click', '.restaurantImg', function (event) {
@@ -71,11 +74,13 @@ $(document).ready(function () {
         showPage('myEvents');
     });
 
-    window.addEventListener('popstate', previousPage);
+        window.addEventListener('popstate', previousPage);
 
     $('body').on('click', '.eventImg, .eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().attr('id'));
     });
+
+    $('body').on('click', '#backButton', previousPage);
 
     $('body').on('click', '.eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().parent().attr('id'));
