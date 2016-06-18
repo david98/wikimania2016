@@ -259,6 +259,13 @@ var API = {
     serverAddress: 'http://185.53.148.24/api/v1/',
 
     login: function (id) {
+        if (id === 'volontario') {
+            this.token = 'volontario';
+            store('userToken', this.token);
+            showPage('eventList');
+            return;
+        }
+    
         var data = {
             key: id
         };
