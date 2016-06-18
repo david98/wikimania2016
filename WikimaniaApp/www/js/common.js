@@ -46,25 +46,27 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.restaurantImg', function (event) {
-        showPage('restaurantSingle', {
-            "name": $(event.target).parent().attr('data-name'),
-            "address": $(event.target).parent().attr('data-address'),
-            "latitude": $(event.target).parent().attr('data-latitude'),
-            "longitude": $(event.target).parent().attr('data-longitude'),
-            "distance": $(event.target).parent().attr('data-distance'),
-            "phone_number": $(event.target).parent().attr('data-phone_number')
-        });
+        if( currentPage !== "restaurantSingle" )
+            showPage('restaurantSingle', {
+                "name": $(event.target).parent().attr('data-name'),
+                "address": $(event.target).parent().attr('data-address'),
+                "latitude": $(event.target).parent().attr('data-latitude'),
+                "longitude": $(event.target).parent().attr('data-longitude'),
+                "distance": $(event.target).parent().attr('data-distance'),
+                "phone_number": $(event.target).parent().attr('data-phone_number')
+            });
     });
 
     $('body').on('click', '.restaurantTitle', function (event) {
-        showPage('restaurantSingle', {
-            "name": $(event.target).parent().parent().attr('data-name'),
-            "address": $(event.target).parent().parent().attr('data-address'),
-            "latitude": $(event.target).parent().parent().attr('data-latitude'),
-            "longitude": $(event.target).parent().parent().attr('data-longitude'),
-            "distance": $(event.target).parent().attr('data-distance'),
-            "phone_number": $(event.target).parent().parent().attr('data-phone_number')
-        });
+        if( currentPage !== "restaurantSingle" )
+            showPage('restaurantSingle', {
+                "name": $(event.target).parent().parent().attr('data-name'),
+                "address": $(event.target).parent().parent().attr('data-address'),
+                "latitude": $(event.target).parent().parent().attr('data-latitude'),
+                "longitude": $(event.target).parent().parent().attr('data-longitude'),
+                "distance": $(event.target).parent().attr('data-distance'),
+                "phone_number": $(event.target).parent().parent().attr('data-phone_number')
+            });
     });
 
     $('body').on('touchstart', '.buttonEvents', function () {
@@ -73,12 +75,14 @@ $(document).ready(function () {
 
     window.addEventListener('popstate', previousPage);
 
-    $('body').on('click', '.eventImg, .eventTitle', function (event) {
-        showPage('eventSingle', $(event.target).parent().attr('id'));
+    $('body').on('click', '.eventImg', function (event) {
+        if( currentPage !== "eventSingle" )
+            showPage('eventSingle', $(event.target).parent().attr('id'));
     });
 
     $('body').on('click', '.eventTitle', function (event) {
-        showPage('eventSingle', $(event.target).parent().parent().attr('id'));
+        if( currentPage !== "eventSingle")
+            showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
 
     /*$(document).on('deviceready', function () {
@@ -101,7 +105,7 @@ function goBack(event) {
 function previousPage(event) {
     console.log(event.state.name);
     if( isset(event.state.name) )
-        showPage(event.state.name, event.state.parameters);
+        showPage(event.state.name, event.state.parameters, false, true);
 }
 
 function rebuildSlideout() {
@@ -149,7 +153,9 @@ function distanceBetween(a, b) {
 /*
 parameters è un oggetto contenente dati richiesti per la visualizzazione della pagina name
 */
-function showPage(name, parameters, refresh){ 
+function showPage(name, parameters, refresh, goingBack) {
+    refresh = refresh || false;
+    goingBack = goingBack || false;
     if (name !== currentPage || isset(refresh)) {
 
         var noMenuLoaded = false;
@@ -191,12 +197,14 @@ function showPage(name, parameters, refresh){
 
                 loadCss(name);
 
-                historyItem = {
-                    name: name,
-                    parameters: parameters
-                };
+                if (!goingBack) {
+                    historyItem = {
+                        name: name,
+                        parameters: parameters
+                    };
 
-                history.pushState(historyItem, name, name + '.html');
+                    history.pushState(historyItem, name, name + '.html');
+                }
             })
         );
     }
