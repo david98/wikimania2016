@@ -71,7 +71,8 @@ $(document).ready(function () {
         showPage('myEvents');
     });
 
-    $(document).on('popstate', previousPage);
+    //window.addEventListener('popstate', goBack);
+    window.onpopstate = goBack;
 
     $('body').on('click', '.eventImg, .eventTitle', function (event) {
         showPage('eventSingle', $(event.target).parent().attr('id'));
