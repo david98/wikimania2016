@@ -281,7 +281,6 @@ var API = {
             data: JSON.stringify(data),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
-            async: true,
             statusCode: {
                 400: function () {
                     alert('Server error. Please retry later.');
@@ -315,7 +314,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'logout',
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -342,7 +340,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'events',
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -368,7 +365,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'restaurants',
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -394,7 +390,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'event/' + idEvent,
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -427,7 +422,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'profile',
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -460,7 +454,6 @@ var API = {
         $.ajax({
             url: this.serverAddress + 'events/booked',
             type: 'GET',
-            async: true,
             dataType: 'json',
             headers: {
                 'X-Auth-Token': that.token
@@ -510,7 +503,6 @@ var API = {
         $.ajax({
                 url: this.serverAddress + 'event/' + id + urlPath,
                 type: request,
-                async: true,
                 dataType: 'json',
                 headers: {
                     'X-Auth-Token': that.token
@@ -556,58 +548,61 @@ var API = {
 
                     newContainer.append(pageHTML);
 
-                    var previousDay = new Date();
+                    var today = new Date();
+                    var previousDay = today;
                     var dateTitle = null;
                     for (var i = 0; i < jsonData.data.length; i++)
                     {
-                        var newEvent = $(baseEvent).clone();
-                        
-                        $(newEvent).attr('id', jsonData.data[i].id);
-                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== 'null' && jsonData.data[i].type !== '')
-                            $('.eventType', newEvent).text(jsonData.data[i].type);
-                        else
-                            $('.eventType', newEvent).remove();
+                        var day = new Date(jsonData.data[i].date + ((jsonData.data[i].start !== '00:00:00') ? (' ' + jsonData.data[i].start) : ' 23:59:59'));
 
-                        if (jsonData.data[i].hasBooked) {
-                            $('.eventSubs', newEvent).text('Booked!');
-                        }
-                        else
-                        {
-                            if (isset(jsonData.data[i].places) && jsonData.data[i].places.length != 0) {
-                                var totalCapacity = 0;
-                                for (var k = 0; k < jsonData.data[i].places.length; k++)
-                                {
-                                    totalCapacity += parseInt(jsonData.data[i].places[k].capacity);
+                        if (day > today) {
+                            var newEvent = $(baseEvent).clone();
+
+                            $(newEvent).attr('id', jsonData.data[i].id);
+                            if (isset(jsonData.data[i].type) && jsonData.data[i].type !== 'null' && jsonData.data[i].type !== '')
+                                $('.eventType', newEvent).text(jsonData.data[i].type);
+                            else
+                                $('.eventType', newEvent).remove();
+
+                            if (jsonData.data[i].hasBooked) {
+                                $('.eventSubs', newEvent).text('Booked!');
+                            }
+                            else {
+                                if (isset(jsonData.data[i].places) && jsonData.data[i].places.length != 0) {
+                                    var totalCapacity = 0;
+                                    for (var k = 0; k < jsonData.data[i].places.length; k++) {
+                                        totalCapacity += parseInt(jsonData.data[i].places[k].capacity);
+                                    }
+
+                                    if (totalCapacity != 0) {
+                                        $('.eventNum', newEvent).text('/' + totalCapacity);
+                                    }
+
                                 }
 
-                                if (totalCapacity != 0) {
-                                    $('.eventNum', newEvent).text('/' + totalCapacity);
-                                }
-                                
-                            }     
+                                $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
+                            }
 
-                            $('.eventSubs', newEvent).prepend(jsonData.data[i].bookings);
+                            var imgSrc = (isset(jsonData.data[i].image) && jsonData.data[i].image != '') ? jsonData.data[i].image : 'img/events/noEventImage.png';
+                            $('.eventImg', newEvent).attr('src', imgSrc);
+
+                            $('.eventTitle', newEvent).text(jsonData.data[i].title);
+
+                            if (day.getDate() !== previousDay.getDate()) {
+                                dateTitle = $('<h2></h2>').text(getMonthName(day.getMonth()) + ' ' + day.getDate());
+                                dateTitle.addClass('dateTitle');
+                            } else
+                                dateTitle = null;
+                            var timeString = jsonData.data[i].start;
+                            var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + timeString.substring(0, 5);
+                            $('.eventDate', newEvent).append(' ' + dayText);
+
+                            if (isset(dateTitle))
+                                newContainer.append(dateTitle);
+                            newContainer.append(newEvent);
+
+                            previousDay = day;
                         }
-
-                        var imgSrc = (isset(jsonData.data[i].image) && jsonData.data[i].image != '') ? jsonData.data[i].image : 'img/events/noEventImage.png';
-                        $('.eventImg', newEvent).attr('src', imgSrc);
-
-                        $('.eventTitle', newEvent).text(jsonData.data[i].title);
-                        var day = new Date(jsonData.data[i].date);
-                        if (day.getDate() !== previousDay.getDate()) {
-                            dateTitle = $('<h2></h2>').text(getMonthName(day.getMonth()) + ' ' + day.getDate());
-                            dateTitle.addClass('dateTitle');
-                        } else
-                            dateTitle = null;
-                        var timeString = jsonData.data[i].start;
-                        var dayText = getMonthName(day.getMonth()) + ' ' + day.getDate() + ' ' + timeString.substring(0,5);
-                        $('.eventDate', newEvent).append(' ' + dayText);
-
-                        if (isset(dateTitle))
-                            newContainer.append(dateTitle);
-                        newContainer.append(newEvent);
-
-                        previousDay = day;
 
                     }
 
