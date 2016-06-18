@@ -26,6 +26,7 @@ var APIServerAddress = 'http://185.53.148.24/api/v1/';
 
 var vw = window.innerWidth / 100;
 var slideout;
+var backButton;
 
 $(document).ready(function () {
 
@@ -36,18 +37,19 @@ $(document).ready(function () {
             rebuildSlideout();
     });
 
-    $('body').on('touchstart', '#menu_btn', function () {
+    var body = $('body');
+
+    body.on('touchstart', '#menu_btn', function () {
         slideout.toggle();
-        $('#backButton', $('body')).toggle();
     });
 
-    $('body').on('touchstart', '.navbar_list_element p', function (event) {
+    body.on('touchstart', '.navbar_list_element p', function (event) {
         showPage(event.target.id);
         slideout.close();
-        $('#backButton', $('body')).show();
+        $('#backButton', body).show();
     });
 
-    $('body').on('click', '.restaurantImg', function (event) {
+    body.on('click', '.restaurantImg', function (event) {
         if( currentPage !== 'restaurantSingle' )
             showPage('restaurantSingle', {
                 'name': $(event.target).parent().attr('data-name'),
@@ -59,7 +61,7 @@ $(document).ready(function () {
             });
     });
 
-    $('body').on('click', '.restaurantTitle', function (event) {
+    body.on('click', '.restaurantTitle', function (event) {
         if( currentPage !== 'restaurantSingle' )
             showPage('restaurantSingle', {
                 'name': $(event.target).parent().parent().attr('data-name'),
@@ -71,21 +73,21 @@ $(document).ready(function () {
             });
     });
 
-    $('body').on('touchstart', '.buttonEvents', function () {
+    body.on('touchstart', '.buttonEvents', function () {
         showPage('myEvents');
     });
 
     window.addEventListener('popstate', previousPage);
-    $('body').on('click', '#backButton', function () {
+    body.on('click', '#backButton', function () {
         goBack();
     });
 
-    $('body').on('click', '.eventImg', function (event) {
+    body.on('click', '.eventImg', function (event) {
         if( currentPage !== 'eventSingle' )
             showPage('eventSingle', $(event.target).parent().attr('id'));
     });
 
-    $('body').on('click', '.eventTitle', function (event) {
+    body.on('click', '.eventTitle', function (event) {
         if( currentPage !== 'eventSingle')
             showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
@@ -123,6 +125,14 @@ function rebuildSlideout() {
             'padding': vw * 70,
             'tolerance': vw * 10
         });
+        slideout.on('beforeopen', function () {
+            backButton.hide();
+        });
+
+        slideout.on('close', function () {
+            backButton.show();
+        });
+
     } catch (err) {
         console.log(err);
     }
@@ -188,6 +198,8 @@ function showPage(name, parameters, refresh, goingBack) {
                     }
                     currentContainer = $('.container');
                     $('#logo, #menu, #panel').hide();
+
+                    backButton = $('#backButton');
                 }
 
                 API[name](name, currentContainer, noMenuLoaded, parameters);
