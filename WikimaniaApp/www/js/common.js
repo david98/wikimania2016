@@ -664,8 +664,12 @@ var API = {
 
                     if (jsonData.data.event.speaker != '')
                         $('.eventDesc', pageHTML).append('the speaker ' + jsonData.data.event.speaker + ' will talk for ' + GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) +' hours.');
-                    else
+                    else if (jsonData.data.event.end != '00:00:00')
                         $('.eventDesc', pageHTML).append('and will last for ' +  GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) + ' hours.');
+                    else if (jsonData.data.event.start == '00:00:00')
+                        $('.eventDesc', pageHTML).append('and will take place during the day.');
+                    else
+                        $('.eventDesc', pageHTML).append('and will start at ' + jsonData.data.event.start + '.');
 
                     if (jsonData.data.event.type != 'null')
                         $('.eventDesc', pageHTML).append('<br>Type: ' + jsonData.data.event.type);
