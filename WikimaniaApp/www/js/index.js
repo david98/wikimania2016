@@ -28,7 +28,7 @@ $(document).ready(function () {
     } 
 
     button = $('#button');
-    button_guest = $('$button_guest');
+    buttonGuest = $('#button_guest');
     idCode = $('#idCode');
     form = $('#form');
     logo = $('#logo');
@@ -39,7 +39,7 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
-    button_guest.on('click', function () {
+    buttonGuest.on('click', function () {
         login("volontario", false);
     });
 });
