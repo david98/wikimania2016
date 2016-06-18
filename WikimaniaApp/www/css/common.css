@@ -234,6 +234,22 @@ a, a:link, a:visited, a:focus, a:active{
     font-weight: 400;
 }
 
+#backButton{
+    opacity: 0.5;
+    text-align: center;
+    line-height: 12vw;
+    width: 12vw;
+    font-size: 10vw;
+    position: fixed;
+    top: 12vh;
+    color: #5e9ac6;
+    left: 3vw;
+    background-color: white;
+    border: 0 solid black;
+    box-shadow: 0 0 0.1vh #9E9E9E;
+    border-radius: 50%;
+}
+
 /*Il menu che si apre*/
 #navbar{
     padding: 4vh;
