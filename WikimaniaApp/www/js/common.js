@@ -861,7 +861,7 @@ var API = {
 
             if (noMenuLoaded)
                 bindEvents();
-
+            
             loadScript(pageName);
             slideout.enableTouch();
 
