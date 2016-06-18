@@ -87,7 +87,7 @@ body {
 .title {
 	width: 100vw;
     margin: 0 0 0 0;
-	top: 40vh;
+	top: 35vh;
 	letter-spacing: 2.5vw;
 	word-spacing: 2vw;
     font-size: 7vmin;
@@ -98,7 +98,7 @@ body {
 }
 
 .button_sign {
-    top: 47vh;
+    top: 42vh;
 	width: 75vmin;
     height: 11vmin;
 	font-size: 4.5vmin;
@@ -144,4 +144,27 @@ body {
 
 .button_sign:active .form{
     display:block;
+}
+
+.button_guest{
+    top: 2vh;
+	width: 60vmin;
+    height: 11vmin;
+	font-size: 4.5vmin;
+	background: none;
+	color: rgb(255, 255, 255);
+	line-height: 8vmin;
+    border-radius: 6vmin;
+    border: 0.5vmin solid rgb(255, 255, 255);
+    text-shadow: 0 0.2vmin 0.2vmin #000000;
+    transition: transform 1s ease-in-out;
+}
+
+.button_guest:focus{
+    outline:none;
+}
+
+.button_guest:active{
+    background-color: #FFFFFF;
+    opacity: 0.7;
 }

@@ -569,7 +569,8 @@ var API = {
                         for (var i = 0; i < jsonData.data.length; i++) {
                             var newRestaurant = $(baseRestaurant).clone();
 
-                            //immagine... ?
+                            $('.restaurantImg', newRestaurant).attr('src', jsonData.data[i].image);
+
                             $(newRestaurant).attr('id', jsonData.data[i].id);
 
                             //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente

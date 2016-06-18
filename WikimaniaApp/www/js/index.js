@@ -33,9 +33,13 @@ $(document).ready(function () {
     logo = $('#logo');
     title = $('#title');
 
-    button.on('touchstart', visualizza);
+    button.on('click', visualizza);
     form.submit(function (event) {
         event.preventDefault();
+    });
+
+    button_guest.on('click', function () {
+        login("volontario", false);
     });
 });
 
@@ -48,7 +52,7 @@ function visualizza() {
     button.css('transform', 'translateY(-20vh)');
 
     button.off('touchstart');
-    button.on('touchstart', function () {
+    button.on('click', function () {
         login(idCode.val(), false);
     });
 
