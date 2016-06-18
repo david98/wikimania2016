@@ -4,14 +4,14 @@
  * distributed with this work for additional information
  * regarding copyright ownership.  The ASF licenses this file
  * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
+ * 'License'); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied.  See the License for the
  * specific language governing permissions and limitations
  * under the License.
@@ -26,7 +26,6 @@ var APIServerAddress = 'http://185.53.148.24/api/v1/';
 
 var vw = window.innerWidth / 100;
 var slideout;
-
 
 $(document).ready(function () {
 
@@ -49,26 +48,26 @@ $(document).ready(function () {
     });
 
     $('body').on('click', '.restaurantImg', function (event) {
-        if( currentPage !== "restaurantSingle" )
+        if( currentPage !== 'restaurantSingle' )
             showPage('restaurantSingle', {
-                "name": $(event.target).parent().attr('data-name'),
-                "address": $(event.target).parent().attr('data-address'),
-                "latitude": $(event.target).parent().attr('data-latitude'),
-                "longitude": $(event.target).parent().attr('data-longitude'),
-                "distance": $(event.target).parent().attr('data-distance'),
-                "phone_number": $(event.target).parent().attr('data-phone_number')
+                'name': $(event.target).parent().attr('data-name'),
+                'address': $(event.target).parent().attr('data-address'),
+                'latitude': $(event.target).parent().attr('data-latitude'),
+                'longitude': $(event.target).parent().attr('data-longitude'),
+                'distance': $(event.target).parent().attr('data-distance'),
+                'phone_number': $(event.target).parent().attr('data-phone_number')
             });
     });
 
     $('body').on('click', '.restaurantTitle', function (event) {
-        if( currentPage !== "restaurantSingle" )
+        if( currentPage !== 'restaurantSingle' )
             showPage('restaurantSingle', {
-                "name": $(event.target).parent().parent().attr('data-name'),
-                "address": $(event.target).parent().parent().attr('data-address'),
-                "latitude": $(event.target).parent().parent().attr('data-latitude'),
-                "longitude": $(event.target).parent().parent().attr('data-longitude'),
-                "distance": $(event.target).parent().attr('data-distance'),
-                "phone_number": $(event.target).parent().parent().attr('data-phone_number')
+                'name': $(event.target).parent().parent().attr('data-name'),
+                'address': $(event.target).parent().parent().attr('data-address'),
+                'latitude': $(event.target).parent().parent().attr('data-latitude'),
+                'longitude': $(event.target).parent().parent().attr('data-longitude'),
+                'distance': $(event.target).parent().attr('data-distance'),
+                'phone_number': $(event.target).parent().parent().attr('data-phone_number')
             });
     });
 
@@ -76,17 +75,19 @@ $(document).ready(function () {
         showPage('myEvents');
     });
 
-        window.addEventListener('popstate', previousPage);
+    window.addEventListener('popstate', previousPage);
 
     $('body').on('click', '.eventImg', function (event) {
-        if( currentPage !== "eventSingle" )
+        if( currentPage !== 'eventSingle' )
             showPage('eventSingle', $(event.target).parent().attr('id'));
     });
 
-    $('body').on('click', '#backButton', previousPage);
+    $('body').on('click', '#backButton', function () {
+        //come si fa a farlo andare... ?
+    });
 
     $('body').on('click', '.eventTitle', function (event) {
-        if( currentPage !== "eventSingle")
+        if( currentPage !== 'eventSingle')
             showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
 
@@ -100,7 +101,7 @@ $.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
 });
 
 function isset(variable) {
-    return typeof (variable) != "undefined" && variable !== null;
+    return typeof (variable) != 'undefined' && variable !== null;
 }
 
 function goBack(event) {
@@ -233,7 +234,7 @@ function loadExternalScript(URL) {
 }
 
 function store(name, value) {
-    if (typeof (Storage) !== "undefined") {
+    if (typeof (Storage) !== 'undefined') {
         // Code for localStorage/sessionStorage.
         localStorage.setItem(name, value);
         return true;
@@ -243,7 +244,7 @@ function store(name, value) {
 }
 
 function getFromStorage(name) {
-    if (typeof (Storage) !== "undefined") {
+    if (typeof (Storage) !== 'undefined') {
         // Code for localStorage/sessionStorage.
         return localStorage.getItem(name);
     } else {
@@ -272,10 +273,10 @@ var API = {
             async: true,
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
                 403: function () {
-                    alert("Wrong code");
+                    navigator.notification.alert('Wrong code', null, 'Login error', 'Retry');
                 }
             },
             success: function (msg) {
@@ -298,7 +299,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
             },
             success: function (data) {
@@ -309,6 +310,9 @@ var API = {
                 };
                 history.replaceState(null, 'index', 'index.html');
                 window.location.reload();
+            },
+            error: function (data) {
+                navigator.notification.alert('Something clearly isn\'t going right. Try waiting or report the error at davidevolta98@gmail.com', null, 'We\'ve got a problem!', 'Understood!');
             }
         });
     },
@@ -325,7 +329,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
                 403: function () {
                     that.token = '';
@@ -350,7 +354,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
             },
             success: function (data) {
@@ -371,7 +375,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
             },
             success: function (data) {
@@ -392,7 +396,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
             },
 
@@ -414,7 +418,7 @@ var API = {
             },
             statusCode: {
                 400: function () {
-                    alert("Server error. Please retry later.");
+                    alert('Server error. Please retry later.');
                 },
             },
 
@@ -430,16 +434,16 @@ var API = {
 
     toggleBook: function (id, hasBooked) {
         var that = this;
-        var request = "";
-        var urlPath = "";
+        var request = '';
+        var urlPath = '';
 
         if (!hasBooked) {
-            request = "POST";
-            urlPath = "/book";
+            request = 'POST';
+            urlPath = '/book';
         }
         else {
-            request = "DELETE";
-            urlPath = "/unbook";
+            request = 'DELETE';
+            urlPath = '/unbook';
         }
         
         $.ajax({
@@ -452,7 +456,7 @@ var API = {
                 },
                 statusCode: {
                     400: function () {
-                        alert("Server error. Please retry later.");
+                        alert('Server error. Please retry later.');
                     },
                 },
 
@@ -493,13 +497,13 @@ var API = {
                         var newEvent = $(baseEvent).clone();
                         
                         $(newEvent).attr('id', jsonData.data[i].id);
-                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== "null" && jsonData.data[i].type !== "")
+                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== 'null' && jsonData.data[i].type !== '')
                             $('.eventType', newEvent).text(jsonData.data[i].type);
                         else
                             $('.eventType', newEvent).remove();
 
                         if (jsonData.data[i].hasBooked) {
-                            $('.eventSubs', newEvent).text("Booked!");
+                            $('.eventSubs', newEvent).text('Booked!');
                         }
                         else
                         {
@@ -624,8 +628,8 @@ var API = {
                     $(pageHTML).attr('id', jsonData.data.event.id);
                     $('.eventTitle', pageHTML).text(jsonData.data.event.title);
 
-
-                    $('.eventImg', pageHTML).attr('src', jsonData.data.event.image);
+                    var imgSrc = (isset(jsonData.data.event.image) && jsonData.data.event.image != '') ? jsonData.data.event.image : 'img/events/noEventImage.png';
+                    $('.eventImg', pageHTML).attr('src', imgSrc);
 
 
                     
@@ -637,28 +641,39 @@ var API = {
 
 
                     for (var i = 0; i < jsonData.data.event.places.length; i++) 
-                        $('.eventDesc', pageHTML).append(jsonData.data.event.places[i].place + "(" + jsonData.data.event.places[i].address + "), ");
+                        $('.eventDesc', pageHTML).append(jsonData.data.event.places[i].place + '(' + jsonData.data.event.places[i].address + '), ');
 
-                    if (jsonData.data.event.speaker != "")
-                        $('.eventDesc', pageHTML).append("the speaker " + jsonData.data.event.speaker + " will talk for " + GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) +" hours.");
+                    if (jsonData.data.event.speaker != '')
+                        $('.eventDesc', pageHTML).append('the speaker ' + jsonData.data.event.speaker + ' will talk for ' + GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) +' hours.');
                     else
-                        $('.eventDesc', pageHTML).append("and will last for " +  GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) + " hours.");
+                        $('.eventDesc', pageHTML).append('and will last for ' +  GetHourDiff(jsonData.data.event.start, jsonData.data.event.end) + ' hours.');
 
-                    if (jsonData.data.event.type != "null")
-                        $('.eventDesc', pageHTML).append("<br>Type: " + jsonData.data.event.type);
+                    if (jsonData.data.event.type != 'null')
+                        $('.eventDesc', pageHTML).append('<br>Type: ' + jsonData.data.event.type);
 
-                    if (jsonData.data.event.theme != "null")
-                        $('.eventDesc', pageHTML).append("<br>Theme:" + jsonData.data.event.theme);
+                    if (jsonData.data.event.theme != 'null')
+                        $('.eventDesc', pageHTML).append('<br>Theme: ' + jsonData.data.event.theme);
 
+                    var totalCapacity = 0;
+                    var hasUndefinedCapacityPlace = false;
+                    for (var k = 0; k < jsonData.data.event.places.length && !hasUndefinedCapacityPlace; k++)
+                    {
+                        var thisPlaceCapacity = parseInt(jsonData.data.event.places[k]) || 0;
+                        if (thisPlaceCapacity == 0)
+                            hasUndefinedCapacityPlace = true;
+                        else
+                            totalCapacity += thisPlaceCapacity;
+                    }
 
                     if (!jsonData.data.event.hasBooked) {
-                        $('.eventNum', pageHTML).text(parseInt(jsonData.data.event.capacity) - parseInt(jsonData.data.event.bookings) + ' seats left!');
-                        $('.eventBtn', pageHTML).text("Subscribe");
+                        if( !hasUndefinedCapacityPlace )
+                            $('.eventNum', pageHTML).text(totalCapacity + ' seats left!');
+                        $('.eventBtn', pageHTML).text('Subscribe');
                     }
                     else
                     {
-                        $('.eventNum', pageHTML).text("You booked this event");
-                        $('.eventBtn', pageHTML).text("Unsubscribe");
+                        $('.eventNum', pageHTML).text('You booked this event');
+                        $('.eventBtn', pageHTML).text('Unsubscribe');
                     }
 
                     $('.eventBtn', pageHTML).click(function(){
@@ -693,7 +708,7 @@ var API = {
                 case 'myProfile': {
                     var pageHTML = $.parseHTML(pageData);
 
-                    $('.username', pageHTML).text(jsonData.data.user.name + " " + jsonData.data.user.surname);
+                    $('.username', pageHTML).text(jsonData.data.user.name + ' ' + jsonData.data.user.surname);
                     newContainer.append(pageHTML);
 
                     break;
@@ -733,13 +748,13 @@ var API = {
                         var newEvent = $(baseEvent).clone();
 
                         $(newEvent).attr('id', jsonData.data[i].id);
-                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== "null" && jsonData.data[i].type !== "")
+                        if (isset(jsonData.data[i].type) && jsonData.data[i].type !== 'null' && jsonData.data[i].type !== '')
                             $('.eventType', newEvent).text(jsonData.data[i].type);
                         else
                             $('.eventType', newEvent).remove();
 
                         if (jsonData.data[i].hasBooked) {
-                            $('.eventSubs', newEvent).text("Booked!");
+                            $('.eventSubs', newEvent).text('Booked!');
                         }
                         else {
                             if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0)
@@ -794,13 +809,13 @@ var API = {
 };
 
 function GetHourDiff(pStartHour, pEndHour) {
-    var res = "";
-    var aTmp="";
+    var res = '';
+    var aTmp='';
     //Trasformo l'orario di inizio in minuti
-    aTmp=pStartHour.split(":");
+    aTmp=pStartHour.split(':');
     var nStartMin = (Number(aTmp[0]) * 60) + Number(aTmp[1]);
     //Trasformo l'orario di fine in minuti
-    aTmp=pEndHour.split(":");
+    aTmp=pEndHour.split(':');
     var nEndMin = (Number(aTmp[0]) * 60) + Number(aTmp[1]);
     //Calcolo la differenza
     var nDiff = 0;
@@ -818,10 +833,10 @@ function GetHourDiff(pStartHour, pEndHour) {
     } else {
         nDiffMin = nDiff;
     }
-    if (nDiffHour < 10) res += "0";
+    if (nDiffHour < 10) res += '0';
     res += nDiffHour;
-    res += ":";
-    if (nDiffMin < 10) res += "0";
+    res += ':';
+    if (nDiffMin < 10) res += '0';
     res += nDiffMin;
     return res;
 }

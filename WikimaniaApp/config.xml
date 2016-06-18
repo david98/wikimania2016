@@ -8,7 +8,7 @@
   <vs:features />
   <preference name="SplashScreen" value="screen" />
   <preference name="SplashScreenDelay" value="6000" />
-  <preference name="FadeSplashScreen" value="false"/>
+  <preference name="FadeSplashScreen" value="false" />
   <preference name="windows-target-version" value="8.1" />
   <plugin name="cordova-plugin-whitelist" version="1" />
   <allow-intent href="http://*/*" />
@@ -68,12 +68,12 @@
   </platform>
   <platform name="android">
     <preference name="SplashScreen" value="screen" />
-    <splash src="res/screens/android/ldpi.9.png" density="ldpi"/>
-    <splash src="res/screens/android/mdpi.9.png" density="mdpi"/>
-    <splash src="res/screens/android/hdpi.9.png" density="hdpi"/>
-    <splash src="res/screens/android/xhdpi.9.png" density="xhdpi"/> 
-    <splash src="res/screens/android/xxhdpi.9.png" density="xxhdpi"/>
-    <splash src="res/screens/android/xxxhdpi.9.png" density="xxxhdpi"/>
+    <splash src="res/screens/android/ldpi.9.png" density="ldpi" />
+    <splash src="res/screens/android/mdpi.9.png" density="mdpi" />
+    <splash src="res/screens/android/hdpi.9.png" density="hdpi" />
+    <splash src="res/screens/android/xhdpi.9.png" density="xhdpi" />
+    <splash src="res/screens/android/xxhdpi.9.png" density="xxhdpi" />
+    <splash src="res/screens/android/xxxhdpi.9.png" density="xxxhdpi" />
   </platform>
   <platform name="ios">
     <splash height="480" src="res/screens/ios/screen-iphone-portrait.png" width="320" />
@@ -113,4 +113,5 @@
   <plugin name="cordova-plugin-crosswalk-webview" version="1.7.2" />
   <preference name="android-minSdkVersion" value="15" />
   <preference name="android-targetSdkVersion" value="22" />
+  <plugin name="cordova-plugin-dialogs" version="1.2.1" />
 </widget>

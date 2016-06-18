@@ -59,7 +59,8 @@ function visualizza() {
 function login(userId, autologin) {
 
     var isValidId = true;
-    /*controlli sull'userId*/
+    
+    if( )
 
 
     if (isValidId)
