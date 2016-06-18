@@ -66,7 +66,7 @@ $(document).ready(function () {
                 'address': $(event.target).parent().parent().attr('data-address'),
                 'latitude': $(event.target).parent().parent().attr('data-latitude'),
                 'longitude': $(event.target).parent().parent().attr('data-longitude'),
-                'distance': $(event.target).parent().attr('data-distance'),
+                'distance': $(event.target).parent().parent().attr('data-distance'),
                 'phone_number': $(event.target).parent().parent().attr('data-phone_number')
             });
     });
@@ -76,14 +76,13 @@ $(document).ready(function () {
     });
 
     window.addEventListener('popstate', previousPage);
+    $('body').on('click', '#backButton', function () {
+        goBack();
+    });
 
     $('body').on('click', '.eventImg', function (event) {
         if( currentPage !== 'eventSingle' )
             showPage('eventSingle', $(event.target).parent().attr('id'));
-    });
-
-    $('body').on('click', '#backButton', function () {
-        //come si fa a farlo andare... ?
     });
 
     $('body').on('click', '.eventTitle', function (event) {
@@ -184,6 +183,9 @@ function showPage(name, parameters, refresh, goingBack) {
 
                 if (noMenuLoaded) {
                     $('body').prepend(menuHTML);
+                    if (API.token === 'public') {
+                        $('#myProfile').parent().remove();
+                    }
                     currentContainer = $('.container');
                     $('#logo, #menu, #panel').hide();
                 }
@@ -687,7 +689,9 @@ var API = {
                             totalCapacity += thisPlaceCapacity;
                     }
 
-                    if (!jsonData.data.event.hasBooked) {
+                    if (API.token === 'public')
+                        $('.eventBtn', pageHTML).parent().replaceWith('<br />');
+                    else if (!jsonData.data.event.hasBooked) {
                         if( !hasUndefinedCapacityPlace )
                             $('.eventNum', pageHTML).text(totalCapacity + ' seats left!');
                         $('.eventBtn', pageHTML).text('Subscribe');
