@@ -39,7 +39,7 @@ $(document).ready(function () {
 
     var body = $('body');
 
-    body.on('touchstart', '#menu_btn', function () {
+    body.on('click', '#menu_btn', function () {
         slideout.toggle();
     });
 
