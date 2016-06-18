@@ -28,6 +28,7 @@ $(document).ready(function () {
     } 
 
     button = $('#button');
+    button_guest = $('$button_guest');
     idCode = $('#idCode');
     form = $('#form');
     logo = $('#logo');
