@@ -748,7 +748,7 @@ var API = {
                     }
                     else
                     {
-                        $('.eventNum', pageHTML).text('You booked this event');
+                        $('.eventNum', pageHTML).text('You showed interest in this event.');
                         $('.eventBtn', pageHTML).text('Unsubscribe');
                     }
 
