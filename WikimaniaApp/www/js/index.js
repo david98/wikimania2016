@@ -42,6 +42,14 @@ $(document).ready(function () {
     buttonGuest.on('click', function () {
         login("volontario", false);
     });
+
+    idCode.on('focusin', function () {
+        buttonGuest.hide();
+    });
+
+    idCode.on('focusout', function () {
+        buttonGuest.show();
+    });
 });
 
 function visualizza() {
