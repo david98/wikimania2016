@@ -51,7 +51,7 @@ $(document).ready(function () {
 
     idCode.on('focusout', function () {
         buttonGuest.fadeIn(300);
-        
+
     });
 });
 

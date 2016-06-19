@@ -158,6 +158,8 @@ body {
     border: 0.5vmin solid rgb(255, 255, 255);
     text-shadow: 0 0.2vmin 0.2vmin #000000;
     transition: transform 1s ease-in-out;
+    margin: 0 auto 0 auto;
+    display: block;
 }
 
 .button_guest:focus{
