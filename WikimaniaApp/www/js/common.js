@@ -879,7 +879,8 @@ var API = {
             slideout.enableTouch();
 
             currentPage = pageName;
-            $('#logo, #menu, #panel').show();
+            $('#logo, #panel').show();
+            $('#menu').css('display', '')
         });
     }
 };
