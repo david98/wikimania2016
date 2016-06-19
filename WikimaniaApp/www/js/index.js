@@ -44,11 +44,14 @@ $(document).ready(function () {
     });
 
     idCode.on('focusin', function () {
-        buttonGuest.hide();
+
+        buttonGuest.fadeOut(300);
+
     });
 
     idCode.on('focusout', function () {
-        buttonGuest.show();
+        buttonGuest.fadeIn(300);
+        
     });
 });
 
