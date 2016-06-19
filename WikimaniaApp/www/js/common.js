@@ -577,7 +577,7 @@ var API = {
                                 $('.eventType', newEvent).remove();
 
                             if (jsonData.data[i].hasBooked) {
-                                $('.eventSubs', newEvent).text('Booked!');
+                                $('.eventSubs', newEvent).text('You like this!');
                             }
                             else {
                                 if (isset(jsonData.data[i].places) && jsonData.data[i].places.length != 0) {
@@ -739,7 +739,7 @@ var API = {
                         if (!hasUndefinedCapacityPlace) {
                             if (totalCapacity != 0) {
                                 $('.eventNum', pageHTML).text(totalCapacity + ' seats left!');
-                                $('.eventBtn', pageHTML).text('Subscribe');
+                                $('.eventBtn', pageHTML).text('Interesting...');
                             }
                             else {
                                 $('.eventNum', pageHTML).text('No more seats left! You may still try and go, though, but be warned!');
@@ -749,7 +749,7 @@ var API = {
                     else
                     {
                         $('.eventNum', pageHTML).text('You showed interest in this event.');
-                        $('.eventBtn', pageHTML).text('Unsubscribe');
+                        $('.eventBtn', pageHTML).text('I\'m not interested anymore');
                     }
 
                     $('.eventBtn', pageHTML).click(function(){
@@ -830,7 +830,7 @@ var API = {
                             $('.eventType', newEvent).remove();
 
                         if (jsonData.data[i].hasBooked) {
-                            $('.eventSubs', newEvent).text('Booked!');
+                            $('.eventSubs', newEvent).text('You like this!');
                         }
                         else {
                             if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0)
