@@ -42,6 +42,14 @@ $(document).ready(function () {
     buttonGuest.on('click', function () {
         login("volontario", false);
     });
+
+    idCode.on('focusin', function () {
+        buttonGuest.hide();
+    });
+
+    idCode.on('focusout', function () {
+        buttonGuest.show();
+    });
 });
 
 function visualizza() {
@@ -53,7 +61,7 @@ function visualizza() {
     button.css('transform', 'translateY(-20vh)');
 
     button.off('touchstart');
-    button.on('click', function () {
+    button.on('touchstart', function () {
         login(idCode.val(), false);
     });
 
