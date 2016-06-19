@@ -361,7 +361,7 @@ var API = {
                     navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    navigator.notification.alert('You must login again.', null, 'Login expired', 'Okay');
+                    navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                     that.token = 'public';
                     API.logout();
                 }
@@ -386,7 +386,7 @@ var API = {
                     navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                     that.token = 'public';
                     API.logout();
                 }
@@ -411,7 +411,7 @@ var API = {
                     navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                     that.token = 'public';
                     API.logout();
                 }
@@ -443,7 +443,7 @@ var API = {
                     navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                     that.token = 'public';
                     API.logout();
                 }
@@ -475,7 +475,7 @@ var API = {
                     navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                 },
                 403: function () {
-                    navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                    navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                     that.token = 'public';
                     API.logout();
                 }
@@ -524,7 +524,7 @@ var API = {
                         navigator.notification.alert('Please retry later.', null, 'Server error', 'Okay');
                     },
                     403: function () {
-                        navigator.notification.alert('Returning to login page.', null, 'Login expired', 'Okay');
+                        navigator.notification.alert('Please login again.', null, 'Login expired', 'Okay');
                         that.token = 'public';
                         API.logout();
                     }
@@ -577,16 +577,21 @@ var API = {
                                 $('.eventType', newEvent).remove();
 
                             if (jsonData.data[i].hasBooked) {
-                                $('.eventSubs', newEvent).text('Booked!');
+                                $('.eventSubs', newEvent).text('You like this!');
                             }
                             else {
                                 if (isset(jsonData.data[i].places) && jsonData.data[i].places.length != 0) {
+                                    var hasUndefinedCapacityPlace = false;
                                     var totalCapacity = 0;
-                                    for (var k = 0; k < jsonData.data[i].places.length; k++) {
-                                        totalCapacity += parseInt(jsonData.data[i].places[k].capacity);
+                                    for (var k = 0; k < jsonData.data[i].places.length && !hasUndefinedCapacityPlace; k++) {
+                                        var thisPlaceCapacity = parseInt(jsonData.data[i].places[k].capacity);
+                                        totalCapacity += thisPlaceCapacity;
+                                        if (thisPlaceCapacity == 0) {
+                                            hasUndefinedCapacityPlace = true;
+                                        }
                                     }
 
-                                    if (totalCapacity != 0) {
+                                    if (totalCapacity != 0 && !hasUndefinedCapacityPlace) {
                                         $('.eventNum', newEvent).text('/' + totalCapacity);
                                     }
 
@@ -726,17 +731,25 @@ var API = {
                             totalCapacity += thisPlaceCapacity;
                     }
 
+                    totalCapacity -= parseInt(jsonData.data.event.bookings);
+
                     if (API.token === 'public')
                         $('.eventBtn', pageHTML).parent().replaceWith('<br />');
                     else if (!jsonData.data.event.hasBooked) {
-                        if( !hasUndefinedCapacityPlace )
-                            $('.eventNum', pageHTML).text(totalCapacity + ' seats left!');
-                        $('.eventBtn', pageHTML).text('Subscribe');
+                        if (!hasUndefinedCapacityPlace) {
+                            if (totalCapacity != 0) {
+                                $('.eventNum', pageHTML).text(totalCapacity + ' seats left!');
+                                $('.eventBtn', pageHTML).text('Interesting...');
+                            }
+                            else {
+                                $('.eventNum', pageHTML).text('No more seats left! You may still try and go, though, but be warned!');
+                            }
+                        }
                     }
                     else
                     {
-                        $('.eventNum', pageHTML).text('You booked this event');
-                        $('.eventBtn', pageHTML).text('Unsubscribe');
+                        $('.eventNum', pageHTML).text('You showed interest in this event.');
+                        $('.eventBtn', pageHTML).text('I\'m not interested anymore');
                     }
 
                     $('.eventBtn', pageHTML).click(function(){
@@ -817,7 +830,7 @@ var API = {
                             $('.eventType', newEvent).remove();
 
                         if (jsonData.data[i].hasBooked) {
-                            $('.eventSubs', newEvent).text('Booked!');
+                            $('.eventSubs', newEvent).text('You like this!');
                         }
                         else {
                             if (isset(jsonData.data[i].capacity) && jsonData.data[i].capacity != 0)
