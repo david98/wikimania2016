@@ -21,10 +21,18 @@ var button, idCode, form, logo, title;
 
 $(document).ready(function () {
 
+    console.log(localStorage.getItem('userToken'))
     userToken = getFromStorage('userToken');
     if (userToken !== '' && isset(userToken)) {
         API.token = userToken;
         showPage('eventList');
+        return;
+    } 
+    userToken = getFromStorage('userToken');
+    if (userToken !== '' && isset(userToken)) {
+        API.token = userToken;
+        showPage('eventList');
+        return;
     } 
 
     button = $('#button');

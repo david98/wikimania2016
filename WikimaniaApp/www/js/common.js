@@ -29,7 +29,6 @@ var slideout;
 var backButton;
 
 $(document).ready(function () {
-
     $(window).resize(function () {
         vw = window.innerWidth / 100;
 
@@ -39,9 +38,6 @@ $(document).ready(function () {
 
     var body = $('body');
 
-    body.on('click', '#menu_btn', function () {
-        slideout.toggle();
-    });
 
     body.on('touchstart', '.navbar_list_element p', function (event) {
         showPage(event.target.id);
@@ -91,14 +87,6 @@ $(document).ready(function () {
         if( currentPage !== 'eventSingle')
             showPage('eventSingle', $(event.target).parent().parent().attr('id'));
     });
-
-    /*$(document).on('deviceready', function () {
-        document.addEventListener('backbutton', goBack, false);
-    });*/
-});
-
-$.when($.ajax('menu.html')).then(function (data, textStatus, jqXHR) {
-    menuHTML = data;
 });
 
 function isset(variable) {
@@ -140,7 +128,55 @@ function rebuildSlideout() {
 }
 
 function bindEvents() {
-    
+
+                $('.navbar_list_element p').on('touchstart', function (event) {
+                    showPage(event.target.id);
+                    slideout.close();
+                    $('#backButton').show();
+                });
+
+                $('.restaurantImg').on('click', function (event) {
+                    if( currentPage !== 'restaurantSingle' )
+                        showPage('restaurantSingle', {
+                            'name': $(event.target).parent().attr('data-name'),
+                            'address': $(event.target).parent().attr('data-address'),
+                            'latitude': $(event.target).parent().attr('data-latitude'),
+                            'longitude': $(event.target).parent().attr('data-longitude'),
+                            'distance': $(event.target).parent().attr('data-distance'),
+                            'phone_number': $(event.target).parent().attr('data-phone_number')
+                        });
+                });
+
+                $('.restaurantTitle').on('click',  function (event) {
+                    if( currentPage !== 'restaurantSingle' )
+                        showPage('restaurantSingle', {
+                            'name': $(event.target).parent().parent().attr('data-name'),
+                            'address': $(event.target).parent().parent().attr('data-address'),
+                            'latitude': $(event.target).parent().parent().attr('data-latitude'),
+                            'longitude': $(event.target).parent().parent().attr('data-longitude'),
+                            'distance': $(event.target).parent().parent().attr('data-distance'),
+                            'phone_number': $(event.target).parent().parent().attr('data-phone_number')
+                        });
+                });
+
+                $('.buttonEvents').on('touchstart', function () {
+                    showPage('myEvents');
+                });
+
+                window.addEventListener('popstate', previousPage);
+                $('#backButton').on('click', function () {
+                    goBack();
+                });
+
+                $('.eventImg').on('click', function (event) {
+                    if( currentPage !== 'eventSingle' )
+                        showPage('eventSingle', $(event.target).parent().attr('id'));
+                });
+
+                $('.eventTitle').on('click', function (event) {
+                        if( currentPage !== 'eventSingle')
+                            showPage('eventSingle', $(event.target).parent().parent().attr('id'));
+                });
 }
 
 function daGradiARadianti(gradi){
@@ -181,18 +217,78 @@ function showPage(name, parameters, refresh, goingBack) {
         else
             currentContainer = $('.container');
 
-        $.when(
-            $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
+        $.when($.ajax('loading.html'),$.ajax('menu.html')).done(function (data, data1) {
+            menuHTML = data1[0];
+            loadCss('loading');
 
-                loadCss('loading');
+            if (noMenuLoaded) {
+                $('body').html(data[0]);
+                $(window).resize(function () {
+                    vw = window.innerWidth / 100;
 
-                if (noMenuLoaded)
-                    $('body').html(data);
+                    if (isset(slideout))
+                        rebuildSlideout();
+                });
+
+                var body = $('body');
+
+                $('.navbar_list_element p').on('touchstart', function (event) {
+                    showPage(event.target.id);
+                    slideout.close();
+                    $('#backButton', body).show();
+                });
+
+                $('.restaurantImg').on('click', function (event) {
+                    if( currentPage !== 'restaurantSingle' )
+                        showPage('restaurantSingle', {
+                            'name': $(event.target).parent().attr('data-name'),
+                            'address': $(event.target).parent().attr('data-address'),
+                            'latitude': $(event.target).parent().attr('data-latitude'),
+                            'longitude': $(event.target).parent().attr('data-longitude'),
+                            'distance': $(event.target).parent().attr('data-distance'),
+                            'phone_number': $(event.target).parent().attr('data-phone_number')
+                        });
+                });
+
+                $('.restaurantTitle').on('click',  function (event) {
+                    if( currentPage !== 'restaurantSingle' )
+                        showPage('restaurantSingle', {
+                            'name': $(event.target).parent().parent().attr('data-name'),
+                            'address': $(event.target).parent().parent().attr('data-address'),
+                            'latitude': $(event.target).parent().parent().attr('data-latitude'),
+                            'longitude': $(event.target).parent().parent().attr('data-longitude'),
+                            'distance': $(event.target).parent().parent().attr('data-distance'),
+                            'phone_number': $(event.target).parent().parent().attr('data-phone_number')
+                        });
+                });
+
+                $('.buttonEvents').on('touchstart', function () {
+                    showPage('myEvents');
+                });
+
+                window.addEventListener('popstate', previousPage);
+                $('#backButton').on('click', function () {
+                    goBack();
+                });
+
+                $('.eventImg').on('click', function (event) {
+                    if( currentPage !== 'eventSingle' )
+                        showPage('eventSingle', $(event.target).parent().attr('id'));
+                });
+
+                $('.eventTitle').on('click', function (event) {
+                        if( currentPage !== 'eventSingle')
+                            showPage('eventSingle', $(event.target).parent().parent().attr('id'));
+                });
+            }
                 else
                     currentContainer.html(data);
 
                 if (noMenuLoaded) {
                     $('body').prepend(menuHTML);
+                    $('#menu_btn').click(function () {
+                        slideout.toggle();
+                    })
                     if (API.token === 'public') {
                         $('#myProfile').parent().remove();
                     }
@@ -228,7 +324,6 @@ function showPage(name, parameters, refresh, goingBack) {
                     }
                 }
             })
-        );
     }
 }
 
@@ -267,7 +362,6 @@ function getFromStorage(name) {
         // Sorry! No Web Storage support..
     }
 }
-
 var API = {
 
     token: '',
@@ -366,9 +460,8 @@ var API = {
                     API.logout();
                 }
             },
-            success: function (data) {
-                API.show(pageName, data, currentContainer, noMenuLoaded);
-            }
+        }).done(function (data) {
+            API.show(pageName, data, currentContainer, noMenuLoaded);
         });
     },
 
@@ -545,7 +638,7 @@ var API = {
     show: function (pageName, jsonData, currentContainer, noMenuLoaded, parameters) {
         var newContainer = $('<div></div>');
         newContainer.addClass('container');
-
+    
         //costruire l'html da inserire
         $.ajax(pageName + '.html').done(function (pageData) {
 
@@ -563,12 +656,15 @@ var API = {
                     var today = new Date();
                     var previousDay = today;
                     var dateTitle = null;
+          
                     for (var i = 0; i < jsonData.data.length; i++)
                     {
-                        var day = new Date(jsonData.data[i].date + ((jsonData.data[i].start !== '00:00:00') ? (' ' + jsonData.data[i].start) : ' 23:59:59'));
-
-                        if (day > today) {
+                 
+                        var day = new Date(jsonData.data[i].date.replace(/-/gi, '/') + ((jsonData.data[i].start !== '00:00:00') ? (' ' + jsonData.data[i].start) : ' 23:59:59'));
+                        if (day.getTime() > today.getTime()) {
+        
                             var newEvent = $(baseEvent).clone();
+    
 
                             $(newEvent).attr('id', jsonData.data[i].id);
                             if (isset(jsonData.data[i].type) && jsonData.data[i].type !== 'null' && jsonData.data[i].type !== '')
@@ -627,13 +723,12 @@ var API = {
                 }
 
                 case 'restaurantList': {
-
                     var options = {
                         enableHighAccuracy: true,
                         timeout: 100 * 1000,
                         maximumAge: 0
                     };
-
+                    if (window.navigator.geolocation)
                     window.navigator.geolocation.getCurrentPosition(function (position) {
                         var userPosition = {
                             lon: position.coords.longitude,
@@ -677,8 +772,88 @@ var API = {
                             newContainer.append(newRestaurant);
                         }
 
-                    }, null, options);
+                    }, function (err) { var userPosition = {
+                            lon: 9.3336,
+                            lat:  45.9958
+                        };
+                        var pageHTML = $.parseHTML(pageData);
+                        var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
+                        $('.singleRestaurant', pageHTML).remove();
 
+                        newContainer.append(pageHTML);
+
+                        for (var i = 0; i < jsonData.data.length; i++) {
+                            var newRestaurant = $(baseRestaurant).clone();
+
+                            $('.restaurantImg', newRestaurant).attr('src', jsonData.data[i].image);
+
+                            $(newRestaurant).attr('id', jsonData.data[i].id);
+
+                            //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
+                            $(newRestaurant).attr('data-name', jsonData.data[i].name);
+                            $(newRestaurant).attr('data-address', jsonData.data[i].address);
+                            $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
+                            $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
+                            $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+
+                            $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+
+                            $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
+                            $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
+
+                            var restaurantPosition = {
+                                lon: jsonData.data[i].longitude,
+                                lat: jsonData.data[i].latitude
+                            };
+
+                            var distance = distanceBetween(userPosition, restaurantPosition).toFixed(0);
+                            $(newRestaurant).attr('data-distance', distance);
+                            $('.restaurantDistance', newRestaurant).text(distance + ' m');
+
+                            newContainer.append(newRestaurant);
+                        } }, options);
+                    else {
+                               var userPosition = {
+                            lon: 9.3336,
+                            lat:  45.9958
+                        };
+                        var pageHTML = $.parseHTML(pageData);
+                        var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
+                        $('.singleRestaurant', pageHTML).remove();
+
+                        newContainer.append(pageHTML);
+
+                        for (var i = 0; i < jsonData.data.length; i++) {
+                            var newRestaurant = $(baseRestaurant).clone();
+
+                            $('.restaurantImg', newRestaurant).attr('src', jsonData.data[i].image);
+
+                            $(newRestaurant).attr('id', jsonData.data[i].id);
+
+                            //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
+                            $(newRestaurant).attr('data-name', jsonData.data[i].name);
+                            $(newRestaurant).attr('data-address', jsonData.data[i].address);
+                            $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
+                            $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
+                            $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+
+                            $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+
+                            $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
+                            $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
+
+                            var restaurantPosition = {
+                                lon: jsonData.data[i].longitude,
+                                lat: jsonData.data[i].latitude
+                            };
+
+                            var distance = distanceBetween(userPosition, restaurantPosition).toFixed(0);
+                            $(newRestaurant).attr('data-distance', distance);
+                            $('.restaurantDistance', newRestaurant).text(distance + ' m');
+
+                            newContainer.append(newRestaurant);
+                        }
+                    }
                    
                     break;
                 }
@@ -869,7 +1044,7 @@ var API = {
                 }
             }
 
-            currentContainer.replaceWith(newContainer);
+            currentContainer.replaceWith(newContainer)
             $('.loading').remove();
 
             if (noMenuLoaded)
