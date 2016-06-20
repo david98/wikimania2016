@@ -138,6 +138,10 @@ body {
     font-size: 5vmin;
 }
 
+#idCode{
+    -webkit-user-select:auto;
+}
+
 .input:focus{
     outline:none;
 }

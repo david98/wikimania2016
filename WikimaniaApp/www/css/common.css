@@ -225,6 +225,7 @@ a, a:link, a:visited, a:focus, a:active{
     margin-right: 5vw;
     margin-top: calc(5vh - 5vmin);
     font-size: 10vmin;
+    z-index: 10;
 }
 
 #logoTitle{
