@@ -30,6 +30,10 @@ var backButton;
 
 $(document).ready(function () {
 
+    //coordinate di Esino Lario
+    store('lastUserLat', (getFromStorage('lastUserLat') !== '' ? getFromStorage('lastUserLat') : '45.993889'));
+    store('lastUserLon', (getFromStorage('lastUserLon') !== '' ? getFromStorage('lastUserLat') : '9.333056'));
+
     $(window).resize(function () {
         vw = window.innerWidth / 100;
 
@@ -57,7 +61,8 @@ $(document).ready(function () {
                 'latitude': $(event.target).parent().attr('data-latitude'),
                 'longitude': $(event.target).parent().attr('data-longitude'),
                 'distance': $(event.target).parent().attr('data-distance'),
-                'phone_number': $(event.target).parent().attr('data-phone_number')
+                'phone_number': $(event.target).parent().attr('data-phone_number'),
+                'image': $(this).attr('src')
             });
     });
 
@@ -69,7 +74,8 @@ $(document).ready(function () {
                 'latitude': $(event.target).parent().parent().attr('data-latitude'),
                 'longitude': $(event.target).parent().parent().attr('data-longitude'),
                 'distance': $(event.target).parent().parent().attr('data-distance'),
-                'phone_number': $(event.target).parent().parent().attr('data-phone_number')
+                'phone_number': $(event.target).parent().parent().attr('data-phone_number'),
+                'image': $('.restaurantImg', $(event.target).parent().parent()).attr('src')
             });
     });
 
@@ -173,62 +179,70 @@ function showPage(name, parameters, refresh, goingBack) {
     goingBack = goingBack || false;
     if (name !== currentPage || isset(refresh)) {
 
-        var noMenuLoaded = false;
-        var currentContainer;
+        if (name === 'journey') {
+            navigator.notification.confirm("This link will open in your default browser. Continue?", function (index) {
+                if( index === 1 )
+                    window.open('https://wikimania2016.wikimedia.org/wiki/Journey', '_system');
+            }, "Are you sure?");
+        } else {
 
-        if (currentPage === 'index')
-            noMenuLoaded = true;
-        else
-            currentContainer = $('.container');
+            var noMenuLoaded = false;
+            var currentContainer;
 
-        $.when(
-            $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
+            if (currentPage === 'index')
+                noMenuLoaded = true;
+            else
+                currentContainer = $('.container');
 
-                loadCss('loading');
+            $.when(
+                $.ajax('loading.html').then(function (data, textStatus, jqXHR) {
 
-                if (noMenuLoaded)
-                    $('body').html(data);
-                else
-                    currentContainer.html(data);
+                    loadCss('loading');
 
-                if (noMenuLoaded) {
-                    $('body').prepend(menuHTML);
-                    if (API.token === 'public') {
-                        $('#myProfile').parent().remove();
-                    }
-                    currentContainer = $('.container');
-                    $('#logo, #menu, #panel').hide();
-
-                    backButton = $('#backButton');
-                }
-
-                API[name](name, currentContainer, noMenuLoaded, parameters);
-
-                if (name !== 'logout') {
-                    for (var i = 0; i < pageNames.length; i++)
-                        unloadCss(pageNames[i]);
+                    if (noMenuLoaded)
+                        $('body').html(data);
+                    else
+                        currentContainer.html(data);
 
                     if (noMenuLoaded) {
-                        rebuildSlideout();
-                        slideout.disableTouch();
-                        unloadCss('index');
-                        loadCss('common');
-                        loadCss('font-awesome/css/font-awesome.min');
+                        $('body').prepend(menuHTML);
+                        if (API.token === 'public') {
+                            $('#myProfile').parent().remove();
+                        }
+                        currentContainer = $('.container');
+                        $('#logo, #menu, #panel').hide();
+
+                        backButton = $('#backButton');
                     }
 
-                    loadCss(name);
+                    API[name](name, currentContainer, noMenuLoaded, parameters);
 
-                    if (!goingBack) {
-                        historyItem = {
-                            name: name,
-                            parameters: parameters
-                        };
+                    if (name !== 'logout') {
+                        for (var i = 0; i < pageNames.length; i++)
+                            unloadCss(pageNames[i]);
 
-                        history.pushState(historyItem, name, name + '.html');
+                        if (noMenuLoaded) {
+                            rebuildSlideout();
+                            slideout.disableTouch();
+                            unloadCss('index');
+                            loadCss('common');
+                            loadCss('font-awesome/css/font-awesome.min');
+                        }
+
+                        loadCss(name);
+
+                        if (!goingBack) {
+                            historyItem = {
+                                name: name,
+                                parameters: parameters
+                            };
+
+                            history.pushState(historyItem, name, name + '.html');
+                        }
                     }
-                }
-            })
-        );
+                })
+            );
+        }
     }
 }
 
@@ -630,16 +644,76 @@ var API = {
 
                     var options = {
                         enableHighAccuracy: true,
-                        timeout: 100 * 1000,
-                        maximumAge: 0
+                        timeout: 10 * 1000,
+                        maximumAge: 600 * 1000,
                     };
 
-                    window.navigator.geolocation.getCurrentPosition(function (position) {
-                        var userPosition = {
-                            lon: position.coords.longitude,
-                            lat: position.coords.latitude
-                        };
+                    
+                    var userPosition = parameters ? (parameters.position || false) : false;
+                    console.log(parameters);
+                    if (!userPosition) {
+                        $.get('loading.html', function (data) {
+                            currentContainer.html(data);
+                            loadCss('loading');
+                        });
 
+                        window.navigator.geolocation.getCurrentPosition(function (position) {
+                            userPosition = {
+                                lon: position.coords.longitude,
+                                lat: position.coords.latitude
+                            };
+
+                            store('lastUserLon', userPosition.lon);
+                            store('lastUserLat', userPosition.lat);
+
+                            var pageHTML = $.parseHTML(pageData);
+                            var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
+                            $('.singleRestaurant', pageHTML).remove();
+
+                            newContainer.append(pageHTML);
+
+                            for (var i = 0; i < jsonData.data.length; i++) {
+                                var newRestaurant = $(baseRestaurant).clone();
+
+                                $('.restaurantImg', newRestaurant).attr('src', jsonData.data[i].image);
+
+                                $(newRestaurant).attr('id', jsonData.data[i].id);
+
+                                //aggiungo tutti i dati come attributi, in modo da ottenerli facilmente
+                                $(newRestaurant).attr('data-name', jsonData.data[i].name);
+                                $(newRestaurant).attr('data-address', jsonData.data[i].address);
+                                $(newRestaurant).attr('data-latitude', jsonData.data[i].latitude);
+                                $(newRestaurant).attr('data-longitude', jsonData.data[i].longitude);
+                                $(newRestaurant).attr('data-phone_number', jsonData.data[i].phone_number);
+
+                                $('.restaurantTitle', newRestaurant).text(jsonData.data[i].name);
+
+                                $('.restaurantPhone', newRestaurant).append(' ' + jsonData.data[i].phone_number);
+                                $('.restaurantPhone', newRestaurant).attr('href', 'tel:' + jsonData.data[i].phone_number);
+
+                                var restaurantPosition = {
+                                    lon: jsonData.data[i].longitude,
+                                    lat: jsonData.data[i].latitude
+                                };
+
+                                var distance = distanceBetween(userPosition, restaurantPosition).toFixed(0);
+                                $(newRestaurant).attr('data-distance', distance);
+                                $('.restaurantDistance', newRestaurant).text(distance + ' m from your current position');
+
+                                newContainer.append(newRestaurant);
+                            }
+
+                        }, function () {
+                            navigator.notification.alert("Using last detected position. (Is GPS enabled?)", null, "GPS error", "Ok!");
+                            parameters = {};
+                            parameters.position = {
+                                lon: getFromStorage('lastUserLon'),
+                                lat: getFromStorage('lastUserLat')
+                            };
+                            API.show(pageName, jsonData, currentContainer, noMenuLoaded, parameters);
+                        }, options);
+                    }
+                    else {
                         var pageHTML = $.parseHTML(pageData);
                         var baseRestaurant = $('.singleRestaurant', pageHTML)[0];
                         $('.singleRestaurant', pageHTML).remove();
@@ -672,14 +746,14 @@ var API = {
 
                             var distance = distanceBetween(userPosition, restaurantPosition).toFixed(0);
                             $(newRestaurant).attr('data-distance', distance);
-                            $('.restaurantDistance', newRestaurant).text(distance + ' m');
+                            $('.restaurantDistance', newRestaurant).text(distance + ' m from your current position');
 
                             newContainer.append(newRestaurant);
                         }
 
-                    }, null, options);
 
-                   
+                        unloadCss('loading');
+                    }
                     break;
                 }
 
@@ -768,14 +842,13 @@ var API = {
                     var pageHTML = $.parseHTML(pageData);
 
                     $('.restaurantTitle', pageHTML).text(jsonData.name);
-                    //immagine... ?
+                    $('.restaurantImg', pageHTML).attr('src', jsonData.image);
                     $('.restaurantPhone', pageHTML).append(' ' + jsonData.phone_number);
                     $('.restaurantPhone', pageHTML).attr('href', 'tel:' + jsonData.phone_number);
-
-                    //MANCA LA DISTANZA E LA MAPPA!!!!!!!!!11!!!!!1!!!!1!!ù
                     
-                    $('.restaurantDistance', pageHTML).text('a ' + jsonData.distance + ' m');
-
+                    $('.restaurantDistance', pageHTML).text(jsonData.distance + ' m from your current position');
+                    var geoLink = 'https://maps.google.com?saddr=Current+Location&daddr=' + jsonData.latitude + ',' + jsonData.longitude;
+                    $('.restaurantGuide', pageHTML).attr('href', geoLink);
                     newContainer.append(pageHTML);
 
                     break;

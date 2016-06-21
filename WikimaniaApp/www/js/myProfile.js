@@ -36,8 +36,8 @@ function locateUser() {
     }
     var options = {
         enableHighAccuracy: true,
-        timeout: 100 * 1000,
-        maximumAge: 0
+        timeout: 15 * 1000,
+        maximumAge: 300 * 1000
     };
     if (isset(window.navigator))
         window.navigator.geolocation.getCurrentPosition(showMap, function () { alert("Can't load the map!") }, options);
@@ -48,6 +48,10 @@ function locateUser() {
 function showMap(position) {
     var lon = position.coords.longitude;
     var lat = position.coords.latitude;
+
+    store('lastUserLon', lon);
+    store('lastUserLat', lat);
+
     var zoom = 16;
     if (!isset(map)) {
         map = new OpenLayers.Map("map", {
