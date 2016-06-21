@@ -112,12 +112,12 @@ function isset(variable) {
 }
 
 function goBack(event) {
-    history.back();
+    if( currentPage !== 'index' )
+        history.back();
 }
 
 function previousPage(event) {
-    console.log(event.state.name);
-    if( isset(event.state.name) )
+    if( currentPage !== 'index' && isset(event.state.name) )
         showPage(event.state.name, event.state.parameters, false, true);
 }
 

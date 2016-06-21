@@ -76,6 +76,12 @@ function showMap(position) {
     }
     map.setCenter(lonLat, zoom);
     addMarker(lon, lat, 'img/mapIcons/user.png', null, 32, 37);
+
+    addMarker(9.32882, 45.99384, 'img/mapIcons/toilet.png', null, 32, 37);
+    addMarker(9.32905, 45.99384, 'img/mapIcons/toilet_disability.png', null, 32, 37);
+
+    addMarker(9.33201, 45.99432, 'img/mapIcons/toilet.png', null, 32, 37);
+
     userData.getMyEvents();
     userData.getAccomodation();
 }
@@ -154,8 +160,10 @@ var userData = {
                 },
                 404: function () {
                     if( !isset(getFromStorage('hasNoAccomodation')) ){
-                        alert("Warning! You have no accomodation in Esino.");
-                        store('hasNoAccomodation', 'true');
+                        navigator.notification.alert("Warning! You have no accomodation in Esino.", function () {
+                            store('hasNoAccomodation', 'true');
+                        }, "Warning!", "Understood!");
+                        
                     }
                     $('.buttonAccomodation').addClass('disabled');
                 }
