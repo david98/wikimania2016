@@ -235,13 +235,13 @@ a, a:link, a:visited, a:focus, a:active{
 }
 
 #backButton{
-    opacity: 0.5;
+    opacity: 0.7;
     text-align: center;
     line-height: 12vw;
     width: 12vw;
     font-size: 10vw;
     position: fixed;
-    top: 12vh;
+    top: 90vh;
     color: #5e9ac6;
     left: 3vw;
     background-color: white;
